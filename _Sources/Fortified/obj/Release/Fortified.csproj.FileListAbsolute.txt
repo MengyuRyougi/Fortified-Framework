@@ -1,0 +1,10 @@
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\Fortified\obj\Release\Fortified.csproj.AssemblyReference.cache
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\Fortified\obj\Release\Fortified.GeneratedMSBuildEditorConfig.editorconfig
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\Fortified\obj\Release\Fortified.AssemblyInfoInputs.cache
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\Fortified\obj\Release\Fortified.AssemblyInfo.cs
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\Fortified\obj\Release\Fortified.csproj.CoreCompileInputs.cache
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\1.5\Assemblies\Fortified.dll
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\1.5\Assemblies\Fortified.pdb
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\Fortified\obj\Release\Fortified.csproj.Up2Date
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\Fortified\obj\Release\Fortified.dll
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\Fortified\obj\Release\Fortified.pdb

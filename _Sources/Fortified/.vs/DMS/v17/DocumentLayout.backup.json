@@ -1,0 +1,364 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_overseer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_overseer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_iscolonymechplayercontrolled.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_iscolonymechplayercontrolled.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_candraftmech.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_candraftmech.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_cancontrolmechs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_cancontrolmechs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_pawn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_pawn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_skillrecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_skillrecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\thing_flammablenow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\thing_flammablenow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_inmechanitorcommandrange.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_inmechanitorcommandrange.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_candropweapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_candropweapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_cantakeorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_cantakeorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_diseasecontractchancefactor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_diseasecontractchancefactor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_biocode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_biocode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_building_mechgestator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_building_mechgestator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\patch\\patch_bossgroupevercallable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:patch\\patch_bossgroupevercallable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\royalty\\patch_generatepawntitle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:royalty\\patch_generatepawntitle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\thing\\defaulttiltefactionextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:thing\\defaulttiltefactionextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\ui\\itab_mech_gear.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:ui\\itab_mech_gear.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\ui\\command_selectappareloutfit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:ui\\command_selectappareloutfit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\component\\compsubrelay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:component\\compsubrelay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch\\_source\\dms\\utility\\checkutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8766CEC8-D11A-432F-B683-4CA0B8395E9B}|DMS.csproj|solutionrelative:utility\\checkutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Patch_CanDraftMech.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_CanDraftMech.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_CanDraftMech.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_CanDraftMech.cs",
+              "RelativeToolTip": "Patch\\Patch_CanDraftMech.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:55:13.563Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Patch_IsColonyMechPlayerControlled.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_IsColonyMechPlayerControlled.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_IsColonyMechPlayerControlled.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_IsColonyMechPlayerControlled.cs",
+              "RelativeToolTip": "Patch\\Patch_IsColonyMechPlayerControlled.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:54:59.797Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Patch_Overseer.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_Overseer.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_Overseer.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_Overseer.cs",
+              "RelativeToolTip": "Patch\\Patch_Overseer.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAwDwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:53:41.661Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Patch_Pawn.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_Pawn.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_Pawn.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_Pawn.cs",
+              "RelativeToolTip": "Patch\\Patch_Pawn.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:53:19.712Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Patch_CanControlMechs.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_CanControlMechs.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_CanControlMechs.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_CanControlMechs.cs",
+              "RelativeToolTip": "Patch\\Patch_CanControlMechs.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABQAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:35:41.149Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Patch_SkillRecord.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_SkillRecord.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_SkillRecord.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_SkillRecord.cs",
+              "RelativeToolTip": "Patch\\Patch_SkillRecord.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:52:58.933Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Thing_FlammableNow.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Thing_FlammableNow.cs",
+              "RelativeDocumentMoniker": "Patch\\Thing_FlammableNow.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Thing_FlammableNow.cs",
+              "RelativeToolTip": "Patch\\Thing_FlammableNow.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:52:41.083Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Patch_CanTakeOrder.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_CanTakeOrder.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_CanTakeOrder.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_CanTakeOrder.cs",
+              "RelativeToolTip": "Patch\\Patch_CanTakeOrder.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T03:53:40.429Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Patch_CanDropWeapon.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_CanDropWeapon.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_CanDropWeapon.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_CanDropWeapon.cs",
+              "RelativeToolTip": "Patch\\Patch_CanDropWeapon.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T03:53:46.679Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Patch_InMechanitorCommandRange.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_InMechanitorCommandRange.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_InMechanitorCommandRange.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_InMechanitorCommandRange.cs",
+              "RelativeToolTip": "Patch\\Patch_InMechanitorCommandRange.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwBcAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T03:54:05.509Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Patch_DiseaseContractChanceFactor.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_DiseaseContractChanceFactor.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_DiseaseContractChanceFactor.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_DiseaseContractChanceFactor.cs",
+              "RelativeToolTip": "Patch\\Patch_DiseaseContractChanceFactor.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:32:24.869Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Patch_Biocode.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_Biocode.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_Biocode.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_Biocode.cs",
+              "RelativeToolTip": "Patch\\Patch_Biocode.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:33:05.862Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Patch_Building_MechGestator.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_Building_MechGestator.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_Building_MechGestator.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_Building_MechGestator.cs",
+              "RelativeToolTip": "Patch\\Patch_Building_MechGestator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:34:14.077Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Patch_BossgroupEverCallable.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_BossgroupEverCallable.cs",
+              "RelativeDocumentMoniker": "Patch\\Patch_BossgroupEverCallable.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Patch\\Patch_BossgroupEverCallable.cs",
+              "RelativeToolTip": "Patch\\Patch_BossgroupEverCallable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:33:43.841Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Patch_GeneratePawnTitle.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Royalty\\Patch_GeneratePawnTitle.cs",
+              "RelativeDocumentMoniker": "Royalty\\Patch_GeneratePawnTitle.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Royalty\\Patch_GeneratePawnTitle.cs",
+              "RelativeToolTip": "Royalty\\Patch_GeneratePawnTitle.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAgwBwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:27:51.068Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "DefaultTilteFactionExtension.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Thing\\DefaultTilteFactionExtension.cs",
+              "RelativeDocumentMoniker": "Thing\\DefaultTilteFactionExtension.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Thing\\DefaultTilteFactionExtension.cs",
+              "RelativeToolTip": "Thing\\DefaultTilteFactionExtension.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:27:43.82Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ITab_Mech_Gear.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\UI\\ITab_Mech_Gear.cs",
+              "RelativeDocumentMoniker": "UI\\ITab_Mech_Gear.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\UI\\ITab_Mech_Gear.cs",
+              "RelativeToolTip": "UI\\ITab_Mech_Gear.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:27:32.197Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Command_SelectApparelOutfit.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\UI\\Command_SelectApparelOutfit.cs",
+              "RelativeDocumentMoniker": "UI\\Command_SelectApparelOutfit.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\UI\\Command_SelectApparelOutfit.cs",
+              "RelativeToolTip": "UI\\Command_SelectApparelOutfit.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T05:27:30.886Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "CompSubRelay.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Component\\CompSubRelay.cs",
+              "RelativeDocumentMoniker": "Component\\CompSubRelay.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Component\\CompSubRelay.cs",
+              "RelativeToolTip": "Component\\CompSubRelay.cs",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAIwF8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T04:32:01.149Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "CheckUtility.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Utility\\CheckUtility.cs",
+              "RelativeDocumentMoniker": "Utility\\CheckUtility.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch\\_Source\\DMS\\Utility\\CheckUtility.cs",
+              "RelativeToolTip": "Utility\\CheckUtility.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABgAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T04:13:03.645Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

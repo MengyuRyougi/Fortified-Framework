@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <OutputPath>$(MSBuildThisFileDirectory)/../../1.5/Assemblies</OutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>10.0</LangVersion>
+    <BaseOutputPath>D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\1.5\Assemblies</BaseOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Thing\WeaponUsableMachine.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\Reference\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="CombatExtended">
+      <HintPath>..\Reference\CombatExtended.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\Reference\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\Reference\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>..\Reference\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\Reference\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\Reference\UnityEngine.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4104" />
+    <PackageReference Include="Lib.Harmony" Version="2.3.3" />
+    <PackageReference Include="Krafs.Publicizer" Version="2.2.1" />
+
+    <Publicize Include="Assembly-CSharp:RimWorld.CompTargetable.selectedTarget" />
+    <Publicize Include="Assembly-CSharp:RimWorld.LordToil_Siege.SetAsDefender" />
+
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Leagecy\" />
+  </ItemGroup>
+
+</Project>
