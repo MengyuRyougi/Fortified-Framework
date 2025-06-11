@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace Fortified
 {

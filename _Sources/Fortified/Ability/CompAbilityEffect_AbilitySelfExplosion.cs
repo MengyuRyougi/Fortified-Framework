@@ -14,7 +14,7 @@ namespace Fortified
     public class CompProperties_AbilitySelfExplosion : CompProperties_AbilityEffect
     {
         public float range;
-        public DamageDef explosionDamage = DMS_DefOf.Stun;
+        public DamageDef explosionDamage = FFF_DefOf.Stun;
         public int damageAmount = 5;
         public float armorPenetration = 0.2f;
         public SoundDef explosionSound;

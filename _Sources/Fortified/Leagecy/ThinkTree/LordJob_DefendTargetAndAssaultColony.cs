@@ -5,7 +5,7 @@ using Verse;
 using Verse.AI;
 using Verse.AI.Group;
 
-namespace AncientCorps
+namespace Fortified
 {
     public class LordJob_DefendTargetAndAssaultColony : LordJob
     {

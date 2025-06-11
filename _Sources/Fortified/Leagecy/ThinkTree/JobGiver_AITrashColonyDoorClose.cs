@@ -2,7 +2,7 @@
 using Verse;
 using Verse.AI;
 
-namespace AncientCorps
+namespace Fortified
 {
     public class JobGiver_AITrashColonyDoorClose : ThinkNode_JobGiver
     {

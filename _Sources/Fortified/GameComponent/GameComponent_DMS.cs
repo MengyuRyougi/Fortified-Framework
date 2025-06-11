@@ -186,7 +186,7 @@ namespace Fortified
                 {
                     Includes =
                     {
-                        DMS_DefOf.DMS_Outgoing_Attack
+                        FFF_DefOf.FFF_Outgoing_Attack
                     },
                     Rules =
                         {
@@ -202,14 +202,15 @@ namespace Fortified
             {
                 Map playerMap = Find.AnyPlayerHomeMap;
                 IntVec3 pos = DropCellFinder.TradeDropSpot(playerMap);
-                ActiveDropPodInfo activeDropPodInfo = new ActiveDropPodInfo();
-                activeDropPodInfo.innerContainer.TryAddRangeOrTransfer(DMS_DefOf.DMS_OutgoingLoots.root.Generate());
+
+                ActiveTransporterInfo activeDropPodInfo = new ActiveTransporterInfo();
+                activeDropPodInfo.innerContainer.TryAddRangeOrTransfer(FFF_DefOf.FFF_OutgoingLoots.root.Generate());
                 DropPodUtility.MakeDropPodAt(pos, playerMap, activeDropPodInfo);
                 Find.LetterStack.ReceiveLetter("DMS_MechStory_Loot".Translate(this.mech.Label), GrammarResolver.Resolve("_story", new GrammarRequest()
                 {
                     Includes =
                     {
-                        DMS_DefOf.DMS_Outgoing_Loot
+                        FFF_DefOf.FFF_Outgoing_Loot
                     },
                     Rules =
                         {

@@ -87,11 +87,11 @@ namespace Fortified
             {
                 this.outgoingTime += Props.minDelayUntilDMS;
                 if (this.outgoingTime >= 60000 * 2 && this.parent is Pawn pawn
-                    && !pawn.Downed && pawn.CurJobDef != DMS_DefOf.DMS_MechLeave &&
+                    && !pawn.Downed && pawn.CurJobDef != FFF_DefOf.FFF_MechLeave &&
                     RCellFinder.TryFindBestExitSpot(pawn, out IntVec3 spot))
                 {
                     Find.LetterStack.ReceiveLetter("DMS_MechStartLeave".Translate(this.parent.Label), "DMS_MechStartLeaveDesc".Translate(this.parent.Label), LetterDefOf.PositiveEvent, this.parent);
-                    Job job = JobMaker.MakeJob(DMS_DefOf.DMS_MechLeave, spot);
+                    Job job = JobMaker.MakeJob(FFF_DefOf.FFF_MechLeave, spot);
                     job.exitMapOnArrival = true;
                     pawn.jobs.StartJob(job);
                 }
@@ -120,9 +120,9 @@ namespace Fortified
             }
             return null;
         }
-        public override void PostDeSpawn(Map map)
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
-            base.PostDeSpawn(map);
+            base.PostDeSpawn(map, mode);
             IThingHolder holder = this.parent.holdingOwner?.Owner;
             if (this.Overseer != null && (holder as Thing == null && holder as Caravan == null) && Current.Game.GetComponent<GameComponent_DMS>() is GameComponent_DMS dms && !dms.lostMechs.Contains(this.parent) && !this.woken)
             {

@@ -4,11 +4,6 @@ using Verse;
 
 namespace Fortified
 {
-    [DefOf]
-    public static class ThingDefOf
-    {
-        public static ThingDef DMS_BandNode;
-    }
 
     public class Hediff_BandNode : Verse.Hediff_BandNode
     {
@@ -59,7 +54,7 @@ namespace Fortified
             List<Map> maps = Find.Maps;
             for (int i = 0; i < maps.Count; i++)
             {
-                foreach (Building item in maps[i].listerBuildings.AllBuildingsColonistOfDef(ThingDefOf.DMS_BandNode))
+                foreach (Building item in maps[i].listerBuildings.AllBuildingsColonistOfDef(FFF_DefOf.FFF_BandNode))
                 {
                     if (item.TryGetComp<CompBandNode>().tunedTo == pawn && item.TryGetComp<CompPowerTrader>().PowerOn)
                     {

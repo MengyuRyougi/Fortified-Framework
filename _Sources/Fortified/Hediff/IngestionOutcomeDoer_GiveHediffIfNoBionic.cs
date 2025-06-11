@@ -24,7 +24,7 @@ namespace Fortified
             //沒有特定Hediff才會產生副作用
             if (!pawn.health.hediffSet.HasHediff(BionicHediff))
             {
-                pawn.needs.mood.thoughts.memories.TryGainMemory(DMS_DefOf.DMS_OverEat, null, null);
+                pawn.needs.mood.thoughts.memories.TryGainMemory(thoughtDef, null, null);
             }
         }
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats(ThingDef parentDef)

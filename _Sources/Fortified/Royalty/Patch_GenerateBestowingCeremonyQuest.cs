@@ -22,7 +22,7 @@ namespace Fortified
                 Slate slate = new Slate();
                 slate.Set("titleHolder", pawn);
                 slate.Set("bestowingFaction", faction);
-                if (QuestDefOf.DMS_PromotionCeremony.CanRun(slate))
+                if (QuestScriptDefOf.BestowingCeremony.CanRun(slate, pawn.MapHeld))
                 {
                     Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(QuestDefOf.DMS_PromotionCeremony, slate);
                     if (quest.root.sendAvailableLetter)

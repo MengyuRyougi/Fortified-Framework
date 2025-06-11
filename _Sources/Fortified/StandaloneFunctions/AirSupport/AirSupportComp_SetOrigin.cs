@@ -9,7 +9,7 @@ namespace Fortified
 {
     public abstract class AirSupportComp_SetOrigin : AirSupportComp
     {
-        bool ignoreOverride;
+        bool ignoreOverride = false;
 
         public override void Trigger(AirSupportDef def, Thing trigger, Map map, LocalTargetInfo target)
         {
@@ -34,7 +34,7 @@ namespace Fortified
 
             List<WorldObject> list = Find.WorldObjects.AllWorldObjects.Where(x => x is Settlement && x.Faction == Find.FactionManager.FirstFactionOfDef(QuestDefOf.DMS_Army)).ToList();
             if (list.NullOrEmpty()) CellFinder.RandomEdgeCell(map).ToVector3Shifted();
-            list.OrderBy(x => map.GetRangeBetweenTiles(x.Tile)).ToList();
+            list.OrderBy(x =>  map.GetRangeBetweenTiles(x.Tile)).ToList();
             list.Reverse();
             WorldObject worldObject = list.First();
             def.tempOriginCache = WorldAngleUtils.Position(map.GetAngleBetweenTiles(worldObject.Tile) + angleRange.RandomInRange, map);

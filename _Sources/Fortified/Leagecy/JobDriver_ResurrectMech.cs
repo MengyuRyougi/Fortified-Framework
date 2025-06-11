@@ -4,7 +4,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace AncientCorps
+namespace Fortified
 {
     public class JobDriver_ResurrectMech : JobDriver
     {

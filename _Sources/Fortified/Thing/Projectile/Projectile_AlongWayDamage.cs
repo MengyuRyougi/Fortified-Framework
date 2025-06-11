@@ -13,7 +13,7 @@ namespace Fortified
         private int tick = 0;
 
         ModExtension_AlongWayDamage Extension => this.def.GetModExtension<ModExtension_AlongWayDamage>();
-        public override void Tick()
+        protected override void Tick()
         {
             Vector3 exactPosition = ExactPosition;
             if (landed)
@@ -88,6 +88,8 @@ namespace Fortified
                 1f,
                 1,
                 null,
+                null,
+                0,
                 false,
                 (ThingDef)null,
                 0f,

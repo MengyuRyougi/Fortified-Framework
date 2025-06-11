@@ -1,14 +1,11 @@
-﻿using Mono.Unix.Native;
-using RimWorld;
+﻿using RimWorld;
 using RimWorld.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
-using static HarmonyLib.Code;
 
 namespace Fortified
 {

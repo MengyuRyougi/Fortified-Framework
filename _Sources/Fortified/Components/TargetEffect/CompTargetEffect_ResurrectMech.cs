@@ -3,9 +3,8 @@ using Verse;
 using Verse.AI;
 using Verse.Sound;
 
-namespace AncientCorps
+namespace Fortified
 {
-
     public class CompTargetEffect_ResurrectMech : CompTargetEffect
     {
         public CompProperties_TargetEffectResurrect Props => (CompProperties_TargetEffectResurrect)props;
@@ -14,7 +13,7 @@ namespace AncientCorps
         {
             if (user.IsColonistPlayerControlled)
             {
-                Job job = JobMaker.MakeJob(DMS_DefOf.DMS_ResurrectMech, target, parent);
+                Job job = JobMaker.MakeJob(FFF_DefOf.FFF_ResurrectMech, target, parent);
                 job.count = 1;
                 job.playerForced = true;
                 user.jobs.TryTakeOrderedJob(job, JobTag.Misc);

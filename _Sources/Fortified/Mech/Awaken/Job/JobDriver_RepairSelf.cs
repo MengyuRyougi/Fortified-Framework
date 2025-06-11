@@ -23,7 +23,6 @@ namespace Fortified
         {
             return true;
         }
-
         protected override IEnumerable<Toil> MakeNewToils()
         {
             if (!ModLister.CheckBiotech("Mech repair"))
@@ -34,35 +33,33 @@ namespace Fortified
             this.FailOnForbidden(TargetIndex.A);
             Toil toil = Toils_General.Wait(int.MaxValue, TargetIndex.None);
             toil.WithEffect(EffecterDefOf.MechRepairing, TargetIndex.A, null);
-            toil.PlaySustainerOrSound( SoundDefOf.RepairMech_Touch, 1f);
+            toil.PlaySustainerOrSound(SoundDefOf.RepairMech_Touch, 1f);
             toil.AddPreInitAction(delegate
             {
                 this.ticksToNextRepair = this.TicksPerHeal;
             });
-            toil.handlingFacing = true;
-            toil.tickAction = delegate ()
+            toil.tickIntervalAction = delegate (int delta)
             {
-                this.ticksToNextRepair--;
-                if (this.ticksToNextRepair <= 0)
+                ticksToNextRepair -= delta;
+                if (ticksToNextRepair <= 0)
                 {
-                    this.pawn.needs.energy.CurLevel -= this.pawn.GetStatValue(StatDefOf.MechEnergyLossPerHP, true, -1);
-                    MechRepairUtility.RepairTick(this.pawn);
-                    this.ticksToNextRepair = this.TicksPerHeal;
+                    pawn.needs.energy.CurLevel -= pawn.GetStatValue(StatDefOf.MechEnergyLossPerHP) * (float)delta;
+                    MechRepairUtility.RepairTick(pawn, delta);
+                    ticksToNextRepair = TicksPerHeal;
                 }
-                this.pawn.rotationTracker.FaceTarget(this.pawn);
-                if (this.pawn.skills != null)
+                if (pawn.skills != null)
                 {
-                    this.pawn.skills.Learn(SkillDefOf.Crafting, 0.05f, false, false);
+                    pawn.skills.Learn(SkillDefOf.Crafting, 0.05f * (float)delta);
                 }
             };
-            toil.AddEndCondition(delegate
+            toil.AddFinishAction(delegate
             {
-                if (!MechRepairUtility.CanRepair(this.pawn))
+                if (pawn.jobs?.curJob != null)
                 {
-                    return JobCondition.Succeeded;
+                    pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
                 }
-                return JobCondition.Ongoing;
             });
+            toil.AddEndCondition(() => MechRepairUtility.CanRepair(pawn) ? JobCondition.Ongoing : JobCondition.Succeeded);
             yield return toil;
             yield break;
         }

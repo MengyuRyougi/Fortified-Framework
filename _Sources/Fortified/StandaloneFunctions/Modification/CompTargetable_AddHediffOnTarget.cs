@@ -14,7 +14,7 @@ namespace Fortified
             {
                 canTargetPawns = true,
                 canTargetHumans = false,
-                canTargetMutants = false,
+                canTargetSubhumans = false,
                 canTargetAnimals = false,
                 canTargetMechs = true,
                 canTargetBuildings = false,
@@ -49,7 +49,7 @@ namespace Fortified
             }
             if (usedBy.IsColonistPlayerControlled)
             {
-                Job job = JobMaker.MakeJob(DMS_DefOf.DMS_Modification, (Pawn)selectedTarget, this.parent);
+                Job job = JobMaker.MakeJob(FFF_DefOf.FFF_Modification, (Pawn)selectedTarget, this.parent);
                 job.count = 1;
                 job.playerForced = true;
                 usedBy.jobs.TryTakeOrderedJob(job, JobTag.Misc);

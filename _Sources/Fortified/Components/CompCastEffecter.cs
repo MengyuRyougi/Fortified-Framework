@@ -1,10 +1,9 @@
-﻿using Mono.Unix.Native;
-using System;
+﻿using System;
 using Verse;
 namespace Fortified
 {
 
-    public class CompCastEffecter : ThingComp
+    public class CompEffecter_Burst : ThingComp
     {
         public CompProperties_CastEffecter Props => (CompProperties_CastEffecter)this.props;
         public void DoBursting(float v, Thing caster)
@@ -16,10 +15,11 @@ namespace Fortified
     {
         public CompProperties_CastEffecter()
         {
-            compClass = typeof(CompCastEffecter);
+            compClass = typeof(CompEffecter_Burst);
         }
         public EffecterDef effecter;
     }
+
     public class SubEffecter_Dust : SubEffecter_Sprayer
     {
         

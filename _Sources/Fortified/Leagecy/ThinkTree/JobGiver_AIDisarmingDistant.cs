@@ -5,7 +5,7 @@ using Verse;
 using Verse.AI;
 using Verse.Noise;
 
-namespace AncientCorps
+namespace Fortified
 {
     public class JobGiver_AIDisarmingDistant : ThinkNode_JobGiver
     {

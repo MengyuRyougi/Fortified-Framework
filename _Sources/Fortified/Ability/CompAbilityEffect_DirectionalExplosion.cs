@@ -11,7 +11,7 @@ namespace Fortified
     {
         public float range;
         public float lineWidthEnd;
-        public DamageDef explosionDamage = DMS_DefOf.Stun;
+        public DamageDef explosionDamage = FFF_DefOf.Stun;
         public int damageAmount = 5;
 
         public CompProperties_AbilityDirectionalExplosion()

@@ -16,7 +16,7 @@ namespace Fortified
 
         ModExtension_ClusterBomb Extension => def.GetModExtension<ModExtension_ClusterBomb>();
 
-        public override void Tick()
+        protected override void Tick()
         {
             if (landed)
             {
@@ -52,7 +52,7 @@ namespace Fortified
                 {
                     if (Extension.doDismantlExplosion)
                     {
-                        GenExplosion.DoExplosion(ExactPosition.ToIntVec3(), base.Map, Extension.dismantlExplosionRadius, Extension.dismantlExplosionDam, (Thing)this, Extension.dismantlExplosionDamAmount, Extension.dismantlExplosionArmorPenetration, Extension.dismantlExplosionSound, (ThingDef)null, (ThingDef)null, (Thing)null, (ThingDef)null, 1f, 1, null, false, (ThingDef)null, 0f, 1, 0f, false, (float?)null, (List<Thing>)null);
+                        GenExplosion.DoExplosion(ExactPosition.ToIntVec3(), base.Map, Extension.dismantlExplosionRadius, Extension.dismantlExplosionDam, (Thing)this, Extension.dismantlExplosionDamAmount, Extension.dismantlExplosionArmorPenetration, Extension.dismantlExplosionSound, (ThingDef)null, (ThingDef)null, (Thing)null, (ThingDef)null, 1f, 1, null, null, 0, false, (ThingDef)null, 0f, 1, 0f, false, (float?)null, (List<Thing>)null);
                     }
                     Dismantling();
                 }

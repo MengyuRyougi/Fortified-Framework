@@ -18,8 +18,9 @@
     <Reference Include="0Harmony">
       <HintPath>..\Reference\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="CombatExtended">
-      <HintPath>..\Reference\CombatExtended.dll</HintPath>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\Reference\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Reference\UnityEngine.dll</HintPath>
@@ -33,14 +34,13 @@
     <Reference Include="UnityEngine.TextRenderingModule">
       <HintPath>..\Reference\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\Reference\UnityEngine.UI.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4104" />
-    <PackageReference Include="Lib.Harmony" Version="2.3.3" />
-    <PackageReference Include="Krafs.Publicizer" Version="2.2.1" />
+    <PackageReference Include="Lib.Harmony" Version="2.3.6" />
+    <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
 
     <Publicize Include="Assembly-CSharp:RimWorld.CompTargetable.selectedTarget" />
     <Publicize Include="Assembly-CSharp:RimWorld.LordToil_Siege.SetAsDefender" />

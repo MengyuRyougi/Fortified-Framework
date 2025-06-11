@@ -8,3 +8,4 @@ D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\1.5\Assemblies\Fort
 D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\Fortified\obj\Release\Fortified.csproj.Up2Date
 D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\Fortified\obj\Release\Fortified.dll
 D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\Fortified\obj\Release\Fortified.pdb
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\Fortified\obj\Release\Fortified.sourcelink.json

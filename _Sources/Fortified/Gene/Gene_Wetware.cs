@@ -14,7 +14,11 @@ namespace Fortified
             {
                 if (pawn?.ageTracker?.AgeBiologicalYears < 1)
                 {
-                    Thing t = ThingMaker.MakeThing(DMS_DefOf.Neurocomputer);
+                    Thing t = ThingMaker.MakeThing(RimWorld.ThingDefOf.ComponentSpacer);
+                    if (DefDatabase<ThingDef>.GetNamedSilentFail("Neurocomputer") != null)
+                    {
+                        t = ThingMaker.MakeThing(DefDatabase<ThingDef>.GetNamedSilentFail("Neurocomputer"));
+                    }
                     GenPlace.TryPlaceThing(t, pawn.Position, pawn.Map, ThingPlaceMode.Near);
                     pawn.DeSpawn();
                     pawn.Destroy(DestroyMode.KillFinalize);

@@ -38,14 +38,14 @@ namespace Fortified
             ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, this.GetDirectlyHeldThings());
         }
 
-        public override void Tick()
+        protected override void Tick()
         {
             if (!innerContainer.Any)
             {
                 return;
             }
             base.Tick();
-            this.innerContainer.ThingOwnerTick(true);
+            this.innerContainer.DoTick();
             if (PawnInside != null)
             {
 

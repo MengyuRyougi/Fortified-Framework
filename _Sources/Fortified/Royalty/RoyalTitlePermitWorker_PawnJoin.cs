@@ -128,7 +128,7 @@ namespace Fortified
             }
             if (list.Any())
             {
-                ActiveDropPodInfo activeDropPodInfo = new ActiveDropPodInfo();
+                ActiveTransporterInfo activeDropPodInfo = new ActiveTransporterInfo();
                 activeDropPodInfo.innerContainer.TryAddRangeOrTransfer(list);
                 DropPodUtility.MakeDropPodAt(cell, map, activeDropPodInfo);
                 Messages.Message("MessagePermitTransportDrop".Translate(faction.Named("FACTION")), new LookTargets(cell, map), MessageTypeDefOf.NeutralEvent);

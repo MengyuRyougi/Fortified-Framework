@@ -17,7 +17,7 @@ namespace Fortified
             if (pawn.TryGetComp<CompDeadManSwitch>() is CompDeadManSwitch comp && comp.woken
     && MechRepairUtility.CanRepair(pawn))
             {
-                return JobMaker.MakeJob(DMS_DefOf.DMS_RepairSelf,pawn);
+                return JobMaker.MakeJob(FFF_DefOf.FFF_RepairSelf,pawn);
             }
             return null;
         }

@@ -314,6 +314,8 @@ namespace Fortified
                                compositeExplosion.postExplosionSpawnChance,
                                compositeExplosion.postExplosionSpawnThingCount,
                                postExplosionGasType: null,
+                                postExplosionGasRadiusOverride: null,
+                                postExplosionGasAmount: 0,
                                applyDamageToExplosionCellsNeighbors: false,
                                compositeExplosion.preExplosionSpawnThingDef,
                                compositeExplosion.preExplosionSpawnChance,

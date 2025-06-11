@@ -5,7 +5,6 @@ using Verse.Noise;
 
 namespace Fortified
 {
-
     public class CompCastFlecker : ThingComp
     {
         public CompProperties_CastFlecker Props => (CompProperties_CastFlecker)this.props;
@@ -33,7 +32,7 @@ namespace Fortified
                 {
                     spawnFleck = FleckDefOf.DustPuff;
                 }
-                else if (terrain.holdSnow) 
+                else if (terrain.holdSnowOrSand) 
                 {
                     spawnFleck = FleckDefOf.AirPuff;
                 }

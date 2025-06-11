@@ -82,7 +82,6 @@ namespace Fortified
             return parent.DrawPos + offset;
         }
     }
-
     public class CompProperties_FlyingFleckThrower : CompProperties
     {
         public CompProperties_FlyingFleckThrower() { this.compClass = typeof(CompFlyingFleckThrower); }

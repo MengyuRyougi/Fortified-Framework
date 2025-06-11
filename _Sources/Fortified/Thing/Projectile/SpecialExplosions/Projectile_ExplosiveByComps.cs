@@ -20,7 +20,7 @@ namespace Fortified
             base.ExposeData();
             Scribe_Values.Look(ref ticksToDetonation_ForComps, "ticksToDetonation_ForComps", -1);
         }
-        public override void Tick()
+        protected override void Tick()
         {
             if (ticksToDetonation_ForComps > 0)
             {
@@ -49,6 +49,8 @@ namespace Fortified
                                 explosion.postExplosionSpawnChance,
                                 explosion.postExplosionSpawnThingCount,
                                 explosion.postExplosionGasType,
+                                null,
+                                0,
                                 false,
                                 explosion.preExplosionSpawnThingDef,
                                 explosion.preExplosionSpawnChance,

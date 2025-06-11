@@ -80,15 +80,13 @@ namespace Fortified
             cachedPawns.Add(this, (Pawn)parent);
             cachedVehicldesPawns.Add((Pawn)parent, this);
         }
-
-        public override void PostDeSpawn(Map map)
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
-            base.PostDeSpawn(map);
+            base.PostDeSpawn(map, mode);
             cachedVehicles.Remove(((Pawn)parent).Drawer.renderer);
             cachedPawns.Remove(this);
             cachedVehicldesPawns.Remove((Pawn)parent);
         }
-
 
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {

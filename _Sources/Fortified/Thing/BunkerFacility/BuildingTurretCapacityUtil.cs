@@ -18,7 +18,7 @@ namespace Fortified
                 }
                 else
                 {
-                    JobDef jobDef = DMS_DefOf.EnterBunkerFacility;
+                    JobDef jobDef = FFF_DefOf.FFF_EnterBunkerFacility;
                     string label = "FT_BunkerFacility_EnterText".Translate();
                     void action()
                     {

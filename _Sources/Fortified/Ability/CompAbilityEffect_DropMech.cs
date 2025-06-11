@@ -40,9 +40,9 @@ namespace Fortified
                         pawn.relations.AddDirectRelation(PawnRelationDefOf.Overseer, this.parent.pawn.GetOverseer().mechanitor.Pawn);
                     }
                     list.Add(pawn);
-                    ActiveDropPodInfo activeDropPodInfo = new ActiveDropPodInfo();
-                    activeDropPodInfo.innerContainer.TryAddRangeOrTransfer(list,false);
-                    DropPodUtility.MakeDropPodAt(target.Cell + Rand(3), parent.pawn.Map, activeDropPodInfo);
+                    ActiveTransporterInfo activeTransporter = new ActiveTransporterInfo();
+                    activeTransporter.innerContainer.TryAddRangeOrTransfer(list, false);
+                    DropPodUtility.MakeDropPodAt(target.Cell + Rand(3), parent.pawn.Map, activeTransporter);
                 }
             }
             else
@@ -59,7 +59,7 @@ namespace Fortified
                         list.Add(pawn);
                     }
 
-                    ActiveDropPodInfo activeDropPodInfo = new ActiveDropPodInfo();
+                    ActiveTransporterInfo activeDropPodInfo = new ActiveTransporterInfo();
                     activeDropPodInfo.innerContainer.TryAddRangeOrTransfer(list);
                     DropPodUtility.MakeDropPodAt(target.Cell + Rand(3), parent.pawn.Map, activeDropPodInfo);
                 }

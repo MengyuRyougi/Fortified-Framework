@@ -51,7 +51,7 @@ namespace Fortified
                 {
                     yield return new FloatMenuOption("RepairMech".Translate(this.LabelShort), () =>
                     {
-                        Job job = JobMaker.MakeJob(DMS_DefOf.DMS_RepairSelf, this);
+                        Job job = JobMaker.MakeJob(FFF_DefOf.FFF_RepairSelf, this);
                         this.jobs.StartJob(job);
                     });
                 }

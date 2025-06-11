@@ -45,16 +45,14 @@
           "targetAlias": "net472",
           "dependencies": {
             "Krafs.Publicizer": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[2.2.1, )"
-            },
-            "Krafs.Rimworld.Ref": {
-              "target": "Package",
-              "version": "[1.5.4104, )"
+              "version": "[2.3.0, )"
             },
             "Lib.Harmony": {
               "target": "Package",
-              "version": "[2.3.3, )"
+              "version": "[2.3.6, )"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203\\RuntimeIdentifierGraph.json"

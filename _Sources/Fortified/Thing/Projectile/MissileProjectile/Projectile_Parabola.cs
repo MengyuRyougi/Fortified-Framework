@@ -39,7 +39,7 @@ namespace Fortified
             compAfterBurner = this.TryGetComp<CompAfterBurner>();
             compAfterBurner?.ThrowLaunchSmoke(origin, (origin - destination).ToAngleFlat() + 90);
         }
-        public override void Tick()
+        protected override void Tick()
         {
             base.Tick();
             if (Spawned && compAfterBurner != null)
