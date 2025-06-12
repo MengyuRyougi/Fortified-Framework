@@ -26,19 +26,28 @@ namespace Fortified
                 float armorPen = ext.armorPen != -1 ? ext.armorPen : this.ArmorPenetration;
                 IntVec3 offsetPos = Position - (Angle * ext.preExplosionOffset).ToIntVec3();
                 var things = Map.listerThings.ThingsInGroup(ThingRequestGroup.Projectile);
-                GenExplosion.DoExplosion(center: offsetPos, Map, ext.range,
-                ext.damage, this.launcher,
-                dmg, armorPen, ext.sound, this.launcher.def, projectile: this.def,
-                affectedAngle: new FloatRange(Angle.ToAngleFlat() - ext.swayAngle, Angle.ToAngleFlat() + ext.swayAngle),
-                doVisualEffects: ext.doVisualEffects, doSoundEffects: ext.sound != null,
-                ignoredThings: things);
+                GenExplosion.DoExplosion(
+                    center: offsetPos,
+                    Map,
+                    ext.range,
+                    ext.damage,
+                    this.Launcher,
+                    dmg, armorPen,
+                    ext.sound,
+                    this.EquipmentDef,
+                    projectile: this.def,
+                    affectedAngle: new FloatRange(Angle.ToAngleFlat() - ext.swayAngle, Angle.ToAngleFlat() + ext.swayAngle),
+                    doVisualEffects: ext.doVisualEffects,
+                    doSoundEffects: ext.sound != null,
+                    ignoredThings: things);
+
                 ext.effecterDef?.Spawn(offsetPos, DestinationCell, this.Map, 1);
             }
             else //默認值
             {
                 GenExplosion.DoExplosion(center: Position - (Angle * 2).ToIntVec3(), this.Map, 7,
                     DamageDefOf.Bullet, this.launcher,
-                    30, 0.5f, weapon: launcher.def,
+                    30, 0.5f, weapon: EquipmentDef,
                     direction: Angle.ToAngleFlat(), affectedAngle: new FloatRange(Angle.ToAngleFlat() - Sway, Angle.ToAngleFlat() + Sway),
                     doVisualEffects: true, doSoundEffects: false
                     );

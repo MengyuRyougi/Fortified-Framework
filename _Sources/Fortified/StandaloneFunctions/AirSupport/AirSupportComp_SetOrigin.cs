@@ -27,18 +27,19 @@ namespace Fortified
     }
     public class AirSupportComp_SetOriginFromClosestBase : AirSupportComp_SetOrigin
     {
-        FloatRange angleRange = new(-30, 30);
+        public FactionDef faction;
+        public FloatRange angleRange = new(-30, 30);
         public override void Trigger(AirSupportDef def, Thing trigger, Map map, LocalTargetInfo target)
         {
             base.Trigger(def, trigger, map, target);
 
-            List<WorldObject> list = Find.WorldObjects.AllWorldObjects.Where(x => x is Settlement && x.Faction == Find.FactionManager.FirstFactionOfDef(QuestDefOf.DMS_Army)).ToList();
+            List<WorldObject> list = Find.WorldObjects.AllWorldObjects.Where(x => x is Settlement && x.Faction == Find.FactionManager.FirstFactionOfDef(faction)).ToList();
             if (list.NullOrEmpty()) CellFinder.RandomEdgeCell(map).ToVector3Shifted();
             list.OrderBy(x =>  map.GetRangeBetweenTiles(x.Tile)).ToList();
             list.Reverse();
             WorldObject worldObject = list.First();
             def.tempOriginCache = WorldAngleUtils.Position(map.GetAngleBetweenTiles(worldObject.Tile) + angleRange.RandomInRange, map);
-            Messages.Message("DMS_AirSupportFromClosestBase".Translate(worldObject.Label, def.label), MessageTypeDefOf.NeutralEvent, false);
+            Messages.Message("FFF_AirSupportFromClosestBase".Translate(worldObject.Label, def.label), MessageTypeDefOf.NeutralEvent, false);
         }
     }
 

@@ -23,7 +23,7 @@ namespace Fortified
                 {
                     StatModifier statModifier = new StatModifier();
                     statModifier.stat = StatDefOf.MechBandwidth;
-                    statModifier.value = cachedTunedBandNodesCount * 4;
+                    statModifier.value = cachedTunedBandNodesCount;
                     curStage = new HediffStage();
                     curStage.statOffsets = new List<StatModifier> { statModifier };
                 }
@@ -52,13 +52,16 @@ namespace Fortified
             int num = cachedTunedBandNodesCount;
             cachedTunedBandNodesCount = 0;
             List<Map> maps = Find.Maps;
+            if (this.def.GetModExtension<BandNodeBuildingExtension>() == null) return;
+
+            var ext = def.GetModExtension<BandNodeBuildingExtension>();
             for (int i = 0; i < maps.Count; i++)
             {
-                foreach (Building item in maps[i].listerBuildings.AllBuildingsColonistOfDef(FFF_DefOf.FFF_BandNode))
+                foreach (Building item in maps[i].listerBuildings.AllBuildingsColonistOfDef(ext.TargetBuilding))
                 {
                     if (item.TryGetComp<CompBandNode>().tunedTo == pawn && item.TryGetComp<CompPowerTrader>().PowerOn)
                     {
-                        cachedTunedBandNodesCount++;
+                        cachedTunedBandNodesCount += ext.bandwidth;
                     }
                 }
             }
@@ -75,5 +78,10 @@ namespace Fortified
             base.ExposeData();
             Scribe_Values.Look(ref cachedTunedBandNodesCount, "cachedTunedBandNodesCount", 0);
         }
+    }
+    public class BandNodeBuildingExtension : DefModExtension
+    {
+        public ThingDef TargetBuilding;
+        public int bandwidth = 4;
     }
 }

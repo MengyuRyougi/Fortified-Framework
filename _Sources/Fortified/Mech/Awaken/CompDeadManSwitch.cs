@@ -13,6 +13,7 @@ namespace Fortified
 {
     public class CompDeadManSwitch : ThingComp
     {
+        
         public CompProperties_DeadManSwitch Props => (CompProperties_DeadManSwitch)props;
         public Pawn Overseer
         {
@@ -186,6 +187,9 @@ namespace Fortified
         public int minDelayUntilDMS = 3000;
         public float wakingChance = 0.3f;
         public RulePackDef nameRule;
+        public RulePackDef attackRule;
+        public RulePackDef lootRule;
+        public ThingSetMakerDef lootSetMaker;
         public CompProperties_DeadManSwitch()
         {
             compClass = typeof(CompDeadManSwitch);

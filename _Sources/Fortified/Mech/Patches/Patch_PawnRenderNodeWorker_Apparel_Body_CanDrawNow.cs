@@ -9,7 +9,7 @@ namespace Fortified
     {
         public static bool Prefix(PawnDrawParms parms, ref bool __result)
         {
-            return !(parms.pawn is HumanlikeMech) || !(__result = true);
+            return !(__result = true) || parms.pawn is not HumanlikeMech;
         }
     }
 }

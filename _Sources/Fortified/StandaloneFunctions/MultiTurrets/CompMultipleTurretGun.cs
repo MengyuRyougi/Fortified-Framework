@@ -46,6 +46,7 @@ namespace Fortified
         public override void CompTick()
         {
             base.CompTick();
+            if (!this.parent.Spawned) return;
             turrets.ForEach(t => t.Tick());
         }
         public override IEnumerable<Gizmo> CompGetWornGizmosExtra()

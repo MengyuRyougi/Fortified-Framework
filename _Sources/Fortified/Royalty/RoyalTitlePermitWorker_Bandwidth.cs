@@ -7,6 +7,7 @@ using Verse.Noise;
 
 namespace Fortified
 {
+
     [StaticConstructorOnStartup]
     public class RoyalTitlePermitWorker_Bandwidth : RoyalTitlePermitWorker
     {
@@ -42,7 +43,7 @@ namespace Fortified
                 Hediff h = caller.health.GetOrAddHediff(ext.hediff);
                 h.Severity = ext.GetLevel(caller.GetCurrentTitleIn(faction));
 
-                Messages.Message("DMS_BandwidthSupported".Translate(faction.Named("FACTION")), new LookTargets(caller.PositionHeld, caller.MapHeld), MessageTypeDefOf.NeutralEvent);
+                Messages.Message("FFF_BandwidthSupported".Translate(faction.Named("FACTION")), new LookTargets(caller.PositionHeld, caller.MapHeld), MessageTypeDefOf.NeutralEvent);
                 caller.royalty.GetPermit(def, faction).Notify_Used();
                 if (!free)
                 {

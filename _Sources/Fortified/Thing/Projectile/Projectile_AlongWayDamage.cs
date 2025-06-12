@@ -60,7 +60,7 @@ namespace Fortified
             {
                 if (item != this && item.def.useHitPoints)
                 {
-                    item.TakeDamage(new DamageInfo(DamageDefOf.Crush, 10f, 0f, -1f, launcher, null, base.EquipmentDef));
+                    item.TakeDamage(new DamageInfo(DamageDefOf.Crush, 10f, 0f, -1f, launcher, null, EquipmentDef));
                 }
                 if (item is Pawn pawn && !pawn.Dead && !pawn.Downed && Extension.alongOnWayHediff != null)
                 {

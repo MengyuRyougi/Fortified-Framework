@@ -10,6 +10,8 @@ namespace Fortified
         [HarmonyPostfix]
         public static void Postfix(ref bool __result, Pawn_DraftController __instance)
         {
+            if(__result) return;
+
             if (__instance.pawn.TryGetComp<CompDeadManSwitch>() is CompDeadManSwitch comp && comp.woken)
             {
                 __result = true;

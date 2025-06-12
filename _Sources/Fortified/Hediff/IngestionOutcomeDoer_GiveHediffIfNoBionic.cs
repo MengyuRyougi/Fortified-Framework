@@ -15,8 +15,6 @@ namespace Fortified
 
         public ChemicalDef toleranceChemical;
 
-        private bool divideByBodySize;
-
         public bool multiplyByGeneToleranceFactors;
 
         protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested, int ingestedCount)

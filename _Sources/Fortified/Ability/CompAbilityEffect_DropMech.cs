@@ -5,6 +5,16 @@ using Verse;
 
 namespace Fortified
 {
+    public class Member
+    {
+        public PawnKindDef pawnKind = null;
+        public ThingDef fixedWeapon;
+        public List<ThingDefCount> additionalThings;
+    }
+    public class PawnKindExtension : DefModExtension
+    {
+        public List<Member> members = new List<Member>();
+    }
 
     public class CompAbilityEffect_DropMech : CompAbilityEffect
     {

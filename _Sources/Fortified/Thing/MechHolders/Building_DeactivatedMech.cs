@@ -62,11 +62,15 @@ namespace Fortified
                 {
                     Pawn.Name = PawnBioAndNameGenerator.GenerateFullPawnName(Pawn.def, Pawn.kindDef.nameMaker);
                 }
+
                 if (!Rand.Chance(Extension.weaponChance) && Pawn.equipment != null && Pawn.equipment.Primary != null && !Pawn.equipment.Primary.def.destroyOnDrop)
                 {
                     Pawn.equipment?.DestroyAllEquipment();
                     Pawn.inventory?.DestroyAll();
                 }
+
+                if (Extension.damageHediffs.NullOrEmpty()) return;
+
                 var num = Extension.damageCount.RandomInRange;
                 if (num > 0)
                 {
@@ -75,12 +79,13 @@ namespace Fortified
                         for (int i = 0; i < num; i++)
                         {
                             var part = Pawn.RaceProps.body.AllParts.Where(p => !p.IsCorePart).RandomElement();
-                            if (!Pawn.health.hediffSet.HasMissingPartFor(part)) Pawn.health.AddHediff(FFF_DefOf.FFF_StructuralDamage, part);
+                            if (!Pawn.health.hediffSet.HasMissingPartFor(part)) Pawn.health.AddHediff(Extension.damageHediffs.RandomElement(), part);
                             else i--;
                         }
                     }
                 }
             }
+
             if (!HasPawn) Destroy(DestroyMode.Vanish);
         }
         public override void DynamicDrawPhaseAt(DrawPhase phase, Vector3 drawLoc, bool flip = false)

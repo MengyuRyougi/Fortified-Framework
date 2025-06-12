@@ -15,6 +15,7 @@ namespace Fortified
         public FloatRange weaponRandomRotRange = new FloatRange(-1, 1);
         public List<PawnGenOption> possibleGeneratePawn;
         public IntRange damageCount = new IntRange(0, 0);
+        public List<HediffDef> damageHediffs = null;
         public IntRange age;
     }
 }

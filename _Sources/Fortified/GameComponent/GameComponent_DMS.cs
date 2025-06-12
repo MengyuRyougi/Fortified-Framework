@@ -186,7 +186,7 @@ namespace Fortified
                 {
                     Includes =
                     {
-                        FFF_DefOf.FFF_Outgoing_Attack
+                        mech.GetComp<CompDeadManSwitch>().Props.attackRule
                     },
                     Rules =
                         {
@@ -202,15 +202,15 @@ namespace Fortified
             {
                 Map playerMap = Find.AnyPlayerHomeMap;
                 IntVec3 pos = DropCellFinder.TradeDropSpot(playerMap);
-
                 ActiveTransporterInfo activeDropPodInfo = new ActiveTransporterInfo();
-                activeDropPodInfo.innerContainer.TryAddRangeOrTransfer(FFF_DefOf.FFF_OutgoingLoots.root.Generate());
+                CompDeadManSwitch comp = mech.GetComp<CompDeadManSwitch>();
+                activeDropPodInfo.innerContainer.TryAddRangeOrTransfer(comp.Props.lootSetMaker.root.Generate());
                 DropPodUtility.MakeDropPodAt(pos, playerMap, activeDropPodInfo);
                 Find.LetterStack.ReceiveLetter("DMS_MechStory_Loot".Translate(this.mech.Label), GrammarResolver.Resolve("_story", new GrammarRequest()
                 {
                     Includes =
                     {
-                        FFF_DefOf.FFF_Outgoing_Loot
+                        comp.Props.lootRule
                     },
                     Rules =
                         {
