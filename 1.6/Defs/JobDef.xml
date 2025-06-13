@@ -28,6 +28,13 @@
   </JobDef>
 
   <JobDef>
+    <defName>FFF_ModificationRemove</defName>
+    <driverClass>Fortified.JobDriver_RemoveModification</driverClass>
+    <reportString>modifing TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <JobDef>
     <defName>FFF_EjectDeactivatedMech</defName>
     <reportString>disabling mech</reportString>
     <driverClass>Fortified.JobDriver_DisableMech</driverClass>

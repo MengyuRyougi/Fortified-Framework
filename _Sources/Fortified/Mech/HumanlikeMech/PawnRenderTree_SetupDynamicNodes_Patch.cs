@@ -11,12 +11,23 @@ namespace Fortified
     [HarmonyPatch(typeof(PawnRenderTree), "SetupDynamicNodes")]
     public class PawnRenderTree_SetupDynamicNodes_Patch
     {
-        private static void Prefix(PawnRenderTree __instance, Pawn ___pawn)
+        public static void Postfix(PawnRenderTree __instance)
         {
-            if (___pawn is HumanlikeMech)
+            if (__instance.pawn == null || __instance.pawn is not HumanlikeMech) return;
+
+            FieldInfo dynField = AccessTools.Field(__instance.GetType(), "dynamicNodeTypeInstances");
+            List<DynamicPawnRenderNodeSetup> dynamicNodeTypeInstance = dynField.GetValue(__instance) as List<DynamicPawnRenderNodeSetup>;
+            if (dynamicNodeTypeInstance == null)
+                return;
+
+            foreach (DynamicPawnRenderNodeSetup node in dynamicNodeTypeInstance.Where(n => n.HumanlikeOnly))
             {
-                Traverse.Create((object)__instance).Method("SetupApparelNodes", Array.Empty<object>()).GetValue();
-                //__instance.SetupApparelNodes(); 嗚，我是笨蛋，學不會用UnsafeAccesser
+                foreach (var (child, parent) in node.GetDynamicNodes(__instance.pawn, __instance))
+                {
+                    var addChildMethod = AccessTools.Method(__instance.GetType(), "AddChild");
+                    addChildMethod.Invoke(__instance, new object[] { child,parent});
+                    //Log.Message("Patched");
+                }
             }
         }
     }

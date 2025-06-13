@@ -91,7 +91,7 @@ namespace Fortified
             {
                 if (item.GetEdifice(workerPawn.Map) != null)
                 {
-                    Messages.Message("FT_MinifiedDeployable_Selected_area_blocked".Translate(), workerPawn, MessageTypeDefOf.RejectInput, historical: false);
+                    Messages.Message("FFF.MinifiedDeployable.SelectedAreaBlocked".Translate(), workerPawn, MessageTypeDefOf.RejectInput, historical: false);
                     return false;
                 }
             }

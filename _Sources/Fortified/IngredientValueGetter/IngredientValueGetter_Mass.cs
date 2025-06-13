@@ -6,7 +6,7 @@ public class IngredientValueGetter_Mass : IngredientValueGetter
 {
     public override string BillRequirementsDescription(RecipeDef r, IngredientCount ing)
     {
-        return "FT_BillRequires_Mass".Translate(ing.GetBaseCount()) + " (" + ing.filter.Summary + ")";
+        return "FFF.BillRequires.Mass".Translate(ing.GetBaseCount(), ing.filter.Summary);
     }
 
     public override float ValuePerUnitOf(ThingDef t)

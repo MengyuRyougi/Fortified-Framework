@@ -36,7 +36,7 @@ public class PlaceWorker_ByWallOnSouth : PlaceWorker
                 Building edifice2 = item.GetEdifice(map);
                 if (edifice2 == null || !edifice2.def.IsDoor)
                 {
-                    return "FT_CannotPlaceWithoutWall".Translate();
+                    return "FFF.Message.CannotPlaceWithoutWall".Translate();
                 }
             }
         }

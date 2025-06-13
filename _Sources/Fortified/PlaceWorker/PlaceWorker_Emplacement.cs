@@ -15,7 +15,7 @@ public class PlaceWorker_Emplacement : PlaceWorker
             Building edifice2 = loc.GetEdifice(map);
             if (edifice2 != null && edifice2.def.fillPercent > 0.9f)
             {
-                return "FT_MustOnACoverBuilding".Translate();
+                return "FFF.Message.MustOnACoverBuilding".Translate();
             }
         }
         return true;

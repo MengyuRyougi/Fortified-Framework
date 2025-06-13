@@ -26,19 +26,24 @@ namespace Fortified
             toil.WithEffect(EffecterDefOf.MechRepairing, TargetIndex.A);
             toil.handlingFacing = true;
             yield return toil;
+
             yield return Toils_General.Do(RemoveModification);
         }
-
         private void RemoveModification()
         {
-            var mod = TargetPawn.health.hediffSet.GetHediffComps<HediffComp_Modification>().Where(m => m.isApplyTarget).First();
-            if (mod != null) return;
+            HediffComp_Modification mod = TargetPawn.health.hediffSet.GetHediffComps<HediffComp_Modification>().Where(m => m.isApplyTarget)?.First();
+            if (mod == null) return;
 
             Messages.Message("FFF.Message.Modification.Removed".Translate(TargetPawn), TargetPawn, MessageTypeDefOf.PositiveEvent);
             TargetPawn.health.RemoveHediff(mod.parent);
-            Thing thing = ThingMaker.MakeThing(mod.parent.def.spawnThingOnRemoved);
-            thing.stackCount = 1;
-            GenPlace.TryPlaceThing(thing, thing.Position, thing.MapHeld, ThingPlaceMode.Near);
+
+            if (mod.parent.def.spawnThingOnRemoved !=null)
+            {
+                Thing thing = ThingMaker.MakeThing(mod.parent.def.spawnThingOnRemoved);
+                thing.stackCount = 1;
+                GenPlace.TryPlaceThing(thing, TargetPawn.Position, TargetPawn.MapHeld, ThingPlaceMode.Near);
+            }
+            this.EndJobWith(JobCondition.Succeeded);
         }
     }
 }

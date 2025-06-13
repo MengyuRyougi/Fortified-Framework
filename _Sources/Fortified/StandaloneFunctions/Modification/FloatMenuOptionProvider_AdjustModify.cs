@@ -14,15 +14,18 @@ namespace Fortified
         protected override bool Multiselect => false;
         protected override bool MechanoidCanDo => true;
 
+        public override bool TargetPawnValid(Pawn pawn, FloatMenuContext context)
+        {
+            return base.TargetPawnValid(pawn, context) && pawn.health != null;
+        }
+
         public override IEnumerable<FloatMenuOption> GetOptionsFor(Pawn clickedPawn, FloatMenuContext context)
         {
-            if (clickedPawn.health == null) yield break;
-
             var comps = clickedPawn.health.hediffSet.GetHediffComps<HediffComp_Modification>();
             if (comps.EnumerableNullOrEmpty()) yield break;
             foreach (HediffComp_Modification item in comps.Cast<HediffComp_Modification>())
             {
-                yield return RimWorld.FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(item.Props.applyJob.LabelCap, delegate
+                yield return RimWorld.FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption("FFF.Modification_Remove".Translate(item.parent.LabelCap), delegate
                 {
                     item.isApplyTarget = true;
                     context.FirstSelectedPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(item.Props.applyJob, clickedPawn), JobTag.Misc);

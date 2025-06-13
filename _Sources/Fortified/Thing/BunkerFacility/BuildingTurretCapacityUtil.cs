@@ -19,7 +19,7 @@ namespace Fortified
                 else
                 {
                     JobDef jobDef = FFF_DefOf.FFF_EnterBunkerFacility;
-                    string label = "FT_BunkerFacility_EnterText".Translate();
+                    string label = "FFF.BunkerFacility_EnterText".Translate();
                     void action()
                     {
                         Job job = JobMaker.MakeJob(jobDef, me);

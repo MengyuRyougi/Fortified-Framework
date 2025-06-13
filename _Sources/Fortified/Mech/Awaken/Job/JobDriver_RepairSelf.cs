@@ -10,15 +10,16 @@ using Verse;
 
 namespace Fortified
 {
+
     public class JobDriver_RepairSelf : JobDriver
     {
-        protected int TicksPerHeal
-        {
-            get
-            {
-                return Mathf.RoundToInt(1f / this.pawn.GetStatValue(StatDefOf.MechRepairSpeed, true, -1) * 120f);
-            }
-        }
+        private const int DefaultTicksPerHeal = 120;
+
+        protected int ticksToNextRepair;
+
+        protected virtual bool Remote => false;
+
+        protected int TicksPerHeal => Mathf.RoundToInt(1f / pawn.GetStatValue(StatDefOf.MechRepairSpeed) * 120f);
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             return true;
@@ -52,23 +53,13 @@ namespace Fortified
                     pawn.skills.Learn(SkillDefOf.Crafting, 0.05f * (float)delta);
                 }
             };
-            toil.AddFinishAction(delegate
-            {
-                if (pawn.jobs?.curJob != null)
-                {
-                    pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
-                }
-            });
             toil.AddEndCondition(() => MechRepairUtility.CanRepair(pawn) ? JobCondition.Ongoing : JobCondition.Succeeded);
             yield return toil;
-            yield break;
         }
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look<int>(ref this.ticksToNextRepair, "ticksToNextRepair", 0, false);
         }
-        private const int DefaultTicksPerHeal = 120;
-        protected int ticksToNextRepair;
     }
 }

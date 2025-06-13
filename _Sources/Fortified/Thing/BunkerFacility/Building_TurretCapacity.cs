@@ -68,12 +68,12 @@ namespace Fortified
             {
                 if (PawnInside != null)
                 {
-                    stringBuilder.AppendLine("FTF_CurrentOperator".Translate() + ": " + PawnInside.Name);
+                    stringBuilder.AppendLine("FFF.CurrentOperator".Translate() + ": " + PawnInside.Name);
                 }
             }
             else
             {
-                stringBuilder.AppendLine("FTF_RequireOperator".Translate());
+                stringBuilder.AppendLine("FFF.RequireOperator".Translate());
             }
             return stringBuilder.ToString().TrimEndNewlines();
         }
@@ -115,7 +115,7 @@ namespace Fortified
             {
                 yield return new Command_Action
                 {
-                    defaultLabel = "FT_BunkerFacility_ExitText".Translate(),
+                    defaultLabel = "FFF.BunkerFacility_ExitText".Translate(),
                     icon = ExitFacilityIcon,
                     action = delegate ()
                     {

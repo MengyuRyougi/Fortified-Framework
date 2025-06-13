@@ -38,12 +38,12 @@ namespace Fortified
             {
                 if (!HasFuel)
                 {
-                    yield return new FloatMenuOption(FloatMenuOptionLabel(myPawn) + "FT_NotFueled".Translate(), null);
+                    yield return new FloatMenuOption(FloatMenuOptionLabel(myPawn) + "FFF.Reason.NotFueled".Translate(), null);
                     yield break;
                 }
                 if (CompFuel.Fuel < (float)Props.fuelCostsPerUse)
                 {
-                    yield return new FloatMenuOption(FloatMenuOptionLabel(myPawn) + "FT_NoEnoughFuel".Translate(), null);
+                    yield return new FloatMenuOption(FloatMenuOptionLabel(myPawn) + "FFF.Reason.NoEnoughFuel".Translate(), null);
                     yield break;
                 }
             }

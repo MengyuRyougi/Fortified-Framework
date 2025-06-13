@@ -14,8 +14,7 @@ namespace Fortified
     {
         protected override Job TryGiveJob(Pawn pawn)
         {
-            if (pawn.TryGetComp<CompDeadManSwitch>() is CompDeadManSwitch comp && comp.woken
-    && MechRepairUtility.CanRepair(pawn))
+            if (pawn.TryGetComp<CompDeadManSwitch>() is CompDeadManSwitch comp && comp.woken && MechRepairUtility.CanRepair(pawn))
             {
                 return JobMaker.MakeJob(FFF_DefOf.FFF_RepairSelf,pawn);
             }

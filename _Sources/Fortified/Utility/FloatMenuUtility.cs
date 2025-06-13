@@ -29,9 +29,9 @@ namespace Fortified
                 }
             }
             //裝備相關
-            if (tmp.def?.apparel != null && pawn.HasComp<CompMechApparel>())
+            if (tmp.def?.apparel != null && pawn.TryGetComp<CompMechApparel>(out var comp))
             {
-                if (CheckUtility.Wearable(mechWeapon, tmp))
+                if (CheckUtility.Wearable(comp, tmp))
                 {
                     yield return TryMakeFloatMenuForApparel(pawn, tmp);
                 }
@@ -47,17 +47,17 @@ namespace Fortified
                 {
                     yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ": " + "FFF.Reason.NoPayloadCapacity".Translate(), null);
                 }
-                else if (tmp.TryGetComp<CompEquippable>(out var comp) && !CheckUtility.IsMechUseable(pawn, tmp))
-                {
-                    yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ": " + "FFF.Reason.WeaponNotSupported".Translate(), null);
-                }
+                //else if (tmp.TryGetComp<CompEquippable>(out var comp) && !CheckUtility.IsMechUseable(pawn, tmp))
+                //{
+                //    yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ": " + "FFF.Reason.WeaponNotSupported".Translate(), null);
+                //}
                 else
                 {
                     yield return new FloatMenuOption("FFF.TakeToInventory".Translate(tmp), () =>
                     {
                         tmp.SetForbidden(false);
                         Job job = JobMaker.MakeJob(JobDefOf.TakeInventory, tmp);
-                        job.count = tmp.stackCount;
+                        job.count = MassUtility.CountToPickUpUntilOverEncumbered(pawn, tmp);
                         pawn.jobs.TryTakeOrderedJob(job, JobTag.DraftedOrder);
                     });
                 }
@@ -111,17 +111,16 @@ namespace Fortified
                         }
                     }
                     //裝備相關
-                    if (tmp.def?.apparel != null && pawn.HasComp<CompMechApparel>())
+                    if (tmp.def?.apparel != null && pawn.TryGetComp<CompMechApparel>(out var compApparel))
                     {
-                        if (CheckUtility.Wearable(MechWeapon, tmp))
-                        {
+                        if (CheckUtility.Wearable(compApparel, tmp))
                             yield return TryMakeFloatMenuForApparel(pawn, tmp);
-                        }
-                        else
-                        {
-                            yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ":" + "FFF.Reason.FrameNotSupported".Translate(), null);
-                        }
                     }
+                    else
+                    {
+                        yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ":" + "FFF.Reason.FrameNotSupported".Translate(), null);
+                    }
+                
                     //撿起物品
                     if (tmp.def.selectable && tmp.def.category == ThingCategory.Item)
                     {
@@ -185,9 +184,9 @@ namespace Fortified
 
             if (pawn is IWeaponUsable weaponUsable)
             {
-                if (equipment is Apparel apparel)
+                if (equipment is Apparel apparel && pawn.TryGetComp<CompMechApparel>(out var mechApparel))
                 {
-                    if (!apparel.PawnCanWear(pawn, true) || !CheckUtility.Wearable(pawn.def.GetModExtension<MechWeaponExtension>(),apparel))
+                    if (!apparel.PawnCanWear(pawn, true) || !CheckUtility.Wearable(mechApparel, apparel))
                     {
                         return new FloatMenuOption("CannotEquip".Translate(labelShort) + ": " + "FFF.FrameNotSupported".Translate(), null);
                     }
@@ -209,6 +208,8 @@ namespace Fortified
             }
             return null;
         }
+
+
         public static FloatMenuOption TryMakeFloatMenuForWeapon(this Pawn pawn, ThingWithComps equipment)
         {
             return TryMakeFloatMenu(pawn, equipment);

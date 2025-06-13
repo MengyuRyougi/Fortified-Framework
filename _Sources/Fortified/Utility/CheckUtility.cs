@@ -143,10 +143,10 @@ public static partial class CheckUtility
         }
         return false;
     }
-    public static bool Wearable(MechWeaponExtension extension, ThingWithComps equipment)//為可用的衣服層。
+    public static bool Wearable(CompMechApparel comp, ThingWithComps equipment)//為可用的衣服層。
     {
-        if (extension.ApparelLayerBlackLists.NullOrEmpty()) return true;
-        foreach (ApparelLayerDef item in extension.ApparelLayerBlackLists)
+        if (comp.Props.ApparelLayerBlackLists.NullOrEmpty()) return true;
+        foreach (ApparelLayerDef item in comp.Props.ApparelLayerBlackLists)
         {
             if (equipment.def.apparel.layers.NullOrEmpty()) return true;
             if (equipment.def.apparel.layers.Contains(item))

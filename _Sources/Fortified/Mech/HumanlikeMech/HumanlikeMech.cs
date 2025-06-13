@@ -51,40 +51,6 @@ namespace Fortified
             }
             base.Kill(dinfo, exactCulprit);
         }
-        public override IEnumerable<FloatMenuOption> GetExtraFloatMenuOptionsFor(IntVec3 sq)
-        {
-            foreach (var item in base.GetExtraFloatMenuOptionsFor(sq))
-            {
-                yield return item;
-            }
-            if (IsColonyMechPlayerControlled)
-            {
-                foreach (var item in FloatMenuUtility.GetExtraFloatMenuOptionsFor(this, sq, MechWeapon))
-                {
-                    yield return item;
-                }
-                List<Thing> things = sq.GetThingList(this.MapHeld);
-                foreach (var item in things)
-                {
-                    if (Extension.canChangeHairStyle && item is Building_StylingStation station)
-                    {
-                        foreach (var item2 in station.GetFloatMenuOptions(this))
-                        {
-                            yield return item2;
-                        }
-                    }
-                }
-                if (this.TryGetComp<CompDeadManSwitch>() is CompDeadManSwitch comp && comp.woken && sq == this.Position && MechRepairUtility.CanRepair(this))
-                {
-                    yield return new FloatMenuOption("RepairMech".Translate(this.LabelShort), () =>
-                    {
-                        Job job = JobMaker.MakeJob(FFF_DefOf.FFF_RepairSelf, this);
-                        this.jobs.StartJob(job);
-                    });
-                }
-                yield break;
-            }
-        }
         public override void ExposeData()
         {
             base.ExposeData();
@@ -103,11 +69,6 @@ namespace Fortified
                 story.headType ??= Extension.headTypeOverride;
                 story.SkinColorBase = Color.white;
 
-                if (Extension.canChangeHairStyle)
-                {
-                    story.HairColor = Color.white;
-                    story.hairDef ??= HairDefOf.Bald;
-                }
 
                 style ??= new Pawn_StyleTracker(this)
                 {
@@ -115,6 +76,12 @@ namespace Fortified
                     FaceTattoo = null,
                     BodyTattoo = null,
                 };
+
+                if (Extension.canChangeHairStyle)
+                {
+                    story.HairColor = Color.white;
+                    story.hairDef ??= HairDefOf.Bald;
+                }
 
                 interactions ??= new(this);
                 if (skills == null)

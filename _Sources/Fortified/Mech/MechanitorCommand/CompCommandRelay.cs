@@ -28,19 +28,22 @@ namespace Fortified
             base.PostDraw();
             if (Pawn.Drafted)
             {
-                if (SameMap)
+                if (Pawn.GetOverseer() == null) return;
+                var overseer = Pawn.GetOverseer();
+
+                if (overseer.MapHeld == Pawn.MapHeld)
                 {
                     CurrentRadius = Props.maxRelayRadius; 
                     //Log.Message("SameMap");
                 }
-                else if (!Pawn.GetOverseer().Spawned)
+                else if (!overseer.Spawned)
                 {
                     CurrentRadius = Props.minRelayRadius;
                     //Log.Message("Overseer not spawned");
                 }
                 else
                 {
-                    int num = Find.WorldGrid.TraversalDistanceBetween(Pawn.MapHeld.Tile, Pawn.GetOverseer().MapHeld.Tile);
+                    float num = Find.WorldGrid.ApproxDistanceInTiles(Pawn.MapHeld.Tile, overseer.MapHeld.Tile);
                     //Log.Message("Overseer at:" + num);
                     if (num > Props.maxWorldMapRadius)
                     {
@@ -56,8 +59,6 @@ namespace Fortified
         }
         
         Pawn Pawn => this.parent as Pawn;
-
-        private bool SameMap => Pawn.GetOverseer().Spawned && Pawn.GetOverseer().MapHeld != null && Pawn.MapHeld == Pawn.GetOverseer().MapHeld;
     }
     public class CompProperties_CommandRelay : CompProperties
     {

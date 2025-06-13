@@ -12,7 +12,7 @@ public class PlaceWorker_NoAltitudeLayerOccupy : PlaceWorker
              where x.def.altitudeLayer == checkingDef.altitudeLayer
              select x).ToList().Count > 0)
         {
-            return "FT_AltitudeLayerOccupied".Translate();
+            return "FFF.Reason.AltitudeLayerOccupied".Translate();
         }
         return true;
     }

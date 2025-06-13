@@ -59,21 +59,21 @@ namespace Fortified
         {
             if (this.parent is Pawn pawn && pawn.Map != null && pawn.Faction != null)
             {
-                //List<Pawn> pawns = new List<Pawn>();
-                //List<Pawn> collection = pawn.Map.mapPawns.SpawnedPawnsInFaction(pawn.Faction);
-                //pawns.AddRange(collection);
-                //pawns.Shuffle<Pawn>();
-                //for (int i = 0; i < pawns.Count; i++)
-                //{
-                //    Pawn p = pawns[i];
-                //    if (p != pawn && InteractionUtility.CanReceiveRandomInteraction(p) && !pawn.HostileTo(p))
-                //    {
-                //        if (this.TryInteractWith(p, this.Props.interacte))
-                //        {
-                //            return true;
-                //        }
-                //    }
-                //}
+                List<Pawn> pawns = new List<Pawn>();
+                List<Pawn> collection = pawn.Map.mapPawns.SpawnedPawnsInFaction(pawn.Faction);
+                pawns.AddRange(collection);
+                pawns.Shuffle<Pawn>();
+                for (int i = 0; i < pawns.Count; i++)
+                {
+                    Pawn p = pawns[i];
+                    if (p != pawn && !pawn.HostileTo(p))
+                    {
+                        if (this.TryInteractWith(p, this.Props.interacte))
+                        {
+                            return true;
+                        }
+                    }
+                }
             }
             return false;
         }

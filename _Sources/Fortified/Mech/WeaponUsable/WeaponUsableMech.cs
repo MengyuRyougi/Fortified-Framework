@@ -34,20 +34,6 @@ namespace Fortified
             }
             base.Kill(dinfo, exactCulprit);
         }
-        public override IEnumerable<FloatMenuOption> GetExtraFloatMenuOptionsFor(IntVec3 sq)
-        {
-            if (!IsColonyMechPlayerControlled) yield break;
-
-            if (this.TryGetComp<CompDeadManSwitch>() is CompDeadManSwitch comp && comp.woken && sq == this.Position
-                && MechRepairUtility.CanRepair(this))
-            {
-                yield return new FloatMenuOption("RepairMech".Translate(this.LabelShort), () =>
-                {
-                    Job job = JobMaker.MakeJob(FFF_DefOf.FFF_RepairSelf, this);
-                    this.jobs.StartJob(job);
-                });
-            }
-        }
         public override void ExposeData()
         {
             base.ExposeData();

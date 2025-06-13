@@ -44,7 +44,7 @@ namespace Fortified
                 }
             };
 
-            if (!pawn.Drafted) command_Target.Disable("FT_DisabledUndrafted".Translate());
+            if (!pawn.Drafted) command_Target.Disable("FFF.DisabledUndrafted".Translate());
             return command_Target;
         }
         public static IEnumerable<Gizmo> Postfix(IEnumerable<Gizmo> __result, Pawn __instance)

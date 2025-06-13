@@ -82,7 +82,7 @@ namespace Fortified
             if (isActive)
             {
                 Command_Action command_Action2 = new Command_Action();
-                command_Action2.defaultLabel = "FT_StopWarmup".Translate();
+                command_Action2.defaultLabel = "FFF.StopWarmup".Translate();
                 command_Action2.icon = ContentFinder<Texture2D>.Get(Props.iconPathDeactive);
                 command_Action2.action = delegate
                 {
@@ -93,11 +93,11 @@ namespace Fortified
                 yield break;
             }
             Command_Action command_Action3 = new Command_Action();
-            command_Action3.defaultLabel = "FT_StartWarmup".Translate();
+            command_Action3.defaultLabel = "FFF.StartWarmup".Translate();
             command_Action3.icon = ContentFinder<Texture2D>.Get(Props.iconPathActive);
             if (ticksUntilCooldown > 0)
             {
-                command_Action3.Disable("FT_NotCooldown".Translate());
+                command_Action3.Disable("FFF.NotCooldown".Translate());
             }
             command_Action3.action = delegate
             {
@@ -114,12 +114,12 @@ namespace Fortified
             {
                 if (ticksUntilTrigger > 0)
                 {
-                    text += "FT_WillReadyAt".Translate() + " " + ticksUntilTrigger.ToStringTicksToPeriod().Colorize(ColoredText.DateTimeColor);
+                    text += "FFF.WillReadyAt".Translate() + " " + ticksUntilTrigger.ToStringTicksToPeriod().Colorize(ColoredText.DateTimeColor);
                 }
             }
             else if (ticksUntilCooldown > 0)
             {
-                text += "FT_WillCooldownAt".Translate() + " " + ticksUntilCooldown.ToStringTicksToPeriod().Colorize(ColoredText.DateTimeColor);
+                text += "FFF.WillCooldownAt".Translate() + " " + ticksUntilCooldown.ToStringTicksToPeriod().Colorize(ColoredText.DateTimeColor);
             }
             return base.CompInspectStringExtra() + text;
         }

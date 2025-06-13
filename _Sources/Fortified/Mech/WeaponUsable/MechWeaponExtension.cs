@@ -16,7 +16,5 @@ namespace Fortified
         public List<WeaponClassDef> UsableWeaponClasses = new List<WeaponClassDef>();
 
         public List<string> BypassUsableWeapons = new List<string>();
-
-        public List<ApparelLayerDef> ApparelLayerBlackLists = new List<ApparelLayerDef>();
     }
 }

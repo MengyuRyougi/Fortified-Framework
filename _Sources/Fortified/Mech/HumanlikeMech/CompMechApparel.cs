@@ -27,7 +27,7 @@ namespace Fortified
         {
             get
             {
-                if (_parentPawn == null) _parentPawn = this.parent as Pawn;
+                _parentPawn ??= this.parent as Pawn;
                 return _parentPawn;
             }
         }
@@ -92,6 +92,8 @@ namespace Fortified
     {
         [NoTranslate]
         public string gizmoIconPath;
+
+        public List<ApparelLayerDef> ApparelLayerBlackLists = new List<ApparelLayerDef>();
 
         public CompProperties_MechApparel()
         {

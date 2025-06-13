@@ -1,38 +1,33 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
-  
-<!--++++ Reason ++++-->
 
-  <!-- EN: Weapon system not supported -->
-  <FFF.Reason.WeaponNotSupported>機體系統不支持</FFF.Reason.WeaponNotSupported>
-  <!-- EN: Mech frame not supported -->
-  <FFF.Reason.FrameNotSupported>機體框架不支持</FFF.Reason.FrameNotSupported>
+  <FFF.ScenPart_SelectPrefabDef>選擇結構</FFF.ScenPart_SelectPrefabDef>
+
   <!-- EN: Must be Mechanior -->
   <FFF.Reason.NotMechanitor>必須是御機使</FFF.Reason.NotMechanitor>
   <!-- EN: Inventroy fulled -->
   <FFF.Reason.NoPayloadCapacity>物品欄已滿</FFF.Reason.NoPayloadCapacity>
-  <!-- EN: bodysize not supported (need:{0}) -->
-  <FFF.Reason.BodysizeNotSupported>體型尺寸不支持(需要:{0})</FFF.Reason.BodysizeNotSupported>
-  <!-- EN: model not supported -->
-  <FFF.Modification_RaceNotSupported>機械體型號不支持安裝該改裝件</FFF.Modification_RaceNotSupported>
-  <!-- EN: no body part to attach modification -->
-  <FFF.Modification_NoValidPart>機械體沒有供改裝件安裝的空余部位</FFF.Modification_NoValidPart>
   <!-- EN: work type disabled -->
   <FFF.Reason.WorkTypeDisabled>工作類型禁用</FFF.Reason.WorkTypeDisabled>
   <!-- EN: need bandwidth:{0} -->
   <FFF.Reason.NeedBandwidth>需要帶寬: {0}</FFF.Reason.NeedBandwidth>
-
+  
+  <!-- EN: altitude layer occupied -->
+  <FFF.Reason.AltitudeLayerOccupied>建築層被占用</FFF.Reason.AltitudeLayerOccupied>
+  <!-- EN: Not enough fuel -->
+  <FFF.Reason.NoEnoughFuel>燃料不足</FFF.Reason.NoEnoughFuel>
+  <!-- EN: No fuel -->
+  <FFF.Reason.NotFueled>沒有燃料</FFF.Reason.NotFueled>
 
 <!--++++ Message ++++-->
 
-  <!-- EN: The modification durability on one of your mechs has exhausted -->
-  <FFF.Message.AddonBroken>安裝於機械體上的改裝模塊已完全損壞</FFF.Message.AddonBroken>
-  <!-- EN: Modification applied -->
-  <FFF.Message.Modification.Applied>{0}已完成改裝件安裝</FFF.Message.Modification.Applied>
-  <!-- EN: Modification removed -->
-  <FFF.Message.Modification.Removed>{0}已完成改裝件移除</FFF.Message.Modification.Removed>
   <!-- EN: Orbital downlink has established connection with mechanitor -->
   <FFF.Message.BandwidthSupported>軌道下行帶寬建立了與御機使的連接協議</FFF.Message.BandwidthSupported>
+
+  <!-- EN: Needs to be placed on the wall or door -->
+  <FFF.Message.CannotPlaceWithoutWall>需要放置於牆體或門上</FFF.Message.CannotPlaceWithoutWall>
+  <!-- EN: Needs to be placed on cover -->
+  <FFF.Message.MustOnACoverBuilding>需要放置在掩體上</FFF.Message.MustOnACoverBuilding>
 
 <!--++++ FloatMenuOptions ++++-->
 
@@ -50,50 +45,22 @@
 
 
 <!--++++ IngredientValueGetter ++++-->
-  <!-- EN: Requires total quality exceeding {0} -->
-  <FT_BillRequires_Mass>需要總計品質超過{0}</FT_BillRequires_Mass>
-  <!-- EN: Requires total price to exceed {0} -->
-  <FT_BillRequires_MarketValue>需要總計價格超過{0}</FT_BillRequires_MarketValue>
-  <FT_AltitudeLayerOccupied></FT_AltitudeLayerOccupied>
-  <!-- EN: Needs to be placed on the wall or door -->
-  <FT_CannotPlaceWithoutWall>需要放置於牆體或門上</FT_CannotPlaceWithoutWall>
-  <!-- EN: Needs to be placed on cover -->
-  <FT_MustOnACoverBuilding>需要放置在掩體上</FT_MustOnACoverBuilding>
-  <!-- EN: Stop broadcast -->
-  <FT_StopWarmup>中止廣播</FT_StopWarmup>
-  <!-- EN: Start broadcast -->
-  <FT_StartWarmup>開始廣播</FT_StartWarmup>
-  <!-- EN: Unable to start: not cooled yet -->
-  <FT_NotCooldown>無法啟動:尚未冷卻</FT_NotCooldown>
-  <!-- EN: will complete broadcast at: -->
-  <FT_WillReadyAt>將完成廣播於:</FT_WillReadyAt>
-  <!-- EN: will complete cooling at: -->
-  <FT_WillCooldownAt>將完成冷卻於:</FT_WillCooldownAt>
-  <!-- EN: Not enough fuel -->
-  <FT_NoEnoughFuel>燃料不足</FT_NoEnoughFuel>
-  <!-- EN: No fuel -->
-  <FT_NotFueled>沒有燃料</FT_NotFueled>
-<!--++++ Misc ++++-->
 
-  <!-- EN: Disposable ceramic armor protects the mecha from damage as ablative armor until its durability is exhausted and needs replacement. -->
-  <FFF.PlatingTooltip>能夠抵禦大多數傷害的一次性防護片，其上限值與機械體體型正相關，無法自然恢復耐久。</FFF.PlatingTooltip>
+  <!-- EN: Requires total mass exceeding {0} -->
+  <FFF.BillRequires.Mass>需要總計重量超過{0}:({1})</FFF.BillRequires.Mass>
+  <!-- EN: Requires total price to exceed {0} -->
+  <FFF.BillRequires.MarketValue>需要總計價值超過{0}:({1})</FFF.BillRequires.MarketValue>
+
+<!--++++ Misc ++++-->
 
   <!-- EN: FFF: Trigger Safe Actived -->
   <FFF.WillTerminateTheBetrayedUnit>失能機關: 待發狀態</FFF.WillTerminateTheBetrayedUnit>
-  <!-- EN: Mounted weapon -->
-  <FFF.MountedWeapon>掛載型武器</FFF.MountedWeapon>
-  <!-- EN: This weapon can only be equipped with listed automatroid or mechframe -->
-  <FFF.MountedWeaponCanOnlyBeEquippedBySpecificApparelOrRaces>此掛載型武器只能由下列機械體或裝備衣物與仿生後所使用</FFF.MountedWeaponCanOnlyBeEquippedBySpecificApparelOrRaces>
-  <!-- EN: This weapon can be equipped with listed specific apparel or bionics -->
-  <FFF.WeaponCanBeEquippedBySpecificApparelOrRaces>此武器也可以由下列機械體或裝備衣物與仿生後所使用</FFF.WeaponCanBeEquippedBySpecificApparelOrRaces>
-  
+
 <!--++++ Inspector ++++-->
 
   <!-- EN: APS remain time:{0} -->
   <FFF.APS_TickRemain>主動防禦系統運作剩餘時間:{0}</FFF.APS_TickRemain>
 
-  <!-- EN: Imprinted: {0}({1}) -->
-  <FFF.WeaponImprinted>適配武器:{0}({1})</FFF.WeaponImprinted>
 
 <!--++++ Events ++++-->
 
@@ -120,95 +87,13 @@
   <!-- EN: {0}'s return of favors -->
   <FFF.MechStory_Loot>{0}的回報</FFF.MechStory_Loot>
 
+  <!-- EN: Imprinted: {0}({1}) -->
+  <FFF.WeaponImprinted>適配武器:{0}({1})</FFF.WeaponImprinted>
   <!-- EN: Imprinted: {0} -->
   <FFF.Inprinted>武器綁定:{0}</FFF.Inprinted>
   <!-- EN: the colony mech {0} has equipped with its first weapon, this makes its adaptive learning ability bound to that type of weapon. -->
   <FFF.InprintedDesc>由殖民地所控制的 {0} 裝備了它的第一個武器，這使得它的自適應能力將與該型號的武器深度綁定，並將隨著時間逐漸增強與該型武器的契合程度從而提升射擊準確性與反應能力。</FFF.InprintedDesc>
   
-  <FFF.Req_TechLevel>必須是下列科技等級的裝備</FFF.Req_TechLevel>
-  <FFF.Req_BodySize>可直接裝備支援體型要求不高於: {0} 的重型武器</FFF.Req_BodySize>
-  <FFF.Req_WeaponFilter>僅能夠使用下列的武器</FFF.Req_WeaponFilter>
-  <FFF.Req_NoWeaponFilter>沒有其他裝備限制</FFF.Req_NoWeaponFilter>
-  
   <FFF.AirSupportFromClosestBase>來自{0}的{1}正在抵達。</FFF.AirSupportFromClosestBase>
-
-  <!-- EN: takeover -->
-  <DMSAC_World_Takeover>接管</DMSAC_World_Takeover>
-  <!-- EN: According to the latest news, a force belonging to {0} took over {2}, which originally belonged to {1}, and now the base has been renamed {3} -->
-  <DMSAC_World_Takeover_Desc>根據最新的消息，一支隸屬於{0}的部隊接管了原屬於{1}的{2}，現在該基地被重新命名為{3}</DMSAC_World_Takeover_Desc>
-  <!-- EN: raised Defcon -->
-  <DMSAC_Level_Rise>戒備提升</DMSAC_Level_Rise>
-  <!-- EN: Due to recent events, the {0} command has raised the defend condition level of its units. Their Defcon level is now -->
-  <DMSAC_Level_Rise_Desc>由於近期發生的事件使得{0}指揮部提高了其部隊的警戒等級，現在它們的警戒等級為</DMSAC_Level_Rise_Desc>
-  <!-- EN: lowered Defcon -->
-  <DMSAC_Level_Down>戒備降低</DMSAC_Level_Down>
-  <!-- EN: Based on recent changes in observed activity, {0} Command has lowered its internal alert level. Their Defcon level is now -->
-  <DMSAC_Level_Down_Desc>根據近期觀察的活動變化，{0}指揮部下降了其內部的警戒等級，現在它們的警戒等級為</DMSAC_Level_Down_Desc>
-  
-  <!-- EN: Level O   {0} retained a minimum number of facility patrols and recalled the medium-sized automatroids in the unit and returned them to their bases for maintenance. -->
-  <DMSAC_Level.0>解除警戒:   {0}僅保留最低限度的設施巡邏編制，並解散了部隊中的中型機兵返回駐地進行檢修。</DMSAC_Level.0>
-  <!-- EN: Level I   {0} deployed all-weather patrols between its ground facilities to shorten the reinforcement intervals for attacked facilities, and deployed medium-sized automatroids in the patrol teams. -->
-  <DMSAC_Level.1>V級警戒:   {0}在其地面設施之間部屬了全天候的巡邏部隊使受襲設施的增援間隔縮短，並且在巡邏隊伍配置中型機兵。</DMSAC_Level.1>
-  <!-- EN: Level II  Based on the current situation, {0} will restart some of its large automatroids and mobilize them at any time, and organize a small number of armored platoons as a task force to reinforce ground facilities. -->
-  <DMSAC_Level.2>IV級警戒:  根據近期當前局勢，{0}將部分的大型機兵重啟並隨時調動，並編制少量的裝甲排作為對地面設施增援的特遣部隊。</DMSAC_Level.2>
-  <!-- EN: Level III Due to the recent tense situation, ultra-heavy automatroids have been put on combat readiness and deployed in various areas to provide reinforcement at any time. {0} will carry out armed expulsion of neighboring illegal military sites in accordance with the Colonial Fleet Convention's alert status regulations. -->
-  <DMSAC_Level.3>III級警戒: 由於近期的緊張局勢，超重型機兵已進入戰備狀態並部屬在各區域隨時增援，{0}將根據殖民艦隊公約的戒備狀態條例對鄰近的非法軍事站點進行武裝驅離。</DMSAC_Level.3>
-  <!-- EN: Level IV  {0} confirmed that the First Hague Convention was no longer applicable to the current situation and issued a formal declaration of war in accordance with the Third Hague Convention. \n\nIn addition, according to Article 2 of the Second Hague Convention, civilians in non-occupied areas who take up arms against {0} forces will be considered combatants as defined by the laws of war. -->
-  <DMSAC_Level.4>II級警戒:  {0}確認海牙第一公約已不再適用於當前狀況，並根據海牙第三公約進行正式的宣戰佈告。\n\n此外根據海牙第二公約第二條，處於未佔領區拿起武器對抗{0}部隊的平民將被視為戰爭法所定義的戰鬥員。</DMSAC_Level.4>
-  <!-- EN: Level V   In accordance with the Colonial Fleet Convention's alert regulations, {0} has determined that conditions have been met to warrant an offensive and the mobilization of a heavy armored brigade to conduct the operation. \n\n{0} will occupy and take over identified hostile-controlled areas in compliance with international humanitarian law and the Rome Statute, and strike back at hostile forces that attack facilities in a proportional manner. -->
-  <DMSAC_Level.5>I級警戒:   根據殖民艦隊公約的戒備狀態條例，{0}確認當前狀況已達到必須展開進攻並調動重型裝甲旅來執行作戰的合規條件。\n\n{0}將在遵守國際人道法和《羅馬規約》條例的前提下對已識別的敵對控制區進行佔領與接管，並根據比例原則對襲擊設施的敵對勢力予以對等打擊。</DMSAC_Level.5>
-
-  <!-- EN: Hacking failed -->
-  <FFF.HackFailed>駭入失敗</FFF.HackFailed>
-  <!-- EN: Due to {0}'s mistakes, mech was not getting controlled as expected. -->
-  <FFF.HackFailedDesc>由於操作上的失誤{0}，機械體並沒有如預期的受到控制。</FFF.HackFailedDesc>
-
-  <!-- EN: Communication -->
-  <DMSAC_CorpNeutral>通訊</DMSAC_CorpNeutral>
-  <!-- EN: "Code 5, registered personal identified."\n"This is {0}, IFF codes synchronized, cease fire."\n\nThis ancient automatroid command system recognized {1}'s identity. Out of respect for {1}, it has temporarily halted hostilities to your colonists. -->
-  <DMSAC_CorpNeutralDesc>"代碼5，識別到登記對象。"\n"這裡是{0}，已同步敵我識別代碼，交火中止。" \n\n這支古老的機兵指揮系統認出了{1}的身分。並出於對{1}戰鬥能力的尊重暫時中止了識別。</DMSAC_CorpNeutralDesc>
-
-  <!-- EN: Communication -->
-  <DMSAC_CorpAlly>通訊</DMSAC_CorpAlly>
-  <!-- EN: "Code 5, registered personal identified."\n"This is {0}, if you require any resources, please formally submit a military surplus requisition form to the {0} logistics office."\n\nOut of trust in {1}, the ancient automatroid command system turned a blind eye to the colonists' actions but issued a warning as per protocol. -->
-  <DMSAC_CorpAllyDesc>"代碼5，識別到登記對象。"\n"這裡是{0}，如果有任何資源需求請向{0}後勤辦事處正式遞交軍剩品徵用申請表。" \n\n古老的機兵指揮系統出於對{1}的信任，對殖民者的行為睜一隻眼閉一隻眼，但出於流程需要發出了警告。</DMSAC_CorpAllyDesc>
-
-  <!-- EN: Communication -->
-  <DMSAC_CorpAllyDown>通訊</DMSAC_CorpAllyDown>
-  <!-- EN: "Code 5, registered personal identified."\n"This is {0}, paying tribute to the Slayer of Zalta and thanking you for your contributions to the colonization project."\n\nThis ancient automatroid command system recognized {1}'s identity. Out of respect for {1}, it has authorized the colonists to operate freely in this area. -->
-  <DMSAC_CorpAllyDownDesc>"代碼5，識別到登記對象。"\n"這裡是{0}，在此向扎爾塔的屠戮者致敬，並感謝您對殖民計畫做出的貢獻。" \n\n這個古老的機兵指揮系統識別出{1}的身分。並出於對{1}的尊重授權了殖民者在這裡自由活動的權力。</DMSAC_CorpAllyDownDesc>
-
-  <!-- EN: Reinforcement -->
-  <DMSAC_CorpHostile>增援</DMSAC_CorpHostile>
-  <!-- EN: An automatroid patrol has discovered colonists intruding into a military facility. After a brief preparation period, they will attempt to expel your colonists.\n\nBased on intercepted communication frequency fluctuations, nearby automatroid patrols in this area may be on their way to reinforcement. -->
-  <DMSAC_CorpHostileDesc>一支機兵巡邏隊發現了入侵軍事設施的殖民者，它們將在準備一段時間後將對你的殖民者實施驅逐。\n\n根據截獲的通訊頻率波動，來自周圍的其他機兵巡邏隊可能正在前來支援的路上。</DMSAC_CorpHostileDesc>
- 
-  <!-- EN: Attack: {0} -->
-  <DMSAC_CompanyRaid>進攻: {0}</DMSAC_CompanyRaid>
-  <!-- EN: A company of automatroids belonging to {0} has surrounded your colony. They are {1}. These automatroids commanded by relay-commanders will launch attacks on colonies and purposefully disarm illegal forces to discourage attacks on their military facilities. -->
-  <DMSAC_CompanyRaid_Desc>一支隸屬於{0}的機兵連隊包圍了你的殖民地，它們是{1}。這些由中繼機體所指揮的機兵將對殖民地發起進攻並有目的性的解除非法武裝來抑止襲擊軍用設施的行為。</DMSAC_CompanyRaid_Desc>
-
-  <!-- EN: {1} -->
-  <DMSAC_Company.Label>{1}</DMSAC_Company.Label>
-  <!-- EN: This is a {1} affiliated with {0}, -->
-  <DMSAC_Company.Desc>這是一支隸屬於{0}的{1}，</DMSAC_Company.Desc>
-  <!-- EN: their targets are likely to be {0} within their combat radius -->
-  <DMSAC_Company.Target>它們的目標很可能是處於作戰半徑內的{0}</DMSAC_Company.Target>
-  <!-- EN: their targets are unknown -->
-  <DMSAC_Company.NoTarget>它們的目標未知</DMSAC_Company.NoTarget>
-  
-  <!-- EN: War declared -->
-  <DMSAC_World_Declaration>宣戰</DMSAC_World_Declaration>
-  <!-- EN: According to the latest news, {0} broadcast a declaration of war against the local faction {1}, and mentioned that all military operations in areas controlled by {1} will be carried out in compliance with the laws of war. \n\nWe don't yet know what impact this will have. -->
-  <DMSAC_World_Declaration_Desc>根據最新的消息，{0}廣播了對本地陣營{1}的宣戰公告，並提及了所有對{1}控制區域的軍事行動都將在遵守戰爭法的前提下完成。\n\n我們尚不清楚這將會造成什麼樣的影響。</DMSAC_World_Declaration_Desc>
-  <!-- EN: War ended -->
-  <DMSAC_World_WarOver>行動結束</DMSAC_World_WarOver>
-  <!-- EN: After taking over the last base, {0} announced that the military operation against {1} had been successfully completed. As a result of the operation, {1}'s influence on the planet was completely eradicated. \n\nAccording to intelligence, this army has returned to its original patrol mode after completing its mission. \nThe war is over...\n\nFor now. -->
-  <DMSAC_World_WarOver_Desc>在接管了最後一個基地後，{0}宣布針對{1}的軍事行動已圓滿結束，作為行動的結果{1}在本星球的影響力被徹底的拔除。\n\n而根據情報，這支傾巢而出的軍隊在完成了它們的任務後已經重新回到原來的巡邏模式。\n戰爭結束了...\n\n暫時的。</DMSAC_World_WarOver_Desc>
-
-  <!-- UNUSED -->
-  <DMSAC_PatrolSquad>增援</DMSAC_PatrolSquad>
-  <DMSAC_PatrolSquadDesc>一支巡邏部隊已經抵達設施，更多的後續部隊將在更短的時間內陸續增援。</DMSAC_PatrolSquadDesc>
-
 
 </LanguageData>

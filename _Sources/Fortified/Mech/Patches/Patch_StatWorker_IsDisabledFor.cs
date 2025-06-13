@@ -11,6 +11,7 @@ using Verse;
 
 namespace Fortified
 {
+    //由於衣服需要有身形，身形需要Story，但Story會使Stat出現不該有的東西。所以需要這個補丁。
     [HarmonyPatch(typeof(StatWorker), nameof(StatWorker.IsDisabledFor))]
     public static class Patch_StatWorker_IsDisabledFor
     {
@@ -35,7 +36,7 @@ namespace Fortified
 
         public static bool IsStoryEmptyOrHumanMech(this Pawn p) 
         {
-            return p.story != null && !(p is HumanlikeMech);
+            return p.story != null && p is not HumanlikeMech;
         }
     }
 }

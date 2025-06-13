@@ -29,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Mech\HumanlikeMech\HumnalikeMechRenderingUtility.cs" />
+    <Compile Remove="Mech\Patches\Patch_PawnRenderNodeWorker_Apparel_Body_CanDrawNow.cs" />
+    <Compile Remove="Mech\Patches\Patch_PawnRenderNodeWorker_Apparel_Head_CanDrawNow.cs" />
     <Compile Remove="Thing\WeaponUsableMachine.cs" />
   </ItemGroup>
 
