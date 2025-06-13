@@ -11,10 +11,6 @@ public class IngredientValueGetter_Mass : IngredientValueGetter
 
     public override float ValuePerUnitOf(ThingDef t)
     {
-        if (t.BaseMass <= 0f)
-        {
-            return 0f;
-        }
         return t.GetStatValueAbstract(StatDefOf.Mass);
     }
 }

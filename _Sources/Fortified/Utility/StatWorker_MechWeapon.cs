@@ -76,7 +76,7 @@ namespace Fortified
                 if (ext.EnableTechLevelFilter)
                 {
                     //必須是下列科技等級的裝備
-                    s += "DMS_Req_TechLevel".Translate() + "\n";
+                    s += "FFF.Req_TechLevel".Translate() + "\n";
                     foreach (TechLevel item in ext.UsableTechLevels)
                     {
                         s += "- "+item.ToStringHuman().Translate() + "\n";
@@ -88,16 +88,16 @@ namespace Fortified
                     if (req.Def is ThingDef def && def.race?.baseBodySize > 1)
                     {
                         //在無額外裝備的情況下能直接使用支援體型要求不高於: {0} 的武器。
-                        s += "DMS_Req_BodySize".Translate(def.race.baseBodySize) + "\n\n";
+                        s += "FFF.Req_BodySize".Translate(def.race.baseBodySize) + "\n\n";
                     }
 
                     //沒有其他裝備限制。
-                    s += "DMS_Req_NoWeaponFilter".Translate();
+                    s += "FFF.Req_NoWeaponFilter".Translate();
                 }
                 else
                 {
                     //僅能夠使用下列的武器。
-                    s += "DMS_Req_WeaponFilter".Translate();
+                    s += "FFF.Req_WeaponFilter".Translate();
                 }
             }
             return s;

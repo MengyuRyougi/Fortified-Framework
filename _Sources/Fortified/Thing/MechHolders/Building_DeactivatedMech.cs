@@ -130,19 +130,19 @@ namespace Fortified
 
                     if (selPawn.WorkTypeIsDisabled(WorkTypeDefOf.Research))
                     {
-                        yield return DisableOption("AncientCorps.Reason_WorkTypeDisabled".Translate().CapitalizeFirst());
+                        yield return DisableOption("FFF.Reason.WorkTypeDisabled".Translate().CapitalizeFirst());
                     }
                     else if (!MechanitorUtility.IsMechanitor(selPawn))
                     {
-                        yield return DisableOption("AncientCorps.Reason_NotMechanitor".Translate().CapitalizeFirst());
+                        yield return DisableOption("FFF.Reason.NotMechanitor".Translate().CapitalizeFirst());
                     }
                     else if (selPawn.mechanitor.TotalBandwidth - selPawn.mechanitor.UsedBandwidth < Pawn.GetStatValue(StatDefOf.BandwidthCost))
                     {
-                        yield return DisableOption("AncientCorps.Reason_NoEnoughBandwidth".Translate(Pawn.GetStatValue(StatDefOf.BandwidthCost)).CapitalizeFirst());
+                        yield return DisableOption("FFF.Reason.NeedBandwidth".Translate(Pawn.GetStatValue(StatDefOf.BandwidthCost)).CapitalizeFirst());
                     }
                     else
                     {
-                        yield return new FloatMenuOption("AncientCorps.DeactivatedMech_TryHack".Translate(Pawn.LabelCap), delegate ()
+                        yield return new FloatMenuOption("FFF.DeactivatedMech_TryHack".Translate(Pawn.LabelCap), delegate ()
                         {
                             selPawn.jobs.TryTakeOrderedJob(new Job(FFF_DefOf.FFF_HackDeactivatedMech, this));
                         });
@@ -156,7 +156,7 @@ namespace Fortified
         }
         private FloatMenuOption DisableOption(string reason)
         {
-            return new FloatMenuOption("AncientCorps.DeactivatedMech_CannotHack".Translate() + ": " + reason, null);
+            return new FloatMenuOption("FFF.DeactivatedMech_CannotHack".Translate() + ": " + reason, null);
         }
         public ThingOwner GetDirectlyHeldThings()
         {
@@ -205,7 +205,7 @@ namespace Fortified
                     usedBy.skills.GetSkill(SkillDefOf.Crafting).Level < 15 && Rand.Chance(0.01f)
                    )
                 {
-                    Find.LetterStack.ReceiveLetter("DMSAC_HackFailed".Translate(), "DMSAC_HackFailedDesc".Translate(usedBy.NameShortColored), LetterDefOf.NegativeEvent);
+                    Find.LetterStack.ReceiveLetter("FFF.HackFailed".Translate(), "FFF.HackFailedDesc".Translate(usedBy.NameShortColored), LetterDefOf.NegativeEvent);
                     Pawn.SetFactionDirect(PawnFaction);
                     SetLordJob();
                 }

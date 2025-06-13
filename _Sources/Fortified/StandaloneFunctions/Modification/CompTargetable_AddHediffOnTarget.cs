@@ -39,12 +39,12 @@ namespace Fortified
             }
             if (!ModificationUtility.SupportedByRace((Pawn)selectedTarget, Props))
             {
-                Messages.Message("DMS_Modification_RaceNotSupported".Translate(), MessageTypeDefOf.NeutralEvent);
+                Messages.Message("FFF.Modification_RaceNotSupported".Translate(), MessageTypeDefOf.NeutralEvent);
                 return;
             }
             if (!ModificationUtility.HasSpaceToAttach((Pawn)selectedTarget, Props, out var _b))
             {
-                Messages.Message("DMS_Modification_NoValidPart".Translate(), MessageTypeDefOf.NeutralEvent);
+                Messages.Message("FFF.Modification_NoValidPart".Translate(), MessageTypeDefOf.NeutralEvent);
                 return;
             }
             if (usedBy.IsColonistPlayerControlled)

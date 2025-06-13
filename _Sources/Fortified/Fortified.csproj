@@ -20,8 +20,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Leagecy\**" />
     <Compile Remove="Royalty\**" />
+    <EmbeddedResource Remove="Leagecy\**" />
     <EmbeddedResource Remove="Royalty\**" />
+    <None Remove="Leagecy\**" />
     <None Remove="Royalty\**" />
   </ItemGroup>
 
@@ -72,9 +75,6 @@
     <Publicize Include="Assembly-CSharp:RimWorld.CompTargetable.selectedTarget" />
     <Publicize Include="Assembly-CSharp:RimWorld.LordToil_Siege.SetAsDefender" />
 
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Leagecy\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Update="System">

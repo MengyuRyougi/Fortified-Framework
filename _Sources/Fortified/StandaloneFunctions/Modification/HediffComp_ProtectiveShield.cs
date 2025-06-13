@@ -8,6 +8,7 @@ using Verse.AI;
 
 namespace Fortified
 {
+
     public class HediffComp_PreApplyDamage: HediffComp
     {
         public override void CompPostMake()
@@ -85,7 +86,7 @@ namespace Fortified
             if (Hitpoints <=0)
             {
                 Hitpoints = 0;
-                Messages.Message("DMS_AddonBroken".Translate(), new LookTargets(parent.pawn.PositionHeld, parent.pawn.MapHeld), MessageTypeDefOf.NeutralEvent);
+                Messages.Message("FFF.Message.AddonBroken".Translate(), new LookTargets(parent.pawn.PositionHeld, parent.pawn.MapHeld), MessageTypeDefOf.NeutralEvent);
                 parent.pawn.health.RemoveHediff(parent);
             }
 
@@ -155,12 +156,5 @@ namespace Fortified
                 h.PreApplyDamage(ref dinfo, out absorbed);
             }
         }
-        public override void PostExposeData()
-        {
-            base.PostExposeData();
-            //Scribe_Collections.Look(ref hediffs, "hediffs", LookMode.Reference);
-            
-        }
-        //public List<HediffComp_PreApplyDamage> hediffs;
     }
 }

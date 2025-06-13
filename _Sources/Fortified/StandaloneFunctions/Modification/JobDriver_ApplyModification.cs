@@ -42,7 +42,7 @@ namespace Fortified
             Pawn p = Target;
             CompTargetable_AddHediffOnTarget comp = Item.TryGetComp<CompTargetable_AddHediffOnTarget>();
             comp.Props.soundDef.PlayOneShot(SoundInfo.InMap(p));
-            Messages.Message("DMS_HasAppliedModification".Translate(p), p, MessageTypeDefOf.PositiveEvent);
+            Messages.Message("FFF.Message.Modification.Applied".Translate(p), p, MessageTypeDefOf.PositiveEvent);
 
             BodyPartRecord partRecord = ModificationUtility.GetBodyPartRecord(p, comp.Props);
             if (partRecord != null)

@@ -20,7 +20,7 @@ namespace Fortified
             }
             if (!MechanitorUtility.IsMechanitor(pawn))
             {
-                yield return new FloatMenuOption("DMS_PawnIsNotMechanitor".Translate(faction.Named("FACTION")), null);
+                yield return new FloatMenuOption("FFF.Reason.NotMechanitor".Translate(faction.Named("FACTION")), null);
                 yield break;
             }
 
@@ -43,7 +43,7 @@ namespace Fortified
                 Hediff h = caller.health.GetOrAddHediff(ext.hediff);
                 h.Severity = ext.GetLevel(caller.GetCurrentTitleIn(faction));
 
-                Messages.Message("FFF_BandwidthSupported".Translate(faction.Named("FACTION")), new LookTargets(caller.PositionHeld, caller.MapHeld), MessageTypeDefOf.NeutralEvent);
+                Messages.Message("FFF.Message.BandwidthSupported".Translate(faction.Named("FACTION")), new LookTargets(caller.PositionHeld, caller.MapHeld), MessageTypeDefOf.NeutralEvent);
                 caller.royalty.GetPermit(def, faction).Notify_Used();
                 if (!free)
                 {

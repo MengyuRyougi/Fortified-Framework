@@ -39,7 +39,7 @@ namespace Fortified
             Text.Anchor = TextAnchor.MiddleCenter;
             Widgets.Label(rect4, (shield.Hitpoints).ToString("F1") + " / " + shield.MaxHitpoints);
             Text.Anchor = TextAnchor.UpperLeft;
-            TooltipHandler.TipRegion(rect2, "DMS_PlatingTooltip".Translate());
+            TooltipHandler.TipRegion(rect2, "FFF.PlatingTooltip".Translate());
             return new GizmoResult(GizmoState.Clear);
         }
     }

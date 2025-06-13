@@ -57,7 +57,7 @@ namespace Fortified
             var ext = def.GetModExtension<BandNodeBuildingExtension>();
             for (int i = 0; i < maps.Count; i++)
             {
-                foreach (Building item in maps[i].listerBuildings.AllBuildingsColonistOfDef(ext.TargetBuilding))
+                foreach (Building item in maps[i].listerBuildings.AllBuildingsColonistOfDef(ext.targetBuilding))
                 {
                     if (item.TryGetComp<CompBandNode>().tunedTo == pawn && item.TryGetComp<CompPowerTrader>().PowerOn)
                     {
@@ -81,7 +81,7 @@ namespace Fortified
     }
     public class BandNodeBuildingExtension : DefModExtension
     {
-        public ThingDef TargetBuilding;
+        public ThingDef targetBuilding;
         public int bandwidth = 4;
     }
 }

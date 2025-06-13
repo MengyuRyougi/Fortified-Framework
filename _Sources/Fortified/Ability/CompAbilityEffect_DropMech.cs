@@ -104,7 +104,7 @@ namespace Fortified
                 }
                 else
                 {
-                    Messages.Message("CommandCallRoyalAid_NoMechanitorAvaliable".Translate(), MessageTypeDefOf.RejectInput);
+                    Messages.Message("FFF.Reason.NotMechanitor".Translate(), MessageTypeDefOf.RejectInput);
                     return false;
                 }
             }

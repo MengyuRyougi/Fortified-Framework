@@ -67,7 +67,7 @@ namespace Fortified
                 {
                     pawn.relations.RemoveDirectRelation(PawnRelationDefOf.Overseer, overseer);
                 }
-                Find.LetterStack.ReceiveLetter("DMS_MechWake".Translate(this.parent.Label), "DMS_MechWakeDesc".Translate(this.parent.Label), LetterDefOf.PositiveEvent, this.parent);
+                Find.LetterStack.ReceiveLetter("FFF.MechWake".Translate(this.parent.Label), "FFF.MechWakeDesc".Translate(this.parent.Label), LetterDefOf.PositiveEvent, this.parent);
                 pawn.interactions = new Pawn_InteractionsTracker(pawn);
             }
         }
@@ -91,7 +91,7 @@ namespace Fortified
                     && !pawn.Downed && pawn.CurJobDef != FFF_DefOf.FFF_MechLeave &&
                     RCellFinder.TryFindBestExitSpot(pawn, out IntVec3 spot))
                 {
-                    Find.LetterStack.ReceiveLetter("DMS_MechStartLeave".Translate(this.parent.Label), "DMS_MechStartLeaveDesc".Translate(this.parent.Label), LetterDefOf.PositiveEvent, this.parent);
+                    Find.LetterStack.ReceiveLetter("FFF.MechStartLeave".Translate(this.parent.Label), "FFF.MechStartLeaveDesc".Translate(this.parent.Label), LetterDefOf.PositiveEvent, this.parent);
                     Job job = JobMaker.MakeJob(FFF_DefOf.FFF_MechLeave, spot);
                     job.exitMapOnArrival = true;
                     pawn.jobs.StartJob(job);
@@ -116,7 +116,7 @@ namespace Fortified
             if (!parent.Faction.IsPlayer || parent.GetComp<CompOverseerSubject>() == null) return null;
             if (parent.GetComp<CompOverseerSubject>().State != OverseerSubjectState.Overseen)
             {
-                string str = "DMS_WillTerminateTheBetrayedUnit".Translate();
+                string str = "FFF.WillTerminateTheBetrayedUnit".Translate();
                 return str;
             }
             return null;

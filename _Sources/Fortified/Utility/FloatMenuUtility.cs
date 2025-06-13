@@ -9,6 +9,79 @@ namespace Fortified
 {
     public static class FloatMenuUtility
     {
+        public static IEnumerable<FloatMenuOption> GetExtraFloatMenuOptionsFor(FloatMenuContext context, Thing clickedThing, MechWeaponExtension mechWeapon)
+        {
+            if (!clickedThing.Spawned) yield break;
+            if (clickedThing is not ThingWithComps tmp) yield break;
+
+            Pawn pawn = context.FirstSelectedPawn as Pawn;
+
+            //武器相關
+            if (tmp.TryGetComp<CompEquippable>() != null)
+            {
+                if (CheckUtility.IsMechUseable(pawn, tmp))
+                {
+                    yield return TryMakeFloatMenuForWeapon(pawn, tmp);
+                }
+                else
+                {
+                    yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ": " + "FFF.Reason.WeaponNotSupported".Translate(), null);
+                }
+            }
+            //裝備相關
+            if (tmp.def?.apparel != null && pawn.HasComp<CompMechApparel>())
+            {
+                if (CheckUtility.Wearable(mechWeapon, tmp))
+                {
+                    yield return TryMakeFloatMenuForApparel(pawn, tmp);
+                }
+                else
+                {
+                    yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ": " + "FFF.Reason.FrameNotSupported".Translate(), null);
+                }
+            }
+            //撿起物品
+            if (tmp.def.selectable && tmp.def.category == ThingCategory.Item)
+            {
+                if (MassUtility.GearAndInventoryMass(pawn) + tmp.GetStatValue(StatDefOf.Mass) > MassUtility.Capacity(pawn))
+                {
+                    yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ": " + "FFF.Reason.NoPayloadCapacity".Translate(), null);
+                }
+                else if (tmp.TryGetComp<CompEquippable>(out var comp) && !CheckUtility.IsMechUseable(pawn, tmp))
+                {
+                    yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ": " + "FFF.Reason.WeaponNotSupported".Translate(), null);
+                }
+                else
+                {
+                    yield return new FloatMenuOption("FFF.TakeToInventory".Translate(tmp), () =>
+                    {
+                        tmp.SetForbidden(false);
+                        Job job = JobMaker.MakeJob(JobDefOf.TakeInventory, tmp);
+                        job.count = tmp.stackCount;
+                        pawn.jobs.TryTakeOrderedJob(job, JobTag.DraftedOrder);
+                    });
+                }
+            }
+            //清空物品
+            if (tmp == pawn && !pawn.inventory.innerContainer.NullOrEmpty())
+            {
+                yield return TryMakeFloatMenuForGearManagement(pawn);
+            }
+            //操作砲塔相關
+            if (tmp.def.building?.turretGunDef != null)
+            {
+                if (CheckUtility.IsMannable(pawn.def.GetModExtension<TurretMannableExtension>(), tmp as Building_Turret))
+                {
+                    var turret = tmp as Building_Turret;
+                    yield return new FloatMenuOption("OrderManThing".Translate(turret.LabelShort, turret), delegate
+                    {
+                        Job job = JobMaker.MakeJob(JobDefOf.ManTurret, turret);
+                        pawn.jobs.TryTakeOrderedJob(job, JobTag.DraftedOrder);
+                    });
+                }
+            }
+        }
+
         public static IEnumerable<FloatMenuOption> GetExtraFloatMenuOptionsFor(Pawn pawn, IntVec3 sq, MechWeaponExtension MechWeapon)
         {
             IWeaponUsable weaponUsable = pawn as IWeaponUsable;
@@ -34,7 +107,7 @@ namespace Fortified
                         }
                         else
                         {
-                            yield return new FloatMenuOption("CannotEquip".Translate(tmp) + " " + "DMS_WeaponNotSupported".Translate(), null);
+                            yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ": " + "FFF.Reason.WeaponNotSupported".Translate(), null);
                         }
                     }
                     //裝備相關
@@ -46,7 +119,7 @@ namespace Fortified
                         }
                         else
                         {
-                            yield return new FloatMenuOption("CannotEquip".Translate(tmp) + " " + "DMS_FrameNotSupported".Translate(), null);
+                            yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ":" + "FFF.Reason.FrameNotSupported".Translate(), null);
                         }
                     }
                     //撿起物品
@@ -54,15 +127,15 @@ namespace Fortified
                     {
                         if (MassUtility.GearAndInventoryMass(pawn) + tmp.GetStatValue(StatDefOf.Mass) > MassUtility.Capacity(pawn))
                         {
-                            yield return new FloatMenuOption("CannotEquip".Translate(tmp) + " " + "DMS_NoPayloadCapacity".Translate(), null);
+                            yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ":" + "FFF.Reason.NoPayloadCapacity".Translate(), null);
                         }
                         else if (tmp.TryGetComp<CompEquippable>(out var comp) && !CheckUtility.IsMechUseable(pawn, tmp))
                         {
-                            yield return new FloatMenuOption("CannotEquip".Translate(tmp) + " " + "DMS_WeaponNotSupported".Translate(), null);
+                            yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ":" + "FFF.Reason.WeaponNotSupported".Translate(), null);
                         }
                         else
                         {
-                            yield return new FloatMenuOption("DMS_TakeToInventory".Translate(tmp), () =>
+                            yield return new FloatMenuOption("FFF.TakeToInventory".Translate(tmp), () =>
                             {
                                 tmp.SetForbidden(false);
                                 Job job = JobMaker.MakeJob(JobDefOf.TakeInventory, tmp);
@@ -96,7 +169,7 @@ namespace Fortified
 
         private static FloatMenuOption TryMakeFloatMenuForGearManagement(Pawn pawn)
         {
-                return new FloatMenuOption("DMS_DropGears".Translate(), () =>
+                return new FloatMenuOption("FFF.DropGears".Translate(), () =>
                 {
                     pawn.inventory.DropAllNearPawn(pawn.Position);
                 });
@@ -116,7 +189,7 @@ namespace Fortified
                 {
                     if (!apparel.PawnCanWear(pawn, true) || !CheckUtility.Wearable(pawn.def.GetModExtension<MechWeaponExtension>(),apparel))
                     {
-                        return new FloatMenuOption("CannotEquip".Translate(labelShort) + ": " + "DMS_FrameNotSupported".Translate(), null);
+                        return new FloatMenuOption("CannotEquip".Translate(labelShort) + ": " + "FFF.FrameNotSupported".Translate(), null);
                     }
                     else
                     {

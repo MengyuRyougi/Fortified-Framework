@@ -74,7 +74,7 @@ namespace Fortified
                     mood /= map.mapPawns.ColonistCount;
                     if ((mood <= 0.1 || mood >= 0.9) && Rand.Chance(0.25f))
                     {
-                        Find.LetterStack.ReceiveLetter("DMS_WokenMechLeave".Translate(mech.Name.ToString()), "DMS_WokenMechLeaveDesc".Translate(mech.Name.ToString()), LetterDefOf.PositiveEvent, mech);
+                        Find.LetterStack.ReceiveLetter("FFF.WokenMechLeave".Translate(mech.Name.ToString()), "FFF.WokenMechLeaveDesc".Translate(mech.Name.ToString()), LetterDefOf.PositiveEvent, mech);
                         mech.TryGetComp<CompDeadManSwitch>().outgoing = true;
                     }
                 }
@@ -103,7 +103,7 @@ namespace Fortified
                 GenSpawn.Spawn(mech, pos, overseer.Map);
                 this.timeToReturn = Rand.Range(3 * GenDate.TicksPerDay, 10 * GenDate.TicksPerDay);
 
-                Find.LetterStack.ReceiveLetter("DMS_MechReturn".Translate(), "DMS_MechReturnDesc".Translate(), LetterDefOf.PositiveEvent, mech);
+                Find.LetterStack.ReceiveLetter("FFF.MechReturn".Translate(), "FFF.MechReturnDesc".Translate(), LetterDefOf.PositiveEvent, mech);
                 if (Rand.Chance(comp.Props.wakingChance))
                 {
                     comp.woken_Lurk = true;
@@ -161,9 +161,9 @@ namespace Fortified
         }
         public void ExposeData()
         {
-            Scribe_Values.Look(ref this.tick, "DMS_TickOutGo");
-            Scribe_Values.Look(ref this.timeToTrigger, "DMS_TimeToTrigger");
-            Scribe_References.Look(ref this.mech, "DMS_OutGomech");
+            Scribe_Values.Look(ref this.tick, "FFF.TickOutGo");
+            Scribe_Values.Look(ref this.timeToTrigger, "FFF.TimeToTrigger");
+            Scribe_References.Look(ref this.mech, "FFF.OutGomech");
         }
         public void Tick()
         {
@@ -182,7 +182,7 @@ namespace Fortified
             {
                 Settlement s = (Settlement)Find.World.worldObjects.AllWorldObjects.FindAll(w => w.def == WorldObjectDefOf.Settlement &&
                 w.Faction != null && !w.Faction.IsPlayer && w.Faction.HostileTo(Find.FactionManager.OfPlayer)).RandomElement();
-                Find.LetterStack.ReceiveLetter("DMS_MechStory_Attack".Translate(this.mech.Label), GrammarResolver.Resolve("_story", new GrammarRequest()
+                Find.LetterStack.ReceiveLetter("FFF.MechStory_Attack".Translate(this.mech.Label), GrammarResolver.Resolve("_story", new GrammarRequest()
                 {
                     Includes =
                     {
@@ -206,7 +206,7 @@ namespace Fortified
                 CompDeadManSwitch comp = mech.GetComp<CompDeadManSwitch>();
                 activeDropPodInfo.innerContainer.TryAddRangeOrTransfer(comp.Props.lootSetMaker.root.Generate());
                 DropPodUtility.MakeDropPodAt(pos, playerMap, activeDropPodInfo);
-                Find.LetterStack.ReceiveLetter("DMS_MechStory_Loot".Translate(this.mech.Label), GrammarResolver.Resolve("_story", new GrammarRequest()
+                Find.LetterStack.ReceiveLetter("FFF.MechStory_Loot".Translate(this.mech.Label), GrammarResolver.Resolve("_story", new GrammarRequest()
                 {
                     Includes =
                     {

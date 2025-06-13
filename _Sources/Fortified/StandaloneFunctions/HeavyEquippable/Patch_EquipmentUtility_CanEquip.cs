@@ -27,7 +27,7 @@ namespace Fortified
                 }
                 else
                 {
-                    __2 = " " + "DMS_WeaponNotSupported".Translate();
+                    __2 = " " + "FFF.WeaponNotSupported".Translate();
                     __result = false;
                 }
             }
@@ -39,7 +39,7 @@ namespace Fortified
                 }
                 else
                 {
-                    __2 = " " + "DMS_BodysizeNotSupported".Translate(thing.def.GetModExtension<HeavyEquippableExtension>().EquippableDef.EquippableBaseBodySize.ToString("0.##"));
+                    __2 = " " + "FFF.BodysizeNotSupported".Translate(thing.def.GetModExtension<HeavyEquippableExtension>().EquippableDef.EquippableBaseBodySize.ToString("0.##"));
                     __result = false;
                 }
             }
