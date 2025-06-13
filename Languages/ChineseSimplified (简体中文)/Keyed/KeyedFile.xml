@@ -3,6 +3,8 @@
 
   <FFF.ScenPart_SelectPrefabDef>选择结构</FFF.ScenPart_SelectPrefabDef>
 
+  <FFF.Reason.NoMechanitorInMap>地图中需有机械师</FFF.Reason.NoMechanitorInMap>
+  <!-- EN: Must be Mechanior -->
   <!-- EN: Must be Mechanior -->
   <FFF.Reason.NotMechanitor>必须是机械师</FFF.Reason.NotMechanitor>
   <!-- EN: Inventroy fulled -->

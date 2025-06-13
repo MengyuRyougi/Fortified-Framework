@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: Weapon system not supported -->
+  <FFF.Reason.WeaponNotSupported>Weapon system not supported</FFF.Reason.WeaponNotSupported>
+  <!-- EN: Mech frame not supported -->
+  <FFF.Reason.FrameNotSupported>Mech frame not supported </FFF.Reason.FrameNotSupported>
+  
+  <!-- EN: model not supported -->
+  <FFF.Modification_RaceNotSupported>model not supported</FFF.Modification_RaceNotSupported>
+  <!-- EN: no body part to attach modification -->
+  <FFF.Modification_NoValidPart>no body part to attach modification</FFF.Modification_NoValidPart>
+  
+  <!-- EN: remove {0} -->
+  <FFF.Modification_Remove>remove {0}</FFF.Modification_Remove>
+  
+  <!-- EN: The modification durability on one of your mechs has exhausted -->
+  <FFF.Message.AddonBroken>A modification durability on one of your mechs has exhausted</FFF.Message.AddonBroken>
+  <!-- EN: Modification applied -->
+  <FFF.Message.Modification.Applied>Modification applied</FFF.Message.Modification.Applied>
+  <!-- EN: Modification removed -->
+  <FFF.Message.Modification.Removed>Modification removed</FFF.Message.Modification.Removed>
+  
+  <!-- EN: Disposable ceramic armor protects the mecha from damage as ablative armor until its durability is exhausted and needs replacement. -->
+  <FFF.PlatingTooltip>Disposable ceramic armor protects the mecha from damage as ablative armor until its durability is exhausted and needs replacement.</FFF.PlatingTooltip>
+
+</LanguageData>

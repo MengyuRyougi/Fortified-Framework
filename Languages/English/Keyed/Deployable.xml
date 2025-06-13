@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: Operator: -->
+  <FFF.CurrentOperator>Operator:</FFF.CurrentOperator>
+  <!-- EN: Requires operator -->
+  <FFF.CurrentOperator>Requires operator</FFF.CurrentOperator>
+  <!-- EN: Enter fortification -->
+  <FFF.BunkerFacility_EnterText>Enter fortification</FFF.BunkerFacility_EnterText>
+  <!-- EN: Exit fortification -->
+  <FFF.BunkerFacility_ExitText>Exit fortification</FFF.BunkerFacility_ExitText>
+  <!-- EN: Not drafted -->
+  <FFF.DisabledUndrafted>not drafted</FFF.DisabledUndrafted>
+
+  <FFF.MinifiedDeployable.SelectedAreaBlocked>area blocked</FFF.MinifiedDeployable.SelectedAreaBlocked>
+
+</LanguageData>

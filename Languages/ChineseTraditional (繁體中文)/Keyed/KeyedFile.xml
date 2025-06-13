@@ -3,6 +3,7 @@
 
   <FFF.ScenPart_SelectPrefabDef>選擇結構</FFF.ScenPart_SelectPrefabDef>
 
+  <FFF.Reason.NoMechanitorInMap>地圖中需有御機使</FFF.Reason.NoMechanitorInMap>
   <!-- EN: Must be Mechanior -->
   <FFF.Reason.NotMechanitor>必須是御機使</FFF.Reason.NotMechanitor>
   <!-- EN: Inventroy fulled -->

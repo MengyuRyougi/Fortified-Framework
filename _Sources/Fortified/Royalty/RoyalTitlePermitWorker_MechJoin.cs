@@ -34,7 +34,7 @@ namespace Fortified
             }
             else//如果地圖中沒有機械師
             {
-                yield return new FloatMenuOption("CommandCallRoyalAid_NoMechanitorAvaliable".Translate(), null);
+                yield return new FloatMenuOption("FFF.Reason.NoMechanitorInMap".Translate(), null);
                 yield break;
             }
 

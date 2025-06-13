@@ -2,13 +2,13 @@
 <LanguageData>
 <!--++++ Broadcast ++++-->
   <!-- EN: Stop broadcast -->
-  <FFF.StopWarmup>中止廣播</FFF.StopWarmup>
+  <FFF.StopWarmup>中止广播</FFF.StopWarmup>
   <!-- EN: Start broadcast -->
-  <FFF.StartWarmup>開始廣播</FFF.StartWarmup>
+  <FFF.StartWarmup>开始广播</FFF.StartWarmup>
   <!-- EN: Unable to start: not cooled yet -->
-  <FFF.NotCooldown>無法啟動:尚未冷卻</FFF.NotCooldown>
+  <FFF.NotCooldown>无法启动:尚未冷却</FFF.NotCooldown>
   <!-- EN: will complete broadcast at: -->
-  <FFF.WillReadyAt>將完成廣播於:</FFF.WillReadyAt>
+  <FFF.WillReadyAt>将完成广播于:</FFF.WillReadyAt>
   <!-- EN: will complete cooling at: -->
-  <FFF.WillCooldownAt>將完成冷卻於:</FFF.WillCooldownAt>
+  <FFF.WillCooldownAt>将完成冷却于:</FFF.WillCooldownAt>
 </LanguageData>
