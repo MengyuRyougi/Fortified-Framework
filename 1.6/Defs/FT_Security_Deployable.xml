@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+	<ThingDef ParentName="MinifiedThing" Name="FFF_MinifiedTurret">
+		<defName>FFF_MinifiedTurret</defName>
+		<label>minified turret</label>
+		<thingClass>Fortified.MinifiedThingDeployable</thingClass>
+		<statBases>
+			<Mass>20</Mass>
+		</statBases>
+		<comps>
+			<li Class="CompProperties_Usable">
+				<useJob>TriggerObject</useJob>
+				<useLabel>Pick up {0_label}</useLabel>
+			</li>
+			<li Class="CompProperties_UseEffect">
+				<compClass>Fortified.CompMinifyToInventory</compClass>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="FFF_MinifiedTurret" Name="FFF_MinifiedTurretEquippable" Abstract="true">
+		<equipmentType>Primary</equipmentType>
+		<techLevel>Industrial</techLevel>
+		<comps>
+			<li>
+				<compClass>CompEquippable</compClass>
+			</li>
+		</comps>
+		<weaponClasses>
+			<li>Ranged</li>
+		</weaponClasses>
+	</ThingDef>
+
+	<ThingDef Name="FFF_BaseDeployableBuilding" ParentName="BuildingBase" Abstract="True">
+		<minifiedDef>FFF_MinifiedTurret</minifiedDef>
+		<thingCategories>
+			<li>BuildingsSecurity</li>
+		</thingCategories>
+		<statBases>
+			<Mass>4</Mass>
+		</statBases>
+		<hasTooltip>true</hasTooltip>
+		<comps>
+			<li Class="CompProperties_Usable">
+				<useJob>TriggerObject</useJob>
+				<useLabel>Pick up {0_label}</useLabel>
+			</li>
+			<li>
+				<compClass>Fortified.CompMinifyToInventory</compClass>
+			</li>
+		</comps>
+	</ThingDef>
+</Defs>
