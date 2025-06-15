@@ -2,9 +2,10 @@
 <Defs>
   <ScenPartDef>
     <defName>FFF_PrefabGen</defName>
-    <label>generate prefab</label>
-    <category>Fixed</category>
-    <scenPartClass>Fortified.ScenPart_PrefabGeneration</scenPartClass>
+    <label>start with prefab</label>
+    <category>Misc</category>
+    <scenPartClass>Fortified.ScenPart_GeneratePrefab</scenPartClass>
+    <maxUses>1</maxUses>
     <summaryPriority>400</summaryPriority>
   </ScenPartDef>
 </Defs>	

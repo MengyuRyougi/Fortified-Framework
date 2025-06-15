@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+  <WorkGiverDef>
+    <defName>FFF_DoAutonomousBill</defName>
+    <label>make things at mech gestator</label>
+    <giverClass>Fortified.WorkGiver_DoAutonomousBill</giverClass>
+    <workType>Smithing</workType>
+    <priorityInType>210</priorityInType>
+    <fixedBillGiverDefs>
+      <!-- DEBUG -->
+      <li>AAAA</li>
+    </fixedBillGiverDefs>
+    <verb>work at</verb>
+    <gerund>working at</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+
+  <JobDef>
+    <defName>FFF_DoAutonomousBill</defName>
+    <driverClass>Fortified.JobDriver_DoAutonomousBill</driverClass>
+    <reportString>do.</reportString>
+  </JobDef>
+
   <JobDef>
     <defName>FFF_RepairSelf</defName>
     <driverClass>Fortified.JobDriver_RepairSelf</driverClass>
@@ -39,7 +63,7 @@
     <reportString>disabling mech</reportString>
     <driverClass>Fortified.JobDriver_DisableMech</driverClass>
   </JobDef>
-  
+
   <JobDef>
     <defName>FFF_HackDeactivatedMech</defName>
     <reportString>hacking mech</reportString>
