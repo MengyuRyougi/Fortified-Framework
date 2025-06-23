@@ -6,10 +6,6 @@
     <giverClass>Fortified.WorkGiver_DoAutonomousBill</giverClass>
     <workType>Smithing</workType>
     <priorityInType>210</priorityInType>
-    <fixedBillGiverDefs>
-      <!-- DEBUG -->
-      <li>AAAA</li>
-    </fixedBillGiverDefs>
     <verb>work at</verb>
     <gerund>working at</gerund>
     <requiredCapacities>
@@ -23,6 +19,14 @@
     <driverClass>Fortified.JobDriver_DoAutonomousBill</driverClass>
     <reportString>do.</reportString>
   </JobDef>
+
+  <JobDef>
+    <defName>FFF_FinishAutonomousBill</defName>
+    <driverClass>Fortified.JobDriver_FinishAutonomousBill</driverClass>
+    <reportString>do.</reportString>
+  </JobDef>
+
+  
 
   <JobDef>
     <defName>FFF_RepairSelf</defName>

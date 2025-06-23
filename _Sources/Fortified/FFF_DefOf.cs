@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Fortified;
@@ -19,4 +20,10 @@ public static class FFF_DefOf
     public static JobDef FFF_EjectDeactivatedMech;
     public static JobDef FFF_HackDeactivatedMech;
     public static JobDef FFF_ResurrectMech;
+}
+
+[StaticConstructorOnStartup]
+public static class FFF_Icons
+{
+    public static Texture2D icon_Cancel = ContentFinder<Texture2D>.Get("UI/Designators/Cancel");
 }

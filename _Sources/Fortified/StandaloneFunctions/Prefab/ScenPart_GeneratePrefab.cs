@@ -62,19 +62,27 @@ namespace Fortified
             base.PostMapGenerate(map);
             if (Find.TickManager.TicksGame < 5f && map != null)
             {
+                Log.Message("B");
                 var prefab = this.maps.RandomElement();
+
+
+                LargeBuildingSpawnParms parms = new LargeBuildingSpawnParms();
+                parms.minDistToEdge = 10;
+                parms.canSpawnOnImpassable = true;
+                parms.allowFogged = false;
+                parms.overrideSize = prefab.size;
+
                 CellRect cellRect = GenAdj.OccupiedRect(map.Center, Rot4.North, prefab.size);
-                foreach (var cell in cellRect)
+                foreach (var c in cellRect)
                 {
-                    map.fogGrid.Unfog(cell);
-                    foreach (var item in cell.GetThingList(map).ListFullCopy())
+                    //map.fogGrid.Unfog(cell);
+                    foreach (var item in c.GetThingList(map).ListFullCopy())
                     {
-                        if (!(item is Skyfaller) && item.def.destroyable && item as Pawn == null)
+                        if (item is not Skyfaller && item.def.destroyable && (item.Faction != Faction.OfPlayer && item as Pawn == null))
                         {
                             item.Destroy();
                         }
                     }
-                    ;
                 }
                 PrefabUtility.SpawnPrefab(prefab, map, map.Center, Rot4.North);
             }

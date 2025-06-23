@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <FFF.CancelActiveBill>取消運行</FFF.CancelActiveBill>
+  <FFF.CancelActiveBillDesc>取消當前運行的工序，這將返還資源並停止消耗電力。</FFF.CancelActiveBillDesc>
+
+  <FFF.Autofacturer.WorkerCanceled>當前執行的工作清單已取消，但需要停止運行。</FFF.Autofacturer.WorkerCanceled>
+
+  <FFF.Autofacturer.WorkerDone>{0}已完成</FFF.Autofacturer.WorkerDone>
+
+  <FFF.Autofacturer.WorkerFinished>{0}的所有工序已經完成</FFF.Autofacturer.WorkerFinished>
+  <FFF.Autofacturer.Information>當前階段剩餘工作時間：{0}\n剩餘階段：{1}</FFF.Autofacturer.Information>
+  <FFF.Autofacturer.Prepared>已準備，需要殖民者進行工作</FFF.Autofacturer.Prepared>
+
+</LanguageData>

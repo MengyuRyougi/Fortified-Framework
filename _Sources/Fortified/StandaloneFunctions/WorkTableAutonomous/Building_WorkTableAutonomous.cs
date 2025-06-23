@@ -3,30 +3,297 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Verse.Sound;
 using Verse;
+using UnityEngine;
+using Verse.Noise;
 
 namespace Fortified
 {
-    public class Building_WorkTableAutonomous : Building_MechGestator
+    public class Building_WorkTableAutonomous : Building_WorkTable, IThingHolder, INotifyHauledTo
     {
-        public override void Notify_FormingCompleted()
+
+        public CompPowerTrader Power;
+
+        public ThingOwner innerContainer;
+
+        public Bill_Production activeBill;
+        public float totalWorkAmount;
+        public float curWorkAmount;
+        public bool prepared;
+
+        protected Effecter effecter;
+
+        public bool CanRun => Power == null || Power.PowerOn;
+
+        public ModExtension_AutoWorkTable ModExtension => def.GetModExtension<ModExtension_AutoWorkTable>();
+
+        public Building_WorkTableAutonomous()
         {
-            if (this.activeBill.CreateProducts() is Pawn p)
-            {
-                Messages.Message("GestationComplete".Translate() + ": " + p.kindDef.LabelCap, this, MessageTypeDefOf.PositiveEvent, true);
-                this.innerContainer.ClearAndDestroyContents(DestroyMode.Vanish);
-                this.innerContainer.TryAdd(p, true);
-            }
-            SoundDefOf.MechGestatorBill_Completed.PlayOneShot(this);
+            innerContainer = new ThingOwner<Thing>(this);
         }
-        public override void PostPostMake()
+
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            if (!this.def.randomStyle.NullOrEmpty<ThingStyleChance>() && Rand.Chance(this.def.randomStyleChance))
+            base.SpawnSetup(map, respawningAfterLoad);
+            this.TryGetComp<CompPowerTrader>(out Power);
+
+            effecter ??= ModExtension?.GetEffecterDef_Phase(this.Rotation)?.SpawnMaintained(this, Map);
+            effecter?.Cleanup();
+        }
+
+        public void StartBill(Bill_Production bill, Thing thing, Pawn handler)
+        {
+            activeBill = bill;
+            totalWorkAmount = bill.GetWorkAmount(thing);
+            ResetCurWorkAmount(handler);
+            prepared = true;
+        }
+
+        public void Finish(Pawn handler)
+        {
+            if (activeBill == null) return;
+            if (totalWorkAmount <= 0f)
             {
-                this.StyleDef = this.def.randomStyle.RandomElementByWeight((ThingStyleChance x) => x.Chance).StyleDef;
+                List<Thing> list = new();
+                innerContainer.CopyToList(list);
+                foreach (Thing item in GenRecipe.MakeRecipeProducts(activeBill.recipe, handler, list, CalculateDominantIngredient(list), this))
+                {
+                    GenPlace.TryPlaceThing(item, this.InteractionCell, base.Map, ThingPlaceMode.Near);
+                }
+                if (activeBill.repeatMode == BillRepeatModeDefOf.RepeatCount)
+                {
+                    activeBill.repeatCount--;
+                }
+                if (activeBill.repeatCount == 0)
+                {
+                    Messages.Message("FFF.Autofacturer.WorkerDone".Translate(activeBill.Label), this, MessageTypeDefOf.TaskCompletion);
+                }
+                activeBill = null;
+                totalWorkAmount = 0f;
+                innerContainer.Clear();
+
             }
+            else
+            {
+                ResetCurWorkAmount(handler);
+                prepared = true;
+            }
+        }
+        public override void Notify_BillDeleted(Bill bill)
+        {
+            Messages.Message("FFF.Autofacturer.WorkerCanceled".Translate(Label), this, MessageTypeDefOf.RejectInput);
+            base.Notify_BillDeleted(bill);
+        }
+
+        public int GetWorkTime()//互動的工作時間
+        {
+            ModExtension_AutoWorkTable modExtension = ModExtension;
+            if (modExtension == null) return 300;
+            return modExtension.workTime;
+            
+        }
+        public float GetWorkAmountStage()
+        {
+            ModExtension_AutoWorkTable modExtension = ModExtension;
+            if (modExtension == null) return 60000;
+            return (float)modExtension.workAmountPerStage;
+        }
+
+        private void ResetCurWorkAmount(Pawn handler)
+        {
+            float workAmount = GetWorkAmountStage();
+            if (totalWorkAmount > workAmount)
+            {
+                curWorkAmount = workAmount;
+                totalWorkAmount -= workAmount;
+            }
+            else
+            {
+                curWorkAmount = totalWorkAmount;
+                totalWorkAmount = 0f;
+            }
+
+            Pawn_SkillTracker skills = handler.skills;
+            if (skills != null && ModExtension != null)
+            {
+                foreach (KeyValuePair<SkillDef, int> skill2 in ModExtension.skills)
+                {
+                    SkillRecord skill = skills.GetSkill(skill2.Key);
+                    if (skill != null && !skill.TotallyDisabled)
+                    {
+                        curWorkAmount -= skill.Level * skill2.Value;
+                    }
+                }
+            }
+            if (curWorkAmount <= 0f)
+            {
+                curWorkAmount = 0f;
+                prepared = false;
+            }
+        }
+
+        public override IEnumerable<Gizmo> GetGizmos()
+        {
+            foreach (Gizmo gizmo in base.GetGizmos())
+            {
+                yield return gizmo;
+            }
+            if (curWorkAmount > 0)
+            {
+                yield return new Command_Action
+                {
+                    defaultLabel = "FFF.CancelActiveBill".Translate(),
+                    defaultDesc = "FFF.CancelActiveBillDesc".Translate(),
+                    icon = FFF_Icons.icon_Cancel,
+                    action = delegate
+                    {
+                        Cancel();
+                    }
+                };
+            }
+            if (DebugSettings.godMode)
+            {
+                yield return new Command_Action
+                {
+                    defaultLabel = "Test Done Trigger",
+                    icon = FFF_Icons.icon_Cancel,
+                    action = delegate
+                    {
+                        var v = this.ModExtension.GetEffecterDef_DoneTrigger(this.Rotation)?.SpawnMaintained(this, this);
+                        v.Trigger(this, this);
+                    }
+                };
+            }
+        }
+
+        protected override void TickInterval(int delta)
+        {
+            if (prepared && CanRun)
+            {
+                curWorkAmount -= delta;
+                if (curWorkAmount <= 0f)
+                {
+                    curWorkAmount = 0f;
+                    prepared = false;
+                    if (totalWorkAmount <= 0f)
+                    {
+                        ModExtension?.GetEffecterDef_DoneTrigger(this.Rotation)?.SpawnAttached(this, this.Map).Trigger(this, this);
+                        Messages.Message("FFF.Autofacturer.WorkerFinished".Translate(Label), this, MessageTypeDefOf.PositiveEvent);
+                    }
+                }
+                else if (activeBill != null)
+                {
+                    UsedThisTick();
+                }
+            }
+        }
+        protected override void Tick()
+        {
+            if (this.IsHashIntervalTick(250))
+            {
+                if (activeBill != null && prepared)
+                {
+                    Power.PowerOutput = 0f - Power.Props.PowerConsumption;
+                }
+                else
+                {
+                    Power.PowerOutput = 0f - Power.Props.idlePowerDraw;
+                }
+            }
+        }
+        public override void TickRare()
+        {
+            if (activeBill != null && curWorkAmount > 0f)
+            {
+                Power.PowerOutput = -Power.Props.PowerConsumption;
+            }
+            else
+            {
+                Power.PowerOutput = -Power.Props.idlePowerDraw;
+            }
+        }
+        public override void UsedThisTick()
+        {
+            base.UsedThisTick();
+
+            if (CanRun && prepared && ModExtension != null)
+            {
+                effecter?.EffectTick(this, this);
+                if (ModExtension.activeMote != null && (!ModExtension.northOnly || this.Rotation == Rot4.North))
+                {
+                    MoteMaker.MakeAttachedOverlay(this, ModExtension.activeMote, Vector3.zero);
+                }
+            }
+        }
+        public void Cancel()
+        {
+            prepared = false;
+            totalWorkAmount = 0f;
+            curWorkAmount = 0f;
+            activeBill = null;
+            innerContainer.TryDropAll(base.Position, base.Map, ThingPlaceMode.Near);
+            Power.PowerOutput = -Power.Props.idlePowerDraw;
+        }
+
+        private Thing CalculateDominantIngredient(List<Thing> ingredients)
+        {
+            if (ingredients.NullOrEmpty())
+            {
+                return null;
+            }
+            RecipeDef recipe = activeBill.recipe;
+            if (recipe.productHasIngredientStuff)
+            {
+                return ingredients[0];
+            }
+            if (recipe.products.Any((ThingDefCountClass x) => x.thingDef.MadeFromStuff) || (recipe.unfinishedThingDef != null && recipe.unfinishedThingDef.MadeFromStuff))
+            {
+                return ingredients.Where((Thing x) => x.def.IsStuff).RandomElementByWeight((Thing x) => x.stackCount);
+            }
+            return ingredients.RandomElementByWeight((Thing x) => x.stackCount);
+        }
+
+        public override string GetInspectString()
+        {
+            StringBuilder stringBuilder = new StringBuilder(base.GetInspectString());
+            if (activeBill != null)
+            {
+                stringBuilder.AppendInNewLine("FFF.Autofacturer.Information".Translate(((int)curWorkAmount).ToStringTicksToPeriodVerbose(true,true), Mathf.CeilToInt(totalWorkAmount / GetAmountPerStage())));
+                if (!prepared)
+                {
+                    stringBuilder.AppendInNewLine("FFF.Autofacturer.Prepared".Translate());
+                }
+            }
+            return stringBuilder.ToString().Trim();
+        }
+        private float GetAmountPerStage()
+        {
+            if (ModExtension != null) return (float)ModExtension.workAmountPerStage;
+            return 10000f; // Default value if ModExtension is not set
+        }
+
+        public void GetChildHolders(List<IThingHolder> outChildren)
+        {
+            ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
+        }
+
+        public ThingOwner GetDirectlyHeldThings()
+        {
+            return innerContainer;
+        }
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref prepared, "prepared", defaultValue: false);
+            Scribe_Values.Look(ref totalWorkAmount, "totalWorkAmount", 0f);
+            Scribe_Values.Look(ref curWorkAmount, "curWorkAmount", 0f);
+            Scribe_References.Look(ref activeBill, "activeBill");
+            Scribe_Deep.Look(ref innerContainer, "innerContainer", this);
+        }
+
+        public void Notify_HauledTo(Pawn hauler, Thing thing, int count)
+        {
         }
     }
 }

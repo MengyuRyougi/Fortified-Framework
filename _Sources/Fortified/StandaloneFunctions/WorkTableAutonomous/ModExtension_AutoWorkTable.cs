@@ -10,7 +10,40 @@ namespace Fortified
 {
     public class ModExtension_AutoWorkTable : DefModExtension
     {
-        //每级降低工作后周期时间，降低时间 = 技能级别 * 对应的值
-        public Dictionary<SkillDef,int> skills = new Dictionary<SkillDef,int>();
+        public int workTime = 300;
+        public int workAmountPerStage = 60000;
+
+        public Dictionary<SkillDef, int> skills = new Dictionary<SkillDef, int>();
+
+        public EffecterDef phaseEffecter_east = null;
+        public EffecterDef phaseEffecter_west = null;
+        public EffecterDef phaseEffecter_south = null;
+        public EffecterDef phaseEffecter_north = null;
+
+        public bool northOnly = false;
+        public ThingDef activeMote = null;
+
+        public EffecterDef doneEffecter_east = null;
+        public EffecterDef doneEffecter_west = null;
+        public EffecterDef doneEffecter_south = null;
+        public EffecterDef doneEffecter_north = null;
+
+
+        public EffecterDef GetEffecterDef_Phase(Rot4 rot)
+        {
+            if (rot == Rot4.East) return phaseEffecter_east;
+            if (rot == Rot4.West) return phaseEffecter_west;
+            if (rot == Rot4.South) return phaseEffecter_south;
+            if (rot == Rot4.North) return phaseEffecter_north;
+            return null;
+        }
+        public EffecterDef GetEffecterDef_DoneTrigger(Rot4 rot)
+        {
+            if (rot == Rot4.East) return doneEffecter_east;
+            if (rot == Rot4.West) return doneEffecter_west;
+            if (rot == Rot4.South) return doneEffecter_south;
+            if (rot == Rot4.North) return doneEffecter_north;
+            return null;
+        }
     }
 }
