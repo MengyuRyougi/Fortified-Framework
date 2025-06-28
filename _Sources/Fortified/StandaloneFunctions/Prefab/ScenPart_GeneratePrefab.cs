@@ -57,35 +57,46 @@ namespace Fortified
                 removeAction();
             }
         }
+
         public override void PostMapGenerate(Map map)
         {
             base.PostMapGenerate(map);
-            if (Find.TickManager.TicksGame < 5f && map != null)
+            if (map == null || !map.IsStartingMap) return;
+
+            var prefab = this.maps.RandomElement();
+
+            CellRect cellRect = GenAdj.OccupiedRect(map.Center, Rot4.Random, prefab.size);
+            foreach (var c in cellRect)
             {
-                Log.Message("B");
-                var prefab = this.maps.RandomElement();
-
-
-                LargeBuildingSpawnParms parms = new LargeBuildingSpawnParms();
-                parms.minDistToEdge = 10;
-                parms.canSpawnOnImpassable = true;
-                parms.allowFogged = false;
-                parms.overrideSize = prefab.size;
-
-                CellRect cellRect = GenAdj.OccupiedRect(map.Center, Rot4.North, prefab.size);
-                foreach (var c in cellRect)
+                foreach (var item in c.GetThingList(map).ListFullCopy())
                 {
-                    //map.fogGrid.Unfog(cell);
-                    foreach (var item in c.GetThingList(map).ListFullCopy())
+                    if (ShouldDestroy(item, (float)(prefab.size.x / 2.5f)))
                     {
-                        if (item is not Skyfaller && item.def.destroyable && (item.Faction != Faction.OfPlayer && item as Pawn == null))
-                        {
-                            item.Destroy();
-                        }
+                        item.Destroy();
+                        if (map.roofGrid.Roofed(item.Position)) map.roofGrid.SetRoof(item.Position, null);
                     }
                 }
-                PrefabUtility.SpawnPrefab(prefab, map, map.Center, Rot4.North);
             }
+            PrefabUtility.SpawnPrefab(prefab, map, map.Center, Rot4.Random, Faction.OfPlayer,onSpawned: OnSpawned);
+            map.fogGrid.Refog(map.BoundsRect());
+        }
+        private void OnSpawned(Thing thing)
+        {
+            var t = thing.Position.GetEdificeSafe(thing.Map);
+            if (t != null && t != thing)
+            {
+                t.Destroy(DestroyMode.Vanish);
+            }
+        }
+        private bool ShouldDestroy(Thing item, float cleanRange = 0)
+        {
+            if (!item.def.destroyable) return false;
+            if (item is Skyfaller) return false;
+            if (item is Building && (item.Position - item.Map.Center).Magnitude < cleanRange) return true;
+            if (item is Pawn p && p.Faction != Faction.OfPlayer) return true;
+            if (item.HasThingCategory(ThingCategoryDefOf.PlantMatter)) return false;
+            if (item.HasThingCategory(ThingCategoryDefOf.Items)) return false;
+            return false;
         }
 
         public override void ExposeData()
@@ -94,7 +105,21 @@ namespace Fortified
             Scribe_Collections.Look(ref this.maps, "maps", LookMode.Def);
         }
 
-
         public List<PrefabDef> maps = new List<PrefabDef>();
+    }
+    public class GenStep_Prefab : GenStep_Scatterer
+    {
+        public override int SeedPart => 114514;
+        public PrefabDef PrefabDef = null;
+
+        public void SetPrefab(PrefabDef prefabDef)
+        {
+            this.PrefabDef = prefabDef;
+        }
+
+        protected override void ScatterAt(IntVec3 loc, Map map, GenStepParams parms, int count = 1)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

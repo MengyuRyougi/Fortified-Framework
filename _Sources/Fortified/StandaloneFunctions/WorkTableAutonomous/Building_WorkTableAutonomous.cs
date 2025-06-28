@@ -22,11 +22,15 @@ namespace Fortified
         public float curWorkAmount;
         public bool prepared;
 
-        protected Effecter effecter;
+        protected Effecter Effecter => effecter ??= modExtension?.GetEffecterDef_Phase(this.Rotation)?.SpawnMaintained(this, Map);
+        private Effecter effecter;
+        private int maintainTick = 0;
+
 
         public bool CanRun => Power == null || Power.PowerOn;
 
-        public ModExtension_AutoWorkTable ModExtension => def.GetModExtension<ModExtension_AutoWorkTable>();
+        public ModExtension_AutoWorkTable modExtension = null;
+        
 
         public Building_WorkTableAutonomous()
         {
@@ -37,9 +41,8 @@ namespace Fortified
         {
             base.SpawnSetup(map, respawningAfterLoad);
             this.TryGetComp<CompPowerTrader>(out Power);
-
-            effecter ??= ModExtension?.GetEffecterDef_Phase(this.Rotation)?.SpawnMaintained(this, Map);
-            effecter?.Cleanup();
+            modExtension = def.GetModExtension<ModExtension_AutoWorkTable>();
+            maintainTick = Rand.Range(0, 120);
         }
 
         public void StartBill(Bill_Production bill, Thing thing, Pawn handler)
@@ -88,14 +91,12 @@ namespace Fortified
 
         public int GetWorkTime()//互動的工作時間
         {
-            ModExtension_AutoWorkTable modExtension = ModExtension;
             if (modExtension == null) return 300;
             return modExtension.workTime;
             
         }
         public float GetWorkAmountStage()
         {
-            ModExtension_AutoWorkTable modExtension = ModExtension;
             if (modExtension == null) return 60000;
             return (float)modExtension.workAmountPerStage;
         }
@@ -115,9 +116,9 @@ namespace Fortified
             }
 
             Pawn_SkillTracker skills = handler.skills;
-            if (skills != null && ModExtension != null)
+            if (skills != null && modExtension != null)
             {
-                foreach (KeyValuePair<SkillDef, int> skill2 in ModExtension.skills)
+                foreach (KeyValuePair<SkillDef, int> skill2 in modExtension.skills)
                 {
                     SkillRecord skill = skills.GetSkill(skill2.Key);
                     if (skill != null && !skill.TotallyDisabled)
@@ -160,8 +161,17 @@ namespace Fortified
                     icon = FFF_Icons.icon_Cancel,
                     action = delegate
                     {
-                        var v = this.ModExtension.GetEffecterDef_DoneTrigger(this.Rotation)?.SpawnMaintained(this, this);
+                        var v = this.modExtension.GetEffecterDef_DoneTrigger(this.Rotation)?.SpawnMaintained(this, this);
                         v.Trigger(this, this);
+                    }
+                };
+                yield return new Command_Action
+                {
+                    defaultLabel = "Test Phase Trigger",
+                    icon = FFF_Icons.icon_Cancel,
+                    action = delegate
+                    {
+                        PlayEffecter();
                     }
                 };
             }
@@ -169,25 +179,20 @@ namespace Fortified
 
         protected override void TickInterval(int delta)
         {
-            if (prepared && CanRun)
+            if (!prepared || !CanRun) return;
+            curWorkAmount -= delta;
+            if (curWorkAmount <= 0f)
             {
-                curWorkAmount -= delta;
-                if (curWorkAmount <= 0f)
+                curWorkAmount = 0f;
+                prepared = false;
+                if (totalWorkAmount <= 0f)
                 {
-                    curWorkAmount = 0f;
-                    prepared = false;
-                    if (totalWorkAmount <= 0f)
-                    {
-                        ModExtension?.GetEffecterDef_DoneTrigger(this.Rotation)?.SpawnAttached(this, this.Map).Trigger(this, this);
-                        Messages.Message("FFF.Autofacturer.WorkerFinished".Translate(Label), this, MessageTypeDefOf.PositiveEvent);
-                    }
-                }
-                else if (activeBill != null)
-                {
-                    UsedThisTick();
+                    modExtension?.GetEffecterDef_DoneTrigger(this.Rotation)?.SpawnAttached(this, this.Map).Trigger(this, this);
+                    //Messages.Message("FFF.Autofacturer.WorkerFinished".Translate(Label), this, MessageTypeDefOf.PositiveEvent);
                 }
             }
         }
+        private bool effectActive = false;
         protected override void Tick()
         {
             if (this.IsHashIntervalTick(250))
@@ -199,6 +204,19 @@ namespace Fortified
                 else
                 {
                     Power.PowerOutput = 0f - Power.Props.idlePowerDraw;
+                }
+            }
+            if (this.IsHashIntervalTick(3))
+            {
+                if (activeBill != null && prepared && CanRun)
+                {
+                    if (maintainTick > 0) maintainTick--;
+                    else
+                    {
+                        effectActive = !effectActive;
+                        maintainTick = Effecter?.def.maintainTicks ?? 0;
+                    }
+                    if (effectActive) PlayEffecter();
                 }
             }
         }
@@ -213,17 +231,14 @@ namespace Fortified
                 Power.PowerOutput = -Power.Props.idlePowerDraw;
             }
         }
-        public override void UsedThisTick()
+        protected void PlayEffecter()
         {
-            base.UsedThisTick();
+            if (modExtension == null) return;
 
-            if (CanRun && prepared && ModExtension != null)
+            Effecter?.EffectTick(this, this);
+            if (modExtension.activeMote != null && (!modExtension.northOnly || this.Rotation == Rot4.North))
             {
-                effecter?.EffectTick(this, this);
-                if (ModExtension.activeMote != null && (!ModExtension.northOnly || this.Rotation == Rot4.North))
-                {
-                    MoteMaker.MakeAttachedOverlay(this, ModExtension.activeMote, Vector3.zero);
-                }
+                MoteMaker.MakeAttachedOverlay(this, modExtension.activeMote, Vector3.zero);
             }
         }
         public void Cancel()
@@ -259,25 +274,30 @@ namespace Fortified
             StringBuilder stringBuilder = new StringBuilder(base.GetInspectString());
             if (activeBill != null)
             {
-                stringBuilder.AppendInNewLine("FFF.Autofacturer.Information".Translate(((int)curWorkAmount).ToStringTicksToPeriodVerbose(true,true), Mathf.CeilToInt(totalWorkAmount / GetAmountPerStage())));
-                if (!prepared)
+                if (prepared)
                 {
-                    stringBuilder.AppendInNewLine("FFF.Autofacturer.Prepared".Translate());
+                    stringBuilder.AppendInNewLine("FFF.Autofacturer.Information".Translate(((int)curWorkAmount).ToStringTicksToPeriodVerbose(true, true), Mathf.CeilToInt(totalWorkAmount / GetAmountPerStage())));
+                }
+                else
+                {
+                    if (totalWorkAmount > 0)
+                    {
+                        stringBuilder.AppendInNewLine("FFF.Autofacturer.WorkerFinished".Translate(Label));
+                    }
+                    else stringBuilder.AppendInNewLine("FFF.Autofacturer.Prepared".Translate());
                 }
             }
             return stringBuilder.ToString().Trim();
         }
         private float GetAmountPerStage()
         {
-            if (ModExtension != null) return (float)ModExtension.workAmountPerStage;
+            if (modExtension != null) return (float)modExtension.workAmountPerStage;
             return 10000f; // Default value if ModExtension is not set
         }
-
         public void GetChildHolders(List<IThingHolder> outChildren)
         {
             ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
         }
-
         public ThingOwner GetDirectlyHeldThings()
         {
             return innerContainer;

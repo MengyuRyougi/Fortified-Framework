@@ -8,8 +8,8 @@
 
   <FFF.Autofacturer.WorkerDone>{0}已完成</FFF.Autofacturer.WorkerDone>
 
-  <FFF.Autofacturer.WorkerFinished>{0}的所有工序已經完成</FFF.Autofacturer.WorkerFinished>
+  <FFF.Autofacturer.WorkerFinished>所有工序已完成，需要殖民者進行工作</FFF.Autofacturer.WorkerFinished>
   <FFF.Autofacturer.Information>當前階段剩餘工作時間：{0}\n剩餘階段：{1}</FFF.Autofacturer.Information>
-  <FFF.Autofacturer.Prepared>已準備，需要殖民者進行工作</FFF.Autofacturer.Prepared>
+  <FFF.Autofacturer.Prepared>已完成，需要殖民者進行工作</FFF.Autofacturer.Prepared>
 
 </LanguageData>
