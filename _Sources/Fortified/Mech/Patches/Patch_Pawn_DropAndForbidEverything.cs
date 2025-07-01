@@ -7,7 +7,7 @@ namespace Fortified
     //用來防止敵對機兵掉落自帶武器
     [StaticConstructorOnStartup]
     [HarmonyPatch(typeof(Pawn), nameof(Pawn.DropAndForbidEverything))]
-    internal static class Patch_Pawn
+    internal static class Patch_Pawn_DropAndForbidEverything
     {
         [HarmonyPrefix]
         static bool PreFix(Pawn __instance)

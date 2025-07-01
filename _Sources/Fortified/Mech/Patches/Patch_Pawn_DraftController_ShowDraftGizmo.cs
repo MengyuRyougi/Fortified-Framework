@@ -16,12 +16,6 @@ namespace Fortified
             {
                 __result = true;
             }
-
-            //甚至不確定有沒有效。
-            else if (__instance.pawn.HostFaction == Faction.OfPlayer)
-            {
-                __result = true;
-            }
         }
     }
 }

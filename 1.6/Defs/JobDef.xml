@@ -49,6 +49,13 @@
   </JobDef>
 
   <JobDef>
+    <defName>FFF_ReturnToDronePlatform</defName>
+    <driverClass>Fortified.JobDriver_ReturnToPlatform</driverClass>
+    <reportString>returning to platform</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <JobDef>
     <defName>FFF_Modification</defName>
     <driverClass>Fortified.JobDriver_ApplyModification</driverClass>
     <reportString>modifing TargetA.</reportString>

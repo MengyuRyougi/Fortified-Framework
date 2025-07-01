@@ -16,6 +16,8 @@ namespace Fortified
             base.SpawnSetup(map, respawningAfterLoad);
             MechWeapon = def.GetModExtension<MechWeaponExtension>();
             interactions ??= new(this);
+            inventory ??= new(this);
+            equipment ??= new(this);
             skills ??= new(this);
             skills.skills.ForEach(s => s.Level = def.race.mechFixedSkillLevel == 0 ? 5 : def.race.mechFixedSkillLevel);
         }
@@ -45,13 +47,12 @@ namespace Fortified
         public void Equip(ThingWithComps equipment)
         {
             equipment.SetForbidden(false);
-            jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Equip, equipment), JobTag.Misc);
+            jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Equip, equipment), JobTag.DraftedOrder);
         }
         public void Wear(ThingWithComps apparel)
         {
             apparel.SetForbidden(false);
-            this.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Wear, apparel), JobTag.Misc);
-            this.equipment.AddEquipment(apparel);
+            this.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Wear, apparel), JobTag.DraftedOrder);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Fortified
                 {
                     __result = true;
                 }
+                if (pawn.TryGetComp<CompDrone>(out var d) && d.CanDraft) __result = true;
             }
         }
     }

@@ -13,7 +13,7 @@ namespace Fortified
     {
         public static void Postfix(PawnRenderTree __instance)
         {
-            if (__instance.pawn == null || __instance.pawn is not HumanlikeMech) return;
+            if (__instance.pawn is not HumanlikeMech) return;
 
             FieldInfo dynField = AccessTools.Field(__instance.GetType(), "dynamicNodeTypeInstances");
             List<DynamicPawnRenderNodeSetup> dynamicNodeTypeInstance = dynField.GetValue(__instance) as List<DynamicPawnRenderNodeSetup>;
@@ -36,7 +36,7 @@ namespace Fortified
     {
         private static void Postfix(ref bool __result, PawnRenderNodeProperties props, Pawn ___pawn)
         {
-            if (__result == true) return;
+            if (__result) return;
             if (___pawn is HumanlikeMech && (props.workerClass== typeof(PawnRenderNodeWorker_Apparel_Body) || props.workerClass ==  typeof(PawnRenderNodeWorker_Apparel_Head)))
             {
                 __result = true;

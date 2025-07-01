@@ -8,7 +8,7 @@ namespace Fortified
     {
         public static bool Prefix(PawnDrawParms parms, ref bool __result)
         {
-            if (__result != true && parms.pawn is HumanlikeMech)
+            if (parms.pawn is HumanlikeMech && parms.pawn.apparel.AnyApparel)
             {
                 __result = true;
                 return false;

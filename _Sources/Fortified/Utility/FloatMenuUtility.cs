@@ -4,6 +4,7 @@ using Verse;
 using Verse.AI;
 using RimWorld;
 using System;
+using System.Security.Principal;
 
 namespace Fortified
 {
@@ -47,17 +48,23 @@ namespace Fortified
                 {
                     yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ": " + "FFF.Reason.NoPayloadCapacity".Translate(), null);
                 }
-                //else if (tmp.TryGetComp<CompEquippable>(out var comp) && !CheckUtility.IsMechUseable(pawn, tmp))
-                //{
-                //    yield return new FloatMenuOption("CannotEquip".Translate(tmp) + ": " + "FFF.Reason.WeaponNotSupported".Translate(), null);
-                //}
                 else
                 {
                     yield return new FloatMenuOption("FFF.TakeToInventory".Translate(tmp), () =>
                     {
                         tmp.SetForbidden(false);
-                        Job job = JobMaker.MakeJob(JobDefOf.TakeInventory, tmp);
-                        job.count = MassUtility.CountToPickUpUntilOverEncumbered(pawn, tmp);
+                        Job job = null;
+                        if (tmp.stackCount <= 1)
+                        {
+                            job = JobMaker.MakeJob(JobDefOf.TakeInventory, tmp);
+                            job.count = 1;
+                        }
+                        else
+                        {
+                            job = JobMaker.MakeJob(JobDefOf.TakeCountToInventory, tmp);
+                            var count = MassUtility.CountToPickUpUntilOverEncumbered(pawn, tmp);
+                            job.count = tmp.stackCount > count ? count : tmp.stackCount;
+                        }
                         pawn.jobs.TryTakeOrderedJob(job, JobTag.DraftedOrder);
                     });
                 }
@@ -76,6 +83,7 @@ namespace Fortified
                     yield return new FloatMenuOption("OrderManThing".Translate(turret.LabelShort, turret), delegate
                     {
                         Job job = JobMaker.MakeJob(JobDefOf.ManTurret, turret);
+                        pawn.jobs.EndCurrentJob(JobCondition.InterruptForced, true, true);
                         pawn.jobs.TryTakeOrderedJob(job, JobTag.DraftedOrder);
                     });
                 }

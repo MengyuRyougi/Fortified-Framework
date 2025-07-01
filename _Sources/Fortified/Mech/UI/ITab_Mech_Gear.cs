@@ -389,12 +389,6 @@ namespace Fortified
             }
         }
 
-        [Obsolete("Will be removed in a future update, use FoodUtility.IngestFromInventoryNow()")]
-        private void InterfaceIngest(Thing t)
-        {
-            FoodUtility.IngestFromInventoryNow(SelPawnForGear, t);
-        }
-
         private bool ShouldShowInventory(Pawn p)
         {
             if (!p.RaceProps.Humanlike)

@@ -23,7 +23,7 @@ namespace Fortified
         [HarmonyPatch(nameof(SkillRecord.Interval))]
         public static bool Interval(Pawn ___pawn)
         {
-            return ___pawn != null && ___pawn.GetComp<CompDeadManSwitch>() == null;
+            return ___pawn.story != null;
         }
     }
 }

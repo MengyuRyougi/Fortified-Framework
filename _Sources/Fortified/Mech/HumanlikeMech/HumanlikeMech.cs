@@ -101,13 +101,13 @@ namespace Fortified
         public void Equip(ThingWithComps equipment)
         {
             equipment.SetForbidden(false);
-            this.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Equip, equipment), JobTag.Misc);
+            this.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Equip, equipment), JobTag.DraftedOrder);
         }
 
         public void Wear(ThingWithComps apparel)
         {
             apparel.SetForbidden(false);
-            this.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Wear, apparel), JobTag.Misc);
+            this.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Wear, apparel), JobTag.DraftedOrder);
         }
     }
 }

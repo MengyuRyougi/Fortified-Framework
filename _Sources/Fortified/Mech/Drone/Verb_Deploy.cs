@@ -1,0 +1,41 @@
+﻿using RimWorld;
+using Verse;
+using Verse.AI;
+using static HarmonyLib.Code;
+
+namespace Fortified
+{
+    public class Verb_Deploy : Verb_CastBase
+    {
+        protected override bool TryCastShot()
+        {
+            if (currentTarget.HasThing && currentTarget.Thing.Map != caster.Map)
+            {
+                return false;
+            }
+            Thing thing = null;
+            if (verbProps.spawnDef.race != null)
+            {
+                thing = PawnGenerator.GeneratePawn(DefDatabase<PawnKindDef>.GetNamed(verbProps.spawnDef.defName), Caster.Faction);
+            }
+            if (thing == null)
+            {
+                Log.Error($"Failed to spawn thing {verbProps.spawnDef.defName} at {currentTarget.Cell} for verb {verbProps.label}.");
+                return false;
+            }
+            GenSpawn.Spawn(thing, currentTarget.Cell, caster.Map);
+            if (thing.TryGetComp<CompDrone>(out var d))
+            {
+                d.SetPlatform(this.VerbOwner_ChargedCompSource.parent);
+            }
+            if (verbProps.colonyWideTaleDef != null)
+            {
+                Pawn pawn = caster.Map.mapPawns.FreeColonistsSpawned.RandomElementWithFallback();
+                TaleRecorder.RecordTale(verbProps.colonyWideTaleDef, caster, pawn);
+            }
+
+            base.ReloadableCompSource?.UsedOnce();
+            return true;
+        }
+    }
+}

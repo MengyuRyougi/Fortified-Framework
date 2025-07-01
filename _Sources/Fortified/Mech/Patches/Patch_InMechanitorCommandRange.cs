@@ -22,6 +22,11 @@ namespace Fortified
                 __result = true;
                 return;
             }
+            if (mech.TryGetComp<CompDrone>() != null)
+            {
+                __result = true;
+                return;
+            }
 
             List<Pawn> overseenPawns = MechanitorUtility.GetOverseer(mech)?.mechanitor?.OverseenPawns;
             if (overseenPawns.NullOrEmpty()) return;
