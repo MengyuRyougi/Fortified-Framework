@@ -4,15 +4,13 @@ using Verse;
 
 namespace Fortified;
 
-[RimWorld.DefOf, StaticConstructorOnStartup]
+[RimWorld.DefOf]
 public static class FFF_DefOf
 {
     static FFF_DefOf()
     {
         DefOfHelper.EnsureInitializedInCtor(typeof(FFF_DefOf));
     }
-    public static DamageDef Stun;
-
     public static JobDef FFF_RepairSelf;
     public static JobDef FFF_MechLeave;
     public static JobDef FFF_EnterBunkerFacility;

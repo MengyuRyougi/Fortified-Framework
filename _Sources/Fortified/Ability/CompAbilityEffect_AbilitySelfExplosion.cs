@@ -14,7 +14,7 @@ namespace Fortified
     public class CompProperties_AbilitySelfExplosion : CompProperties_AbilityEffect
     {
         public float range;
-        public DamageDef explosionDamage = FFF_DefOf.Stun;
+        public DamageDef ExplosionDamage => DefDatabase<DamageDef>.GetNamed("Stun");
         public int damageAmount = 5;
         public float armorPenetration = 0.2f;
         public SoundDef explosionSound;
@@ -33,7 +33,7 @@ namespace Fortified
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             IntVec3 position = parent.pawn.Position;
-            GenExplosion.DoExplosion(center: position, map: parent.pawn.MapHeld, radius: Props.range, damType: Props.explosionDamage, instigator: Pawn, damAmount: Props.damageAmount, armorPenetration: Props.armorPenetration, explosionSound: Props.explosionSound, weapon: null, projectile: null, intendedTarget: null, postExplosionSpawnThingDef: null, postExplosionSpawnChance: 0f, postExplosionSpawnThingCount: 0, postExplosionGasType: null, applyDamageToExplosionCellsNeighbors: true, preExplosionSpawnThingDef: null, preExplosionSpawnChance: 0f, preExplosionSpawnThingCount: 0, chanceToStartFire: 0.8f, damageFalloff: false, direction: null, ignoredThings: null, doVisualEffects: true, propagationSpeed: -1, excludeRadius: 0f, doSoundEffects: true);
+            GenExplosion.DoExplosion(center: position, map: parent.pawn.MapHeld, radius: Props.range, damType: Props.ExplosionDamage, instigator: Pawn, damAmount: Props.damageAmount, armorPenetration: Props.armorPenetration, explosionSound: Props.explosionSound, weapon: null, projectile: null, intendedTarget: null, postExplosionSpawnThingDef: null, postExplosionSpawnChance: 0f, postExplosionSpawnThingCount: 0, postExplosionGasType: null, applyDamageToExplosionCellsNeighbors: true, preExplosionSpawnThingDef: null, preExplosionSpawnChance: 0f, preExplosionSpawnThingCount: 0, chanceToStartFire: 0.8f, damageFalloff: false, direction: null, ignoredThings: null, doVisualEffects: true, propagationSpeed: -1, excludeRadius: 0f, doSoundEffects: true);
             base.Apply(target, dest);
             if (Props.explosionEffect != null)
             {

@@ -36,7 +36,7 @@ namespace Fortified
                                 Map,
                                 explosion.radius,
                                 explosion.damamgeDef,
-                                launcher,
+                                Launcher,
                                 explosion.amount,
 
                                 explosion.armorPenetration ?? -1,
@@ -56,16 +56,14 @@ namespace Fortified
                                 explosion.preExplosionSpawnChance,
                                 explosion.preExplosionSpawnThingCount,
                                 explosion.chanceToStartFire,
-                                false,
+                                damageFalloff: explosion.damageFalloff,
                                 origin.AngleToFlat(destination),
                                 null,
-                                null,
+                                explosion.affectedAngle,
                                 true,
                                 def.projectile.damageDef.expolosionPropagationSpeed,
                                 0f,
-                                true,
-                                explosion.postExplosionSpawnThingDefWater,
-                                0
+                                true
                                 );
                         }
                     }

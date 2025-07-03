@@ -11,7 +11,7 @@ namespace Fortified
     {
         public float range;
         public float lineWidthEnd;
-        public DamageDef explosionDamage = FFF_DefOf.Stun;
+        public DamageDef ExplosionDamage => DefDatabase<DamageDef>.GetNamed("Stun");
         public int damageAmount = 5;
 
         public CompProperties_AbilityDirectionalExplosion()
@@ -30,7 +30,7 @@ namespace Fortified
         {
             IntVec3 position = parent.pawn.Position;
             float num = Mathf.Atan2(-(target.Cell.z - position.z), target.Cell.x - position.x) * 57.29578f;
-            GenExplosion.DoExplosion(affectedAngle: new FloatRange(num - 10f, num + 10f), center: position, map: parent.pawn.MapHeld, radius: Props.range, damType: Props.explosionDamage, instigator: Pawn, damAmount: Props.damageAmount, armorPenetration: -1f, explosionSound: null, weapon: null, projectile: null, intendedTarget: null, postExplosionSpawnThingDef: null, postExplosionSpawnChance: 0f, postExplosionSpawnThingCount: 0, postExplosionGasType: null, applyDamageToExplosionCellsNeighbors: true, preExplosionSpawnThingDef: null, preExplosionSpawnChance: 0f, preExplosionSpawnThingCount: 0, chanceToStartFire: 0f, damageFalloff: false, direction: null, ignoredThings: null, doVisualEffects: false, propagationSpeed: -1f, excludeRadius: 0f, doSoundEffects: false);
+            GenExplosion.DoExplosion(affectedAngle: new FloatRange(num - 10f, num + 10f), center: position, map: parent.pawn.MapHeld, radius: Props.range, damType: Props.ExplosionDamage, instigator: Pawn, damAmount: Props.damageAmount, armorPenetration: -1f, explosionSound: null, weapon: null, projectile: null, intendedTarget: null, postExplosionSpawnThingDef: null, postExplosionSpawnChance: 0f, postExplosionSpawnThingCount: 0, postExplosionGasType: null, applyDamageToExplosionCellsNeighbors: true, preExplosionSpawnThingDef: null, preExplosionSpawnChance: 0f, preExplosionSpawnThingCount: 0, chanceToStartFire: 0f, damageFalloff: false, direction: null, ignoredThings: null, doVisualEffects: false, propagationSpeed: -1f, excludeRadius: 0f, doSoundEffects: false);
             base.Apply(target, dest);
         }
 
@@ -41,19 +41,11 @@ namespace Fortified
 
         public override bool AICanTargetNow(LocalTargetInfo target)
         {
-            if (Pawn.Faction != null)
+            if (Pawn.Faction == null) return true;
+
+            foreach (var item in Pawn.MapHeld.mapPawns.PawnsInFaction(Pawn.Faction))
             {
-                foreach (IntVec3 item in AffectedCells(target))
-                {
-                    List<Thing> thingList = item.GetThingList(Pawn.Map);
-                    for (int i = 0; i < thingList.Count; i++)
-                    {
-                        if (thingList[i].Faction == Pawn.Faction)
-                        {
-                            return false;
-                        }
-                    }
-                }
+                if (AffectedCells(target).Contains(item.PositionHeld)) return false;
             }
             return true;
         }
@@ -98,31 +90,19 @@ namespace Fortified
             }
 
             return tmpCells;
+
             bool CanUseCell(IntVec3 c)
             {
-                if (!c.InBounds(Pawn.Map))
-                {
-                    return false;
-                }
+                if (!c.InBounds(Pawn.Map)) return false;
 
-                if (c == Pawn.Position)
-                {
-                    return false;
-                }
+                if (c == Pawn.Position) return false;
 
-                if (c.Filled(Pawn.Map))
-                {
-                    return false;
-                }
+                if (c.Filled(Pawn.Map)) return false;
 
-                if (!c.InHorDistOf(Pawn.Position, Props.range))
-                {
-                    return false;
-                }
+                if (!c.InHorDistOf(Pawn.Position, Props.range)) return false;
 
                 return GenSight.LineOfSight(Pawn.Position, c, Pawn.Map, skipFirstCell: true);
             }
         }
-        
     }
 }

@@ -29,6 +29,8 @@ namespace Fortified
         public float postExplosionSpawnChance = 0;
         public int postExplosionSpawnThingCount = 0;
         public float chanceToStartFire = 0;
+        public bool damageFalloff = true;
+        public FloatRange? affectedAngle = null;
     }
 
 }
