@@ -9,7 +9,9 @@ namespace Fortified
         internal static void Postfix(Pawn __instance, ref bool __result)
         {
             if (__result) return;
-            if (__instance is IWeaponUsable && __instance.Spawned && __instance.IsColonyMech && !__instance.DeadOrDowned) __result = true;
+            if (!__instance.Spawned || !__instance.IsColonyMech) return;
+            if (__instance is IWeaponUsable) __result = true;
+            if (__instance.TryGetComp<CompDrone>(out var c) && c.CanDraft) __result = true;
         }
     }
 }

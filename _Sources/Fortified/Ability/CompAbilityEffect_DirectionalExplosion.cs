@@ -11,12 +11,17 @@ namespace Fortified
     {
         public float range;
         public float lineWidthEnd;
-        public DamageDef ExplosionDamage => DefDatabase<DamageDef>.GetNamed("Stun");
+        public DamageDef explosionDamage;
         public int damageAmount = 5;
 
         public CompProperties_AbilityDirectionalExplosion()
         {
             compClass = typeof(CompAbilityEffect_DirectionalExplosion);
+        }
+        public override IEnumerable<string> ConfigErrors(AbilityDef parentDef)
+        {
+            if(explosionDamage ==null) explosionDamage = DamageDefOf.Stun;
+            return base.ConfigErrors(parentDef);
         }
     }
     public class CompAbilityEffect_DirectionalExplosion : CompAbilityEffect
@@ -30,7 +35,7 @@ namespace Fortified
         {
             IntVec3 position = parent.pawn.Position;
             float num = Mathf.Atan2(-(target.Cell.z - position.z), target.Cell.x - position.x) * 57.29578f;
-            GenExplosion.DoExplosion(affectedAngle: new FloatRange(num - 10f, num + 10f), center: position, map: parent.pawn.MapHeld, radius: Props.range, damType: Props.ExplosionDamage, instigator: Pawn, damAmount: Props.damageAmount, armorPenetration: -1f, explosionSound: null, weapon: null, projectile: null, intendedTarget: null, postExplosionSpawnThingDef: null, postExplosionSpawnChance: 0f, postExplosionSpawnThingCount: 0, postExplosionGasType: null, applyDamageToExplosionCellsNeighbors: true, preExplosionSpawnThingDef: null, preExplosionSpawnChance: 0f, preExplosionSpawnThingCount: 0, chanceToStartFire: 0f, damageFalloff: false, direction: null, ignoredThings: null, doVisualEffects: false, propagationSpeed: -1f, excludeRadius: 0f, doSoundEffects: false);
+            GenExplosion.DoExplosion(affectedAngle: new FloatRange(num - 10f, num + 10f), center: position, map: parent.pawn.MapHeld, radius: Props.range, damType: Props.explosionDamage, instigator: Pawn, damAmount: Props.damageAmount, armorPenetration: -1f, explosionSound: null, weapon: null, projectile: null, intendedTarget: null, postExplosionSpawnThingDef: null, postExplosionSpawnChance: 0f, postExplosionSpawnThingCount: 0, postExplosionGasType: null, applyDamageToExplosionCellsNeighbors: true, preExplosionSpawnThingDef: null, preExplosionSpawnChance: 0f, preExplosionSpawnThingCount: 0, chanceToStartFire: 0f, damageFalloff: false, direction: null, ignoredThings: null, doVisualEffects: false, propagationSpeed: -1f, excludeRadius: 0f, doSoundEffects: false);
             base.Apply(target, dest);
         }
 

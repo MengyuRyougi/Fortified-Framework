@@ -9,6 +9,7 @@ using Verse.AI;
 
 namespace Fortified
 {
+
     public class JobDriver_ReturnToPlatform : JobDriver
     {
         private const TargetIndex PlatformInd = TargetIndex.A;
@@ -68,10 +69,10 @@ namespace Fortified
                     _fiRemaining.SetValue(apparelReloadable, apparelReloadable.RemainingCharges + 1);
                 }
             }
-            //if (Platform.TryGetComp<CompRefuelable>(out var comp))
-            //{ 
-
-            //}
+            else if (Platform.TryGetComp<CompMechPlatform>(out var p))
+            {
+                p.Retracted(this.Actor);
+            }
             DespawnAndDestroy();
         }
         protected void Recycle()
@@ -84,6 +85,7 @@ namespace Fortified
         protected void DropEquipment()
         {
             Actor.equipment?.DropAllEquipment(Actor.Position, false, false);
+            Actor.inventory?.DropAllNearPawn(Actor.Position, false, false);
         }
         protected void DespawnAndDestroy()
         {

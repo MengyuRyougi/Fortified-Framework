@@ -1,0 +1,475 @@
+﻿using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using Verse;
+using Verse.AI;
+using Verse.AI.Group;
+
+namespace Fortified
+{
+    public class CompMechPlatform : ThingComp, IThingHolder
+    {
+        private const int LowIngredientCountThreshold = 75;
+
+        private int cooldownTicksRemaining;
+
+        private ThingOwner innerContainer;
+
+        private List<Pawn> spawnedPawns = new List<Pawn>();
+
+        public int maxToFill;
+
+        private List<Thing> tmpResources = new List<Thing>();
+
+        public CompProperties_MechPlatform Props => (CompProperties_MechPlatform)props;
+
+        public virtual AcceptanceReport CanSpawn
+        {
+            get
+            {
+                if (parent is Pawn pawn)
+                {
+                    if (pawn.IsSelfShutdown())
+                    {
+                        return "SelfShutdown".Translate();
+                    }
+
+                    if (pawn.Faction == Faction.OfPlayer && !pawn.IsColonyMechPlayerControlled)
+                    {
+                        return false;
+                    }
+
+                    if (!pawn.Awake() || pawn.Downed || pawn.Dead || !pawn.Spawned)
+                    {
+                        return false;
+                    }
+                }
+                else if (parent is Building building)
+                {
+                    if (!building.TryGetComp<CompPowerTrader>().PowerOn)
+                    {
+                        return "NoPower".Translate();
+                    }
+                    if (building.TryGetComp<CompBreakdownable>().BrokenDown)
+                    {
+                        return "BrokenDown".Translate();
+                    }
+                    if (building.TryGetComp<CompFlickable>().SwitchIsOn == false)
+                    {
+                        return "Deactivated".Translate();
+                    }
+                }
+
+                if (MaxCanSpawn <= 0)
+                {
+                    return "MechCarrierNotEnoughResources".Translate();
+                }
+
+                if (cooldownTicksRemaining > 0)
+                {
+                    return "CooldownTime".Translate() + " " + cooldownTicksRemaining.ToStringSecondsFromTicks();
+                }
+
+                return true;
+            }
+        }
+
+        public virtual int IngredientCount => innerContainer.TotalStackCountOfDef(Props.fixedIngredient);
+
+        public virtual int AmountToAutofill => Mathf.Max(0, maxToFill - IngredientCount);
+
+        public virtual int MaxCanSpawn => Mathf.Min(Mathf.FloorToInt(IngredientCount / Props.costPerPawn), Props.maxPawnsToSpawn);
+
+        public bool LowIngredientCount => IngredientCount < LowIngredientCountThreshold;
+
+        public float PercentageFull => (float)IngredientCount / (float)Props.maxIngredientCount;
+
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            if (!ModLister.CheckBiotech("Mech carrier"))
+            {
+                parent.Destroy();
+                return;
+            }
+
+            base.PostSpawnSetup(respawningAfterLoad);
+            if (!respawningAfterLoad && !parent.BeingTransportedOnGravship)
+            {
+                innerContainer = new ThingOwner<Thing>(this, oneStackOnly: false);
+                if (Props.startingIngredientCount > 0)
+                {
+                    Thing thing = ThingMaker.MakeThing(Props.fixedIngredient);
+                    thing.stackCount = Props.startingIngredientCount;
+                    innerContainer.TryAdd(thing, Props.startingIngredientCount);
+                }
+                maxToFill = Props.startingIngredientCount;
+            }
+        }
+
+        public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn)
+        {
+            if (AmountToAutofill <= 0) yield break;
+            FloatMenuOption floatMenuOption = new FloatMenuOption("FFF.FillMechPlatform".Translate(Props.fixedIngredient.label, AmountToAutofill), delegate
+            {
+                List<Thing> list = HaulAIUtility.FindFixedIngredientCount(selPawn, this.Props.fixedIngredient, AmountToAutofill);
+                if (!list.NullOrEmpty())
+                {
+                    Job job = HaulAIUtility.HaulToContainerJob(selPawn, list[0], this.parent);
+                    job.count = Mathf.Min(job.count, AmountToAutofill);
+                    job.targetQueueB = (from i in list.Skip(1) select new LocalTargetInfo(i)).ToList();
+                    selPawn.jobs.TryTakeOrderedJob(job, JobTag.Misc, false);
+                }
+            }, MenuOptionPriority.Default, null, null, 0f, null, null, true, 0);
+            if (!floatMenuOption.Disabled)
+            {
+                yield return floatMenuOption;
+            }
+        }
+
+        public void TrySpawnPawns()
+        {
+            int maxCanSpawn = MaxCanSpawn;
+            if (maxCanSpawn <= 0)
+            {
+                return;
+            }
+
+            PawnGenerationRequest request = new PawnGenerationRequest(Props.spawnPawnKind, parent.Faction, PawnGenerationContext.NonPlayer, null, forceGenerateNewPawn: true, allowDead: false, allowDowned: false, canGeneratePawnRelations: true, mustBeCapableOfViolence: false, 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: false, allowFood: true, allowAddictions: true, inhabitant: false, certainlyBeenInCryptosleep: false, forceRedressWorldPawnIfFormerColonist: false, worldPawnFactionDoesntMatter: false, 0f, 0f, null, 1f, null, null, null, null, null, null, null, null, null, null, null, null, forceNoIdeo: false, forceNoBackstory: false, forbidAnyTitle: false, forceDead: false, null, null, null, null, null, 0f, DevelopmentalStage.Newborn);
+            tmpResources.Clear();
+            tmpResources.AddRange(innerContainer);
+            Lord lord = ((parent is Pawn p) ? p.GetLord() : null);
+            for (int i = 0; i < maxCanSpawn; i++)
+            {
+                Pawn pawn = PawnGenerator.GeneratePawn(request);
+
+                // Set the pawn's platform if it is a drone.
+                if (pawn.TryGetComp<CompDrone>(out var d))
+                {
+                    d.SetPlatform(parent);
+                }
+
+                GenSpawn.Spawn(pawn, parent.Position, parent.Map);
+                spawnedPawns.Add(pawn);
+                lord?.AddPawn(pawn);
+                int num = Props.costPerPawn;
+                for (int j = 0; j < tmpResources.Count; j++)
+                {
+                    Thing thing = innerContainer.Take(tmpResources[j], Mathf.Min(tmpResources[j].stackCount, Props.costPerPawn));
+                    num -= thing.stackCount;
+                    thing.Destroy();
+                    if (num <= 0)
+                    {
+                        break;
+                    }
+                }
+
+                if (Props.spawnedMechEffecter != null)
+                {
+                    Effecter effecter = new Effecter(Props.spawnedMechEffecter);
+                    effecter.Trigger(Props.attachSpawnedMechEffecter ? ((TargetInfo)pawn) : new TargetInfo(pawn.Position, pawn.Map), TargetInfo.Invalid);
+                    effecter.Cleanup();
+                }
+            }
+
+            tmpResources.Clear();
+            cooldownTicksRemaining = Props.cooldownTicks;
+            if (Props.spawnEffecter != null)
+            {
+                Effecter effecter2 = new Effecter(Props.spawnEffecter);
+                effecter2.Trigger(Props.attachSpawnedEffecter ? ((TargetInfo)parent) : new TargetInfo(parent.Position, parent.Map), TargetInfo.Invalid);
+                effecter2.Cleanup();
+            }
+        }
+
+        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        {
+            if (parent is Building b && this.parent.Faction != Faction.OfPlayer)
+            {
+                yield break;
+            }
+            if (parent is Pawn pawn && !pawn.IsColonyMech && pawn.GetOverseer() == null)
+            {
+                yield break;
+            }
+
+            foreach (Gizmo item in base.CompGetGizmosExtra())
+            {
+                yield return item;
+            }
+
+            // Add the gizmo to retract spawned pawns if there are any.
+            if (!spawnedPawns.NullOrEmpty())
+            {
+                Command_Action command_Action = new Command_Action
+                {
+                    action = delegate
+                    {
+                        foreach (Pawn item in spawnedPawns)
+                        {
+                            if (item.TryGetComp<CompDrone>(out var d))
+                            {
+                                d.ReturnToPlatform();
+                            }
+                        }
+                    },
+                    hotKey = KeyBindingDefOf.Misc3,
+                    icon = ContentFinder<Texture2D>.Get(Props.gizmoIconPath_Retract),
+                    defaultLabel = "FFF.RetractDrones".Translate(Props.spawnPawnKind.labelPlural),
+                    defaultDesc = "FFF.RetractDronesDesc".Translate(Props.spawnPawnKind.labelPlural, Props.fixedIngredient.label)
+                };
+                yield return command_Action;
+            }
+
+            AcceptanceReport canSpawn = CanSpawn;
+            Command_ActionWithCooldown act = new Command_ActionWithCooldown
+            {
+                cooldownPercentGetter = () => Mathf.InverseLerp(Props.cooldownTicks, 0f, cooldownTicksRemaining),
+                action = delegate
+                {
+                    TrySpawnPawns();
+                },
+                hotKey = KeyBindingDefOf.Misc2,
+                Disabled = !canSpawn.Accepted,
+                icon = ContentFinder<Texture2D>.Get(Props.gizmoIconPath),
+                defaultLabel = "FFF.DeployDrone".Translate(Props.spawnPawnKind.labelPlural),
+                defaultDesc = "FFF.DeployDroneDesc".Translate(Props.fixedIngredient.label, Props.maxPawnsToSpawn, Props.spawnPawnKind.label, Props.spawnPawnKind.labelPlural, Props.spawnPawnKind.label)
+            };
+            if (!canSpawn.Reason.NullOrEmpty())
+            {
+                act.Disable(canSpawn.Reason);
+            }
+            Command_Toggle command_Toggle = new Command_Toggle
+            {
+                defaultLabel = "FFF.AutoDeploy".Translate(),
+                defaultDesc = "FFF.AutoDeployDesc".Translate(),
+                icon = ContentFinder<Texture2D>.Get("UI/Drone_AutoDeploy"),
+                isActive = () => autoDeployEnabled,
+                toggleAction = () =>
+                {
+                    autoDeployEnabled = !autoDeployEnabled;
+                }
+            };
+            yield return command_Toggle;
+
+
+            if (DebugSettings.ShowDevGizmos)
+            {
+                if (cooldownTicksRemaining > 0)
+                {
+                    Command_Action command_Action = new Command_Action();
+                    command_Action.defaultLabel = "DEV: Reset cooldown";
+                    command_Action.action = delegate
+                    {
+                        cooldownTicksRemaining = 0;
+                    };
+                    yield return command_Action;
+                }
+
+                Command_Action command_Action2 = new Command_Action();
+                command_Action2.defaultLabel = "DEV: Fill with " + Props.fixedIngredient.label;
+                command_Action2.action = delegate
+                {
+                    while (IngredientCount < Props.maxIngredientCount)
+                    {
+                        int stackCount = Mathf.Min(Props.maxIngredientCount - IngredientCount, Props.fixedIngredient.stackLimit);
+                        Thing thing = ThingMaker.MakeThing(Props.fixedIngredient);
+                        thing.stackCount = stackCount;
+                        innerContainer.TryAdd(thing, thing.stackCount);
+                    }
+                };
+                yield return command_Action2;
+                Command_Action command_Action3 = new Command_Action();
+                command_Action3.defaultLabel = "DEV: Empty " + Props.fixedIngredient.label;
+                command_Action3.action = delegate
+                {
+                    innerContainer.ClearAndDestroyContents();
+                };
+                yield return command_Action3;
+            }
+
+            yield return act;
+        }
+
+        public void GetChildHolders(List<IThingHolder> outChildren)
+        {
+            ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
+        }
+
+        public ThingOwner GetDirectlyHeldThings()
+        {
+            return innerContainer;
+        }
+
+        public override string CompInspectStringExtra()
+        {
+            string text = base.CompInspectStringExtra();
+            if (text.NullOrEmpty()) text = "";
+
+            text += "CasketContains".Translate() + ": " + innerContainer.ContentsString.CapitalizeFirst();
+            if (autoDeployEnabled)
+            {
+                text += "\n" + "FFF.AutoDeployEnabled".Translate();
+            }
+            return text;
+        }
+
+        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        {
+            base.PostDestroy(mode, previousMap);
+            innerContainer?.ClearAndDestroyContents();
+            for (int i = 0; i < spawnedPawns.Count; i++)
+            {
+                if (!spawnedPawns[i].Dead)
+                {
+                    spawnedPawns[i].Kill(null, null);
+                }
+            }
+        }
+
+        public void Retracted(Pawn pawn)
+        {
+            spawnedPawns.Remove(pawn);
+            int stackCount = Mathf.Min(Props.costPerPawn, Props.fixedIngredient.stackLimit);
+            Thing thing = ThingMaker.MakeThing(Props.fixedIngredient);
+            thing.stackCount = stackCount;
+            if (innerContainer.TotalStackCountOfDef(Props.fixedIngredient) + stackCount <= Props.maxIngredientCount)
+            {
+                innerContainer.TryAdd(thing, thing.stackCount);
+            }
+            else
+            {
+                GenPlace.TryPlaceThing(thing, parent.Position, parent.Map, ThingPlaceMode.Near);
+            }
+        }
+
+        public override void PostDrawExtraSelectionOverlays()
+        {
+            if (!Find.Selector.IsSelected(parent))
+            {
+                return;
+            }
+
+            for (int i = 0; i < spawnedPawns.Count; i++)
+            {
+                if (!spawnedPawns[i].Dead || !spawnedPawns[i].Spawned)
+                {
+                    GenDraw.DrawLineBetween(parent.TrueCenter(), spawnedPawns[i].TrueCenter());
+                }
+            }
+        }
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Deep.Look(ref innerContainer, "innerContainer", this);
+            Scribe_Values.Look(ref cooldownTicksRemaining, "cooldownTicksRemaining", 0);
+            Scribe_Values.Look(ref autoDeployTicks, "autoDeployTicks", 0);
+            Scribe_Values.Look(ref maxToFill, "maxToFill", 0);
+            Scribe_Collections.Look(ref spawnedPawns, "spawnedPawns", LookMode.Reference);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                spawnedPawns.RemoveAll((Pawn x) => x == null);
+            }
+        }
+        public override void CompTick()
+        {
+            CompTickInterval(1);
+        }
+        public override void CompTickRare()
+        {
+            CompTickInterval(250);
+        }
+
+        private int autoDeployTicks = 0;
+        private bool autoDeployEnabled = false;
+        public override void CompTickInterval(int delta)
+        {
+            if (cooldownTicksRemaining > 0)
+            {
+                cooldownTicksRemaining -= delta;
+            }
+            if (autoDeployTicks > 0) autoDeployTicks -= delta;
+            else if (autoDeployEnabled && spawnedPawns?.Count < Props.maxPawnsToSpawn * 2)
+            {
+                autoDeployTicks = (int)(Props.cooldownTicks * 1.5f);
+                if (CanSpawn.Accepted)
+                {
+                    TrySpawnPawns();
+                }
+            }
+        }
+        public void ReleaseOverFilled()
+        {
+            if (innerContainer.Count <= Props.maxIngredientCount)
+            {
+                return;
+            }
+            int excess = innerContainer.Count - Props.maxIngredientCount;
+            while (excess > 0)
+            {
+                Thing t = null;
+                if (excess > innerContainer[0].stackCount)
+                {
+                    t = innerContainer[0];
+                    excess -= innerContainer[0].stackCount;
+                }
+                else
+                { 
+                    t = innerContainer[0].SplitOff(excess);
+                    excess = 0;
+                }
+                innerContainer.TryDrop(t, ThingPlaceMode.Near, out var _);
+            }
+        }
+    }
+
+    public class CompProperties_MechPlatform : CompProperties
+    {
+        [NoTranslate]
+        public string gizmoIconPath = "UI/Gizmos/ReleaseWarUrchins";
+
+        [NoTranslate]
+        public string gizmoIconPath_Retract = "UI/Drone_Retract";
+
+        [MustTranslate]
+        public string gizmoLabel = "MechCarrierRelease";
+        [MustTranslate]
+        public string gizmoDesc = "MechCarrierDesc";
+
+        public ThingDef fixedIngredient;
+
+        public int costPerPawn;
+
+        public int maxIngredientCount;
+
+        public int startingIngredientCount;
+
+        public PawnKindDef spawnPawnKind;
+
+        public int cooldownTicks = 900;
+
+        public int maxPawnsToSpawn = 3;
+
+        public EffecterDef spawnEffecter;
+
+        public EffecterDef spawnedMechEffecter;
+
+        public bool attachSpawnedEffecter;
+
+        public bool attachSpawnedMechEffecter;
+
+        public CompProperties_MechPlatform()
+        {
+            compClass = typeof(CompMechPlatform);
+        }
+
+        public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
+        {
+            foreach (string item in base.ConfigErrors(parentDef))
+            {
+                yield return item;
+            }
+        }
+    }
+}

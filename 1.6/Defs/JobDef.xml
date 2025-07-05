@@ -53,6 +53,9 @@
     <driverClass>Fortified.JobDriver_ReturnToPlatform</driverClass>
     <reportString>returning to platform</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    <casualInterruptible>false</casualInterruptible>
+    <suspendable>false</suspendable>
+    <forceCompleteBeforeNextJob>true</forceCompleteBeforeNextJob>
   </JobDef>
 
   <JobDef>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <FFF.FillMechPlatform>優先填充{0}x{1}</FFF.FillMechPlatform>
+
+  <FFF.Drone.Return>返回部署平台</FFF.Drone.Return>
+  <FFF.Drone.ReturnDesc>命令該無人機返回部署平台並關機，這將恢復部署無人機時的資源消耗。</FFF.Drone.ReturnDesc>
+
+  <FFF.Drone.NoPlatform>部署平台不可用</FFF.Drone.NoPlatform>
+
+  <FFF.DeployDrone>部署 {0}</FFF.DeployDrone>
+  <FFF.DeployDroneDesc>命令平台消耗儲存的{0}來部署最多{1}架的{2}無人機。如果部署平台被破壞，所有受其控制的{3}都會關停。{4}使用內置電池運作，並在電量不足時自動返回平台來回收部署時的消耗。</FFF.DeployDroneDesc>
+
+  <FFF.AutoDeploy>自動部署</FFF.AutoDeploy>
+  <FFF.AutoDeployDesc>命令此平台以穩定的間隔週期自動部署與部署無人機。</FFF.AutoDeployDesc>
+  <FFF.AutoDeployEnabled>自動部署激活</FFF.AutoDeployEnabled>
+  <FFF.WillDeployAt>部署間隔: {0}</FFF.WillDeployAt>
+
+  <FFF.RetractDrones>收回所有 {0}</FFF.RetractDrones>
+  <FFF.RetractDronesDesc>命令所有由此平台所控制的{0}撤回部署平台，這將補充平台部署無人機時的{1}消耗。</FFF.RetractDronesDesc>
+
+</LanguageData>

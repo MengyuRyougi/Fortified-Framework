@@ -36,10 +36,16 @@ namespace Fortified
         {
             get
             {
-                if (parentPlatform == null) return false;
+                if (parentPlatform == null || !parentPlatform.Spawned) return false;
                 if (CanDraftAsApparelPlatform()) return true;
                 if (parentPlatform.Faction != Faction.OfPlayer) return false;
-                if (!parentPlatform.Spawned) return false;
+
+                if (parentPlatform is Building building)
+                {
+                    if (!parentPlatform.TryGetComp<CompPowerTrader>().PowerOn) return false;
+                    if (building.TryGetComp<CompBreakdownable>().BrokenDown) return false;
+                    if (building.TryGetComp<CompFlickable>().SwitchIsOn == false) return false;
+                }
                 return true;
             }
         }
@@ -54,11 +60,8 @@ namespace Fortified
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            if (respawningAfterLoad)
-            {
-                powerCell = parent.TryGetComp<CompMechPowerCell>();
-            }
-            
+            powerCell = parent.TryGetComp<CompMechPowerCell>();
+
         }
         public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
         {
@@ -106,9 +109,9 @@ namespace Fortified
             {
                 var draftGizmo = new Command_Action
                 {
-                    defaultLabel = "FFF_Return".Translate(),
-                    defaultDesc = "FFF_ReturnDesc".Translate(),
-                    icon = ContentFinder<Texture2D>.Get("UI/Commands/Draft"),
+                    defaultLabel = "FFF.Drone.Return".Translate(),
+                    defaultDesc = "FFF.Drone.ReturnDesc".Translate(),
+                    icon = ContentFinder<Texture2D>.Get(Props.returnGizmoPath),
                     action = () =>
                     {
                         ReturnToPlatform();
@@ -117,32 +120,38 @@ namespace Fortified
                 yield return draftGizmo;
             }
         }
-        public override void CompTickInterval(int delta)
+        public override void CompTick()
         {
-            base.CompTickInterval(delta);
-            if (pawn.CurJobDef != Props.returnToDraftPlatformJob && powerCell != null && powerCell.PowerTicksLeft < 4000)
+            if (!parent.Spawned) return;
+
+            if (!parent.IsHashIntervalTick(500)) return;
+            if (powerCell.PowerTicksLeft < 5000) Log.Message(powerCell.PowerTicksLeft);
+
+            if (pawn.CurJobDef != Props.returnToDraftPlatformJob && powerCell != null && powerCell.PowerTicksLeft < 5000)
             {
                 ReturnToPlatform();
             }
         }
+        bool noPlatformWarning = false;
         public void ReturnToPlatform()
         {
-            if (!HasPlatform)
+            if (!HasPlatform && !noPlatformWarning)
             {
                 //如果沒有平台則警告
-                Messages.Message("FFF_NoPlatform".Translate(), MessageTypeDefOf.RejectInput, false);
+                Messages.Message("FFF.Drone.NoPlatform".Translate(), MessageTypeDefOf.RejectInput, false);
+                noPlatformWarning = true;
                 return;
             }
 
             if (isApparelPlatform)
             {
-                pawn.jobs.StopAll();
-                pawn.jobs.StartJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner, Apparel), JobCondition.InterruptForced, null, true, true);
+                //pawn.jobs.StopAll();
+                pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner, Apparel),JobTag.DraftedOrder);
             }
             else
             {
-                pawn.jobs.StopAll();
-                pawn.jobs.StartJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner), JobCondition.InterruptForced, null, true, true);
+                //pawn.jobs.StopAll();
+                pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner), JobTag.DraftedOrder);
             }
         }
         public override void PostExposeData()
@@ -154,6 +163,9 @@ namespace Fortified
     }
     public class CompProperties_Drone : CompProperties
     {
+        [NoTranslate]
+        public string returnGizmoPath = "UI/Drone_Retract";
+
         public JobDef returnToDraftPlatformJob = null;
         public CompProperties_Drone()
         {
@@ -169,10 +181,26 @@ namespace Fortified
         {
             if (ModsConfig.BiotechActive && pawn.kindDef != null && pawn.TryGetComp<CompDrone>() != null && pawn.workSettings == null)
             {
+
                 pawn.workSettings = new Pawn_WorkSettings(pawn);
+                pawn.workSettings.EnableAndInitializeIfNotAlreadyInitialized();
             }
         }
     }
+
+    //[HarmonyPatch(typeof(ThinkNode_ConditionalWorkMode), "Satisfied")]
+    //internal static class Patch_Satisfied
+    //{
+    //    [HarmonyPostfix]
+    //    public static void Postfix(Pawn pawn, ref bool __result)
+    //    {
+    //        if (__result) return;
+    //        if (pawn.Faction == Faction.OfPlayer && pawn.TryGetComp<CompDrone>() != null)
+    //        {
+    //            __result = true;
+    //        }
+    //    }
+    //}
 
     [HarmonyPatch(typeof(Pawn_DraftController), nameof(Pawn_DraftController.ShowDraftGizmo), MethodType.Getter)]
     internal static class Patch_ShowDraftGizmo
@@ -180,7 +208,6 @@ namespace Fortified
         internal static void Postfix(Pawn_DraftController __instance, ref bool __result)
         {
             if (__result) return;
-
             if (__instance.pawn.Faction == Faction.OfPlayer && __instance.pawn.TryGetComp<CompDrone>() != null) __result = true;
         }
     }

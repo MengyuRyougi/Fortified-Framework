@@ -1,7 +1,6 @@
 ﻿using RimWorld;
 using Verse;
 using Verse.AI;
-using static HarmonyLib.Code;
 
 namespace Fortified
 {

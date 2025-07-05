@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Fortified")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38791806985740e1f261369098cac4b5a2e1cc33")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+935ec1a523e26a237cd6f87beea7418a27167050")]
 [assembly: System.Reflection.AssemblyProductAttribute("Fortified")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Fortified")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
