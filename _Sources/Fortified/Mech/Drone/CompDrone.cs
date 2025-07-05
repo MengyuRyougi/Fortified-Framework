@@ -36,17 +36,11 @@ namespace Fortified
         {
             get
             {
-                if (parentPlatform == null || !parentPlatform.Spawned) return false;
-                if (CanDraftAsApparelPlatform()) return true;
-                if (parentPlatform.Faction != Faction.OfPlayer) return false;
+                if (parentPlatform == null) return false;
 
-                if (parentPlatform is Building building)
-                {
-                    if (!parentPlatform.TryGetComp<CompPowerTrader>().PowerOn) return false;
-                    if (building.TryGetComp<CompBreakdownable>().BrokenDown) return false;
-                    if (building.TryGetComp<CompFlickable>().SwitchIsOn == false) return false;
-                }
-                return true;
+                if (CanDraftAsApparelPlatform()) return true;
+                if (CanDraftAsBuildingPlatform()) return true;
+                return false;
             }
         }
         public override void PostPostMake()
@@ -71,7 +65,7 @@ namespace Fortified
             }
             base.Notify_Killed(prevMap, dinfo);
         }
-        private bool CanDraftAsApparelPlatform()
+        protected virtual bool CanDraftAsApparelPlatform()
         {
             if (!isApparelPlatform) return false;
 
@@ -82,6 +76,17 @@ namespace Fortified
             if (!wearer.IsPlayerControlled) return false;
             return true;
         }
+        protected virtual bool CanDraftAsBuildingPlatform()
+        {
+            if (parentPlatform == null) return false;
+            if (!parentPlatform.Spawned) return false;
+            if (parentPlatform.Faction != Faction.OfPlayer) return false;
+            if (!parentPlatform.TryGetComp<CompPowerTrader>().PowerOn) return false;
+            if (parentPlatform.TryGetComp<CompBreakdownable>().BrokenDown) return false;
+            if (parentPlatform.TryGetComp<CompFlickable>().SwitchIsOn == false) return false;
+            return true;
+        }
+
         public bool HasPlatform
         {
             get
