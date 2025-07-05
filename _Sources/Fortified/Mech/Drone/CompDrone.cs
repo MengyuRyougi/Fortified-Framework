@@ -36,10 +36,11 @@ namespace Fortified
         {
             get
             {
-                if (parentPlatform == null) return false;
+                if (parentPlatform == null)return false;
 
-                if (CanDraftAsApparelPlatform()) return true;
+                if (isApparelPlatform &&CanDraftAsApparelPlatform()) return true;
                 if (CanDraftAsBuildingPlatform()) return true;
+                
                 return false;
             }
         }
@@ -67,7 +68,6 @@ namespace Fortified
         }
         protected virtual bool CanDraftAsApparelPlatform()
         {
-            if (!isApparelPlatform) return false;
 
             var wearer = Apparel.Wearer;
             if (wearer == null) return false;
@@ -130,6 +130,7 @@ namespace Fortified
             if (!parent.Spawned) return;
 
             if (!parent.IsHashIntervalTick(500)) return;
+            if (!CanDraft) pawn.drafter.Drafted = false;
             if (powerCell.PowerTicksLeft < 5000) Log.Message(powerCell.PowerTicksLeft);
 
             if (pawn.CurJobDef != Props.returnToDraftPlatformJob && powerCell != null && powerCell.PowerTicksLeft < 5000)
