@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -32,16 +33,22 @@ namespace Fortified
 
         public CompProperties_Drone Props => (CompProperties_Drone)this.props;
 
-        public bool CanDraft
+        public AcceptanceReport CanDraft
         {
             get
             {
-                if (parentPlatform == null)return false;
+                if (parentPlatform == null) return new AcceptanceReport("FFF.Drone.NoControlPlatform".Translate());
 
-                if (isApparelPlatform &&CanDraftAsApparelPlatform()) return true;
-                if (CanDraftAsBuildingPlatform()) return true;
-                
-                return false;
+                if (isApparelPlatform)
+                {
+                    Pawn wearer = Apparel.Wearer;
+                    return CanDraftAsPawnPlatform(wearer);
+                }
+                else if (parentPlatform.GetType().IsAssignableFrom(typeof(Pawn)))
+                {
+                    return CanDraftAsPawnPlatform(parentPlatform as Pawn);
+                }
+                return CanDraftAsBuildingPlatform();
             }
         }
         public override void PostPostMake()
@@ -49,14 +56,22 @@ namespace Fortified
             //玩家召喚的並不會有自帶裝備。
             if (this.parent.Faction == Faction.OfPlayer)
             {
-                (this.parent as Pawn).equipment?.DestroyAllEquipment(DestroyMode.Vanish);
+                pawn.equipment?.DestroyAllEquipment(DestroyMode.Vanish);
             }
         }
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
             powerCell = parent.TryGetComp<CompMechPowerCell>();
-
+            if (!respawningAfterLoad && parent.Faction != Faction.OfPlayer)
+            {
+                if (this.parent.TryGetComp<CompExplosiveOnMelee>(out var e) && Rand.Chance(0.5f))
+                {
+                    Thing shell = ThingMaker.MakeThing(ThingDefOf.Shell_HighExplosive);
+                    pawn.inventory ??= new Pawn_InventoryTracker(pawn);
+                    pawn.inventory.innerContainer.TryAdd(shell, 1);
+                }
+            }
         }
         public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
         {
@@ -66,24 +81,23 @@ namespace Fortified
             }
             base.Notify_Killed(prevMap, dinfo);
         }
-        protected virtual bool CanDraftAsApparelPlatform()
+        protected virtual AcceptanceReport CanDraftAsPawnPlatform(Pawn p)
         {
-
-            var wearer = Apparel.Wearer;
-            if (wearer == null) return false;
-            if (!wearer.Spawned) return false;
-            if (wearer.Map != parent.Map) return false;
-            if (!wearer.IsPlayerControlled) return false;
+            if (p == null) return new AcceptanceReport("FFF.Drone.NoController".Translate());
+            if (!p.Drafted) return new AcceptanceReport("FFF.Drone.ControllerNotDrafted".Translate());
+            if (!p.Spawned) return new AcceptanceReport("FFF.Drone.ControllerNotInMap".Translate());
+            if (p.Map != parent.Map) return new AcceptanceReport("FFF.Drone.ControllerNotInMap".Translate());
+            if (!p.IsPlayerControlled) return new AcceptanceReport("FFF.Drone.ControllerNotInControl".Translate());
             return true;
         }
-        protected virtual bool CanDraftAsBuildingPlatform()
+        protected virtual AcceptanceReport CanDraftAsBuildingPlatform()
         {
-            if (parentPlatform == null) return false;
-            if (!parentPlatform.Spawned) return false;
-            if (parentPlatform.Faction != Faction.OfPlayer) return false;
-            if (!parentPlatform.TryGetComp<CompPowerTrader>().PowerOn) return false;
-            if (parentPlatform.TryGetComp<CompBreakdownable>().BrokenDown) return false;
-            if (parentPlatform.TryGetComp<CompFlickable>().SwitchIsOn == false) return false;
+            if (parentPlatform == null) return new AcceptanceReport("FFF.Drone.NoController".Translate());
+            if (!parentPlatform.Spawned) return new AcceptanceReport("FFF.Drone.ControllerNotInMap".Translate());
+            if (parentPlatform.Faction != Faction.OfPlayer) return new AcceptanceReport("FFF.Drone.ControllerNotInControl".Translate());
+            if (!parentPlatform.TryGetComp<CompPowerTrader>().PowerOn) return new AcceptanceReport("FFF.Drone.ControllerNotInControl".Translate());
+            if (parentPlatform.TryGetComp<CompBreakdownable>().BrokenDown) return new AcceptanceReport("FFF.Drone.ControllerNotInControl".Translate());
+            if (parentPlatform.TryGetComp<CompFlickable>().SwitchIsOn == false) return new AcceptanceReport("FFF.Drone.ControllerNotInControl".Translate());
             return true;
         }
 
@@ -130,8 +144,8 @@ namespace Fortified
             if (!parent.Spawned) return;
 
             if (!parent.IsHashIntervalTick(500)) return;
-            if (!CanDraft) pawn.drafter.Drafted = false;
-            if (powerCell.PowerTicksLeft < 5000) Log.Message(powerCell.PowerTicksLeft);
+            if (!CanDraft && pawn.drafter != null) pawn.drafter.Drafted = false;
+            //if (powerCell.PowerTicksLeft < 5000) Log.Message(powerCell.PowerTicksLeft);
 
             if (pawn.CurJobDef != Props.returnToDraftPlatformJob && powerCell != null && powerCell.PowerTicksLeft < 5000)
             {
@@ -144,7 +158,7 @@ namespace Fortified
             if (!HasPlatform && !noPlatformWarning)
             {
                 //如果沒有平台則警告
-                Messages.Message("FFF.Drone.NoPlatform".Translate(), MessageTypeDefOf.RejectInput, false);
+                Messages.Message("FFF.Drone.NoPlatform".Translate(parent.Label), MessageTypeDefOf.RejectInput, false);
                 noPlatformWarning = true;
                 return;
             }
@@ -152,7 +166,7 @@ namespace Fortified
             if (isApparelPlatform)
             {
                 //pawn.jobs.StopAll();
-                pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner, Apparel),JobTag.DraftedOrder);
+                pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner, Apparel), JobTag.DraftedOrder);
             }
             else
             {
@@ -223,7 +237,7 @@ namespace Fortified
         internal static void Postfix(Pawn mech, ref AcceptanceReport __result)
         {
             if (__result) return;
-            if (mech.TryGetComp<CompDrone>(out var d) && d.CanDraft) __result = true;
+            if (mech.TryGetComp<CompDrone>(out var d)) __result = d.CanDraft;
         }
     }
 }

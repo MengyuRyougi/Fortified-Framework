@@ -1,17 +1,15 @@
 ﻿using RimWorld;
+using System.Collections.Generic;
 using Verse;
 using Verse.AI;
 
 namespace Fortified
 {
-    public class Verb_Deploy : Verb_CastBase
+    public class Verb_Deploy : Verb
     {
         protected override bool TryCastShot()
         {
-            if (currentTarget.HasThing && currentTarget.Thing.Map != caster.Map)
-            {
-                return false;
-            }
+            currentTarget = new LocalTargetInfo(Caster.Position);
             Thing thing = null;
             if (verbProps.spawnDef.race != null)
             {

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <FFF.Drone.NoControlPlatform>主控平台不可用</FFF.Drone.NoControlPlatform>
+  <FFF.Drone.NoController>没有主控</FFF.Drone.NoController>
+  <FFF.Drone.ControllerNotInControl>主控不受控制</FFF.Drone.ControllerNotInControl>
+  <FFF.Drone.ControllerNotDrafted>主控未受征招</FFF.Drone.ControllerNotDrafted>
+  <FFF.Drone.ControllerNotInMap>主控不存在于地图内</FFF.Drone.ControllerNotInMap>
+
+  <FFF.ExplosiveOnDead>机体在碰撞后会引爆携带的爆炸物</FFF.ExplosiveOnDead>
+
+  <FFF.FillMechPlatform>优先填充{0}x{1}</FFF.FillMechPlatform>
+
+  <FFF.Drone.Return>返回部署平台</FFF.Drone.Return>
+  <FFF.Drone.ReturnDesc>命令该无人机返回部署平台并关机，这将恢复部署无人机时的资源消耗。</FFF.Drone.ReturnDesc>
+
+  <FFF.Drone.NoPlatform>{0}的部署平台不可用</FFF.Drone.NoPlatform>
+
+  <FFF.DeployDrone>部署 {0}</FFF.DeployDrone>
+  <FFF.DeployDroneDesc>命令平台消耗储存的{0}来部署最多{1}架的{2}无人机。如果部署平台被破坏，所有受其控制的{3}都会关停。{4}使用内置电池运作，并在电量不足时自动返回平台来回收部署时的消耗。</FFF.DeployDroneDesc>
+
+  <FFF.AutoDeploy>自动部署</FFF.AutoDeploy>
+  <FFF.AutoDeployDesc>命令此平台以稳定的间隔周期自动部署与部署无人机。</FFF.AutoDeployDesc>
+  <FFF.AutoDeployEnabled>自动部署激活</FFF.AutoDeployEnabled>
+  <FFF.WillDeployAt>部署间隔: {0}</FFF.WillDeployAt>
+
+  <FFF.RetractDrones>收回所有 {0}</FFF.RetractDrones>
+  <FFF.RetractDronesDesc>命令所有由此平台所控制的{0}撤回部署平台，这将补充平台部署无人机时的{1}消耗。</FFF.RetractDronesDesc>
+  
+</LanguageData>

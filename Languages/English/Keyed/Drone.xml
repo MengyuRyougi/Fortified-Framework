@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <FFF.Drone.NoControlPlatform>control platform unavailable</FFF.Drone.NoControlPlatform>
+  <FFF.Drone.NoController>No control</FFF.Drone.NoController>
+  <FFF.Drone.ControllerNotInControl>platform not controlled</FFF.Drone.ControllerNotInControl>
+  <FFF.Drone.ControllerNotDrafted>platform not drafted</FFF.Drone.ControllerNotDrafted>
+  <FFF.Drone.ControllerNotInMap>platform not exist in the map</FFF.Drone.ControllerNotInMap>
+
+  <FFF.ExplosiveOnDead>Will detonate explosives payloads after collision</FFF.ExplosiveOnDead>
+
+  <FFF.FillMechPlatform>Prioritize filling {0}x{1}</FFF.FillMechPlatform>
+
+  <FFF.Drone.Return>Return to platform</FFF.Drone.Return>
+  <FFF.Drone.ReturnDesc>Commands drone return to the deployment platform and shut down, which will restore the consumed resources.</FFF.Drone.ReturnDesc>
+
+  <FFF.Drone.NoPlatform>The deployment platform for {0} is unavailable</FFF.Drone.NoPlatform>
+
+  <FFF.DeployDrone>Deploy {0}</FFF.DeployDrone>
+  <FFF.DeployDroneDesc>Consume stored {0} to deploy up to {1} {2} drones. If the platform is destroyed, all {3} controlled by it will shut down. {4} operates on internal batteries and automatically returns to the platform when the battery is low.</FFF.DeployDroneDesc>
+
+  <FFF.AutoDeploy>Auto Deploy</FFF.AutoDeploy>
+  <FFF.AutoDeployDesc>Command this platform to automatically deploy and undeploy drones at a stable interval.</FFF.AutoDeployDesc>
+  <FFF.AutoDeployEnabled>Auto Deploy Enable</FFF.AutoDeployEnabled>
+  <FFF.WillDeployAt>Deployment interval: {0}</FFF.WillDeployAt>
+
+  <FFF.RetractDrones>Retract all {0}</FFF.RetractDrones>
+  <FFF.RetractDronesDesc>Command all {0} controlled by this platform to withdraw, which will replenish the {1} consumption.</FFF.RetractDronesDesc>
+
+</LanguageData>

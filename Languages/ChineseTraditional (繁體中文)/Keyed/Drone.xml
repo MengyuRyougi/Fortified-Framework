@@ -1,12 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
+  <FFF.Drone.NoControlPlatform>主控平台不可用</FFF.Drone.NoControlPlatform>
+  <FFF.Drone.NoController>沒有主控</FFF.Drone.NoController>
+  <FFF.Drone.ControllerNotInControl>主控不受控制</FFF.Drone.ControllerNotInControl>
+  <FFF.Drone.ControllerNotDrafted>主控未受徵招</FFF.Drone.ControllerNotDrafted>
+  <FFF.Drone.ControllerNotInMap>主控不存在於地圖內</FFF.Drone.ControllerNotInMap>
+
+  <FFF.ExplosiveOnDead>機體在碰撞後會引爆攜帶的爆炸物</FFF.ExplosiveOnDead>
+
   <FFF.FillMechPlatform>優先填充{0}x{1}</FFF.FillMechPlatform>
 
   <FFF.Drone.Return>返回部署平台</FFF.Drone.Return>
   <FFF.Drone.ReturnDesc>命令該無人機返回部署平台並關機，這將恢復部署無人機時的資源消耗。</FFF.Drone.ReturnDesc>
 
-  <FFF.Drone.NoPlatform>部署平台不可用</FFF.Drone.NoPlatform>
+  <FFF.Drone.NoPlatform>{0}的部署平台不可用</FFF.Drone.NoPlatform>
 
   <FFF.DeployDrone>部署 {0}</FFF.DeployDrone>
   <FFF.DeployDroneDesc>命令平台消耗儲存的{0}來部署最多{1}架的{2}無人機。如果部署平台被破壞，所有受其控制的{3}都會關停。{4}使用內置電池運作，並在電量不足時自動返回平台來回收部署時的消耗。</FFF.DeployDroneDesc>
@@ -18,5 +26,5 @@
 
   <FFF.RetractDrones>收回所有 {0}</FFF.RetractDrones>
   <FFF.RetractDronesDesc>命令所有由此平台所控制的{0}撤回部署平台，這將補充平台部署無人機時的{1}消耗。</FFF.RetractDronesDesc>
-
+  
 </LanguageData>
