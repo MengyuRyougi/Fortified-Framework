@@ -432,11 +432,6 @@ namespace Fortified
         [NoTranslate]
         public string gizmoIconPath_Retract = "UI/Drone_Retract";
 
-        [MustTranslate]
-        public string gizmoLabel = "MechCarrierRelease";
-        [MustTranslate]
-        public string gizmoDesc = "MechCarrierDesc";
-
         public ThingDef fixedIngredient;
 
         public int costPerPawn;
