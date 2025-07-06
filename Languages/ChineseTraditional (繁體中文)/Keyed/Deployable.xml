@@ -4,14 +4,15 @@
   <!-- EN: Operator: -->
   <FFF.CurrentOperator>操作者:</FFF.CurrentOperator>
   <!-- EN: Requires operator -->
-  <FFF.CurrentOperator>需要操作者</FFF.CurrentOperator>
+  <FFF.RequireOperator>需要操作者</FFF.RequireOperator>
   <!-- EN: Enter fortification -->
   <FFF.BunkerFacility_EnterText>進入建築工事</FFF.BunkerFacility_EnterText>
   <!-- EN: Exit fortification -->
   <FFF.BunkerFacility_ExitText>離開建築工事</FFF.BunkerFacility_ExitText>
-  <!-- EN: Not drafted -->
+  <!-- EN: not drafted -->
   <FFF.DisabledUndrafted>未徵召</FFF.DisabledUndrafted>
 
+  <!-- EN: area blocked -->
   <FFF.MinifiedDeployable.SelectedAreaBlocked>位置被阻擋</FFF.MinifiedDeployable.SelectedAreaBlocked>
 
 </LanguageData>

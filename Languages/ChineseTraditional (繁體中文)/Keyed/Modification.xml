@@ -14,7 +14,7 @@
   <!-- EN: remove {0} -->
   <FFF.Modification_Remove>移除{0}</FFF.Modification_Remove>
   
-  <!-- EN: The modification durability on one of your mechs has exhausted -->
+  <!-- EN: A modification durability on one of your mechs has exhausted -->
   <FFF.Message.AddonBroken>安裝於機械體上的改裝模塊已完全損壞</FFF.Message.AddonBroken>
   <!-- EN: Modification applied -->
   <FFF.Message.Modification.Applied>{0}已完成改裝件安裝</FFF.Message.Modification.Applied>

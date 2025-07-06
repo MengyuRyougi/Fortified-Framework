@@ -1,69 +1,56 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
-
-  <FFF.ScenPart_SelectPrefabDef>選擇結構</FFF.ScenPart_SelectPrefabDef>
-
-  <FFF.Reason.NoMechanitorInMap>地圖中需有御機使</FFF.Reason.NoMechanitorInMap>
-  <!-- EN: Must be Mechanior -->
-  <FFF.Reason.NotMechanitor>必須是御機使</FFF.Reason.NotMechanitor>
-  <!-- EN: Inventroy fulled -->
-  <FFF.Reason.NoPayloadCapacity>物品欄已滿</FFF.Reason.NoPayloadCapacity>
-  <!-- EN: work type disabled -->
-  <FFF.Reason.WorkTypeDisabled>工作類型禁用</FFF.Reason.WorkTypeDisabled>
-  <!-- EN: need bandwidth:{0} -->
-  <FFF.Reason.NeedBandwidth>需要帶寬: {0}</FFF.Reason.NeedBandwidth>
   
-  <!-- EN: altitude layer occupied -->
-  <FFF.Reason.AltitudeLayerOccupied>建築層被占用</FFF.Reason.AltitudeLayerOccupied>
-  <!-- EN: Not enough fuel -->
-  <FFF.Reason.NoEnoughFuel>燃料不足</FFF.Reason.NoEnoughFuel>
-  <!-- EN: No fuel -->
-  <FFF.Reason.NotFueled>沒有燃料</FFF.Reason.NotFueled>
 
-<!--++++ Message ++++-->
-
+  <!-- EN: DMS: Trigger Safe Actived -->
+  <FFF.WillTerminateTheBetrayedUnit>失能機關: 待發狀態</FFF.WillTerminateTheBetrayedUnit>
+  
+  <!-- EN: Need mechanitor in map -->
+  <FFF.Reason.NoMechanitorInMap>地圖中需有御機使</FFF.Reason.NoMechanitorInMap>
+  <!-- EN: Must be Mechanitor -->
+  <FFF.Reason.NotMechanitor>必須是御機使</FFF.Reason.NotMechanitor>
   <!-- EN: Orbital downlink has established connection with mechanitor -->
   <FFF.Message.BandwidthSupported>軌道下行帶寬建立了與御機使的連接協議</FFF.Message.BandwidthSupported>
 
-  <!-- EN: Needs to be placed on the wall or door -->
-  <FFF.Message.CannotPlaceWithoutWall>需要放置於牆體或門上</FFF.Message.CannotPlaceWithoutWall>
-  <!-- EN: Needs to be placed on cover -->
-  <FFF.Message.MustOnACoverBuilding>需要放置在掩體上</FFF.Message.MustOnACoverBuilding>
-
-<!--++++ FloatMenuOptions ++++-->
-
+  <!-- EN: Inventroy fulled -->
+  <FFF.Reason.NoPayloadCapacity>物品欄已滿</FFF.Reason.NoPayloadCapacity>
   <!-- EN: Take {0} -->
   <FFF.TakeToInventory>拿取{0}</FFF.TakeToInventory>
   <!-- EN: Drop inventories -->
   <FFF.DropGears>卸載所有物品</FFF.DropGears>
-  
+
+  <!-- EN: work type disabled -->
+  <!-- EN: work type disabled -->
+  <FFF.Reason.WorkTypeDisabled>工作類型禁用</FFF.Reason.WorkTypeDisabled>
+  <!-- EN: need bandwidth:{0} -->
+  <!-- EN: need bandwidths:{0} -->
+  <FFF.Reason.NeedBandwidth>需要帶寬: {0}</FFF.Reason.NeedBandwidth>
+  <!-- EN: altitude layer occupied -->
+  <!-- EN: altitude layer occupied -->
+  <FFF.Reason.AltitudeLayerOccupied>建築層被占用</FFF.Reason.AltitudeLayerOccupied>
+  <!-- EN: No enough fuel -->
+  <!-- EN: No enough fuel -->
+  <FFF.Reason.NoEnoughFuel>燃料不足</FFF.Reason.NoEnoughFuel>
+  <!-- EN: No fuel -->
+  <!-- EN: No fuel -->
+  <FFF.Reason.NotFueled>沒有燃料</FFF.Reason.NotFueled>
+
   <!-- EN: deactivate Mech -->
+  <!-- EN: deactivate mech -->
   <FFF.DeactivatedMech_Disable>拆解機體</FFF.DeactivatedMech_Disable>
+  <!-- EN: Try hacking {0} -->
   <!-- EN: Try hacking {0} -->
   <FFF.DeactivatedMech_TryHack>嘗試駭入{0}</FFF.DeactivatedMech_TryHack>
   <!-- EN: Cannot hacking -->
+  <!-- EN: Cannot hack -->
   <FFF.DeactivatedMech_CannotHack>無法駭入</FFF.DeactivatedMech_CannotHack>
 
-
-<!--++++ IngredientValueGetter ++++-->
-
+  <!-- EN: Requires total mass exceeding {0} -->
   <!-- EN: Requires total mass exceeding {0} -->
   <FFF.BillRequires.Mass>需要總計重量超過{0}:({1})</FFF.BillRequires.Mass>
   <!-- EN: Requires total price to exceed {0} -->
+  <!-- EN: Requires total price to exceed {0} -->
   <FFF.BillRequires.MarketValue>需要總計價值超過{0}:({1})</FFF.BillRequires.MarketValue>
-
-<!--++++ Misc ++++-->
-
-  <!-- EN: FFF: Trigger Safe Actived -->
-  <FFF.WillTerminateTheBetrayedUnit>失能機關: 待發狀態</FFF.WillTerminateTheBetrayedUnit>
-
-<!--++++ Inspector ++++-->
-
-  <!-- EN: APS remain time:{0} -->
-  <FFF.APS_TickRemain>主動防禦系統運作剩餘時間:{0}</FFF.APS_TickRemain>
-
-
-<!--++++ Events ++++-->
 
   <!-- EN: missing mech returned -->
   <FFF.MechReturn>失蹤機兵回歸</FFF.MechReturn>
@@ -74,7 +61,6 @@
   <!-- EN: maybe because it has been wandering for a long time, the dead man switch doesn't reset as usual, and the faulty unit has gained its understanding of death. \n\nIt named itself and now refuses to be controlled, but it respected its former commander. \n\nit will follow your command until it decides to leave. -->
   <FFF.MechWakeDesc>可能是因為徘徊的緣故，一架機兵的失能機關在單位回歸控制後並未照常復位，並隨著時間使其開始思考停機與自身思維停止所帶來的意義。最終自主脫離了御機使的直接控制。 \n\n出於對控制者的尊重與自身的從屬關係，它會繼續聽從命令直到認為這裡不再需要幫助。\n\n根據殖民艦隊提供的訊息，只要一次停機或重新控制就能使造成板機復位失效的內存清除並回歸原廠設置，它們並不干涉你對於失能機兵的處理方式。</FFF.MechWakeDesc>
 
-  <!-- UNUSED -->
   <!-- EN: {0} is leaving -->
   <FFF.MechStartLeave>{0}啟程</FFF.MechStartLeave>
   <!-- EN: After spending some time together, {0} decided it is time to leave. -->
@@ -88,13 +74,23 @@
   <!-- EN: {0}'s return of favors -->
   <FFF.MechStory_Loot>{0}的回報</FFF.MechStory_Loot>
 
+  <!-- EN: APS remain time:{0} -->
+  <FFF.APS_TickRemain>主動防禦系統運作剩餘時間:{0}</FFF.APS_TickRemain>
+
   <!-- EN: Imprinted: {0}({1}) -->
   <FFF.WeaponImprinted>適配武器:{0}({1})</FFF.WeaponImprinted>
+
   <!-- EN: Imprinted: {0} -->
   <FFF.Inprinted>武器綁定:{0}</FFF.Inprinted>
+
   <!-- EN: the colony mech {0} has equipped with its first weapon, this makes its adaptive learning ability bound to that type of weapon. -->
   <FFF.InprintedDesc>由殖民地所控制的 {0} 裝備了它的第一個武器，這使得它的自適應能力將與該型號的武器深度綁定，並將隨著時間逐漸增強與該型武器的契合程度從而提升射擊準確性與反應能力。</FFF.InprintedDesc>
-  
+
+  <!-- EN: {1} from {0} is inbound. -->
   <FFF.AirSupportFromClosestBase>來自{0}的{1}正在抵達。</FFF.AirSupportFromClosestBase>
+  <!-- UNUSED -->
+  <FFF.ScenPart_SelectPrefabDef>選擇結構</FFF.ScenPart_SelectPrefabDef>
+  <FFF.Message.CannotPlaceWithoutWall>需要放置於牆體或門上</FFF.Message.CannotPlaceWithoutWall>
+  <FFF.Message.MustOnACoverBuilding>需要放置在掩體上</FFF.Message.MustOnACoverBuilding>
 
 </LanguageData>

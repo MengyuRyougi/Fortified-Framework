@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: minified turret -->
+  <FFF_MinifiedTurret.label>收起的建筑</FFF_MinifiedTurret.label>
+  <!-- EN: Pick up {0_label} -->
+  <FFF_MinifiedTurret.comps.CompUsable.useLabel>捡起{0}</FFF_MinifiedTurret.comps.CompUsable.useLabel>
+  
+</LanguageData>

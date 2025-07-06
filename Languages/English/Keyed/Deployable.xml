@@ -4,7 +4,7 @@
   <!-- EN: Operator: -->
   <FFF.CurrentOperator>Operator:</FFF.CurrentOperator>
   <!-- EN: Requires operator -->
-  <FFF.CurrentOperator>Requires operator</FFF.CurrentOperator>
+  <FFF.RequireOperator>Requires operator</FFF.RequireOperator>
   <!-- EN: Enter fortification -->
   <FFF.BunkerFacility_EnterText>Enter fortification</FFF.BunkerFacility_EnterText>
   <!-- EN: Exit fortification -->
