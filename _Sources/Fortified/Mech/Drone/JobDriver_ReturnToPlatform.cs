@@ -49,8 +49,7 @@ namespace Fortified
             yield return Toils_General.Do(RefillPlatformCost);
         }
 
-        private static readonly FieldInfo _fiRemaining =
-        AccessTools.Field(typeof(CompApparelReloadable), "remainingCharges");
+        private static readonly FieldInfo _fiRemaining = AccessTools.Field(typeof(CompApparelReloadable), "remainingCharges");
 
         protected void RefillPlatformCost()
         {

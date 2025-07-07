@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using RimWorld;
+using System.Linq;
 using Verse;
 
 namespace Fortified
@@ -7,7 +8,15 @@ namespace Fortified
     {
         protected override float ChanceToUse(Pawn wearer)
         {
-            return 0.01f;
+            if (wearer.IsPrisoner) return 0f;
+            if (Rand.Chance(0.05f))
+            {
+                if (wearer.Map.mapPawns.FactionsOnMap().Any(d => d.HostileTo(wearer.Faction)))
+                {
+                    return 0.25f;
+                }
+            }
+            return 0f;
         }
 
         protected override void UsePack(Pawn wearer)

@@ -365,6 +365,7 @@ namespace Fortified
             Scribe_Deep.Look(ref innerContainer, "innerContainer", this);
             Scribe_Values.Look(ref cooldownTicksRemaining, "cooldownTicksRemaining", 0);
             Scribe_Values.Look(ref autoDeployTicks, "autoDeployTicks", 0);
+            Scribe_Values.Look(ref autoDeployEnabled, "autoDeployEnabled", false);
             Scribe_Values.Look(ref maxToFill, "maxToFill", 0);
             Scribe_Collections.Look(ref spawnedPawns, "spawnedPawns", LookMode.Reference);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
