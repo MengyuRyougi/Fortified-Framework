@@ -2,3 +2,9 @@ _Sources/Fortified/.vs/Fortified/v17
 _Sources/Fortified/.vs/
 /_Sources/Fortified/.vs
 /_Sources/Fortified/.vs/Fortified/CopilotIndices
+*.db
+*.cache
+*.vsidx
+*.Up2Date
+*.bin
+*.db
