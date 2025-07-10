@@ -33,6 +33,9 @@
     <Compile Remove="Mech\HumanlikeMech\HumnalikeMechRenderingUtility.cs" />
     <Compile Remove="Mech\Patches\Patch_PawnRenderNodeWorker_Apparel_Body_CanDrawNow.cs" />
     <Compile Remove="Mech\Patches\Patch_PawnRenderNodeWorker_Apparel_Head_CanDrawNow.cs" />
+    <Compile Remove="StandaloneFunctions\Modification\WeaponMod\CompTargetEffect_WeaponMod.cs" />
+    <Compile Remove="StandaloneFunctions\Modification\WeaponMod\CompWeaponMod.cs" />
+    <Compile Remove="StandaloneFunctions\Modification\WeaponMod\WeaponModificationExtension.cs" />
     <Compile Remove="Thing\WeaponUsableMachine.cs" />
   </ItemGroup>
 
@@ -124,6 +127,9 @@
     <Reference Update="System.Xml.Linq">
       <Private>False</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="StandaloneFunctions\Modification\WeaponMod\" />
   </ItemGroup>
 
 </Project>

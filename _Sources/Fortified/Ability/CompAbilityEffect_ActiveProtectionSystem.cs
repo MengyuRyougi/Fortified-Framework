@@ -106,7 +106,7 @@ namespace Fortified
         public override string CompInspectStringExtra()
         {
             if (isActive)
-                return "FFF.APS_TickRemain:{0}".Translate(tickRemain.TicksToSeconds());
+                return "FFF.APS_TickRemain".Translate(tickRemain.TicksToSeconds());
             else
                 return base.CompInspectStringExtra();
         }
