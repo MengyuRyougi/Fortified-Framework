@@ -8,7 +8,7 @@ using UnityEngine;
 using Verse;
 using CombatExtended;
 
-namespace DMSCE
+namespace FortifiedCE
 {
     public abstract class Verb_SprayCE : Verb_ShootCE
     {
@@ -41,10 +41,9 @@ namespace DMSCE
 
             return b;
         }
-
-        public override bool TryFindCEShootLineFromTo(IntVec3 root, LocalTargetInfo targ, out ShootLine resultingLine)
+        public override bool TryFindCEShootLineFromTo(IntVec3 root, LocalTargetInfo targ, out ShootLine resultingLine, out Vector3 targetPos)
         {
-            return base.TryFindCEShootLineFromTo(root, originalTargetTemp.IsValid ? originalTarget : targ, out resultingLine);
+            return base.TryFindCEShootLineFromTo(root, originalTargetTemp.IsValid ? originalTarget : targ, out resultingLine, out targetPos);
         }
 
         public override void WarmupComplete()

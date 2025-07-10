@@ -1,30 +1,24 @@
-﻿using RimWorld;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CombatExtended;
+using RimWorld;
 using UnityEngine;
 using Verse;
+using Fortified;
 
-namespace Fortified
+namespace FortifiedCE
 {
     [StaticConstructorOnStartup]
-    public class Building_TurretCapacity : Building_TurretGun, IThingHolder, IPawnCapacity
+    public class Building_TurretCapacityCE : Building_TurretGunCE, IThingHolder, IPawnCapacity
     {
-        public bool CanEnter => !innerContainer.Any;
         public static readonly Texture2D ExitFacilityIcon = ContentFinder<Texture2D>.Get("Things/ExitFacility");
-        public Pawn PawnInside => innerContainer.Any ? innerContainer.First() as Pawn : null;
-        public float CurrentAccuracy => PawnInside == null ? PawnInside.GetStatValue(StatDefOf.ShootingAccuracyPawn) : 0;
-
-        public Building_TurretCapacity()
-        {
-            this.innerContainer = new ThingOwner<Thing>(this, false, LookMode.Deep);
-        }
-
         public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn myPawn)
         {
-            foreach (FloatMenuOption floatMenuOption1 in base.GetFloatMenuOptions(myPawn))
+            foreach (FloatMenuOption floatMenuOption2 in base.GetFloatMenuOptions(myPawn))
             {
-                yield return floatMenuOption1;
+                yield return floatMenuOption2;
             }
             foreach (FloatMenuOption floatMenuOption2 in BuildingTurretCapacityUtil.GetFloatMenuOptions(myPawn, this, this.innerContainer))
             {
@@ -32,13 +26,19 @@ namespace Fortified
             }
             yield break;
         }
-
+        public bool CanEnter => !innerContainer.Any;
+        public Building_TurretCapacityCE()
+        {
+            this.innerContainer = new ThingOwner<Thing>(this, false, LookMode.Deep);
+        }
         public void GetChildHolders(List<IThingHolder> outChildren)
         {
             ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, this.GetDirectlyHeldThings());
         }
-        protected override void Tick()
+        public Pawn PawnInside => innerContainer.Any ? innerContainer.First() as Pawn : null;
+        public override void Tick()
         {
+
             if (!innerContainer.Any)
             {
                 return;
@@ -47,14 +47,13 @@ namespace Fortified
             this.innerContainer.DoTick();
             if (PawnInside != null)
             {
-
                 if (ShouldGetOut() || PawnInside.Downed || PawnInside.InMentalState || PawnInside.Dead)
                 {
                     GetOut();
                 }
             }
-        }
 
+        }
         public override string GetInspectString()
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -67,43 +66,33 @@ namespace Fortified
             {
                 if (PawnInside != null)
                 {
-                    stringBuilder.AppendLine("FFF.CurrentOperator".Translate() + ": " + PawnInside.Name);
+                    stringBuilder.AppendLine("FTF_CurrentOperator".Translate() + ": " + PawnInside.Name);
                 }
             }
             else
             {
-                stringBuilder.AppendLine("FFF.RequireOperator".Translate());
+                stringBuilder.AppendLine("FTF_RequireOperator".Translate());
             }
             return stringBuilder.ToString().TrimEndNewlines();
         }
-
         private bool ShouldGetOut()
         {
-            if (PawnInside?.needs.food != null)
-            {
-                //只有在這兩個同時都小於10%時會自動出來
-                if (PawnInside.needs.food.CurLevel <= 0.1f && PawnInside.needs.rest.CurLevel <= 0.1f)
-                {
-                    return true;
-                }
-            }
+            if (PawnInside.needs?.food != null && PawnInside.needs.food.CurLevel <= 0.1f) return true;
+            if (PawnInside.needs?.rest != null && PawnInside.needs.rest.CurLevel <= 0.1f) return true;
             return false;
         }
-
         public ThingOwner GetDirectlyHeldThings()
         {
             return this.innerContainer;
         }
-
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Deep.Look<ThingOwner>(ref this.innerContainer, "innerContainer", new object[]
+            Scribe_Deep.Look(ref this.innerContainer, "innerContainer", new object[]
             {
                 this
             });
         }
-
         public override IEnumerable<Gizmo> GetGizmos()
         {
             foreach (Gizmo gizmo in base.GetGizmos())
@@ -114,7 +103,7 @@ namespace Fortified
             {
                 yield return new Command_Action
                 {
-                    defaultLabel = "FFF.BunkerFacility_ExitText".Translate(),
+                    defaultLabel = "FT_BunkerFacility_ExitText".Translate(),
                     icon = ExitFacilityIcon,
                     action = delegate ()
                     {
@@ -127,7 +116,6 @@ namespace Fortified
         {
             return this.innerContainer.CanAcceptAnyOf(thing, true);
         }
-
         public virtual bool TryAcceptThing(Thing thing)
         {
             if (!this.Accepts(thing))
@@ -150,7 +138,6 @@ namespace Fortified
             }
             return false;
         }
-
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
             GetOut();
@@ -160,7 +147,6 @@ namespace Fortified
         {
             this.innerContainer.TryDropAll(this.InteractionCell, base.Map, ThingPlaceMode.Near, null, null, true);
         }
-
         public bool HasPawn(out Pawn pawn)
         {
             pawn = PawnInside;

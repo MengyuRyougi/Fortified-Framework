@@ -7,8 +7,8 @@
     <ProjectGuid>{89063F8A-6EE5-439A-B1BB-60E44A6E7FB5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DMSCE</RootNamespace>
-    <AssemblyName>DMSCE</AssemblyName>
+    <RootNamespace>FortifiedCE</RootNamespace>
+    <AssemblyName>FortifiedCE</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\1.5\CE\Assemblies\</OutputPath>
+    <OutputPath>..\..\1.6\CE\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -40,12 +40,10 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="CombatExtended">
-      <HintPath>..\Reference\CombatExtended.dll</HintPath>
+      <HintPath>..\..\..\_Dead-Man-Switch-AncientCorps\_source\Reference\CombatExtended.dll</HintPath>
     </Reference>
-    <Reference Include="DMS">
-      <HintPath>..\..\1.5\Assemblies\DMS.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <Private>False</Private>
+    <Reference Include="Fortified">
+      <HintPath>..\..\1.6\Assemblies\Fortified.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -77,8 +75,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Building_TurretCapacityCE.cs" />
     <Compile Include="CompAbilityEffect_ActiveProtectionSystem.cs" />
     <Compile Include="CompAntiBlasterSmoke.cs" />
+    <Compile Include="CompExplosiveWithCompositeCE.cs" />
+    <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="Harmony_DeployableTurretCompat.cs" />
+    <Compile Include="Harmony_ThreatDisabled.cs" />
+    <Compile Include="Harmony_TurretGunCE.cs" />
+    <Compile Include="Harmony_Verb_ShootCE.cs" />
+    <Compile Include="ProjectileCE_ClusterBomb.cs" />
+    <Compile Include="ProjectileCE_ExplosiveByComps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Verb\Verb_CastAbilityArcSprayProjectile.cs" />
   </ItemGroup>

@@ -18,9 +18,9 @@ namespace Fortified
 
         public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
         {
-            if (thing is Building_WorkTableAutonomous building_DMSWorker)
+            if (thing is Building_WorkTableAutonomous building)
             {
-                if (building_DMSWorker.activeBill == null)
+                if (building.activeBill == null)
                 {
                     Job job = base.JobOnThing(pawn, thing, forced);
                     if (job != null)
@@ -34,7 +34,7 @@ namespace Fortified
                         return job2;
                     }
                 }
-                else if (!building_DMSWorker.prepared && building_DMSWorker.activeBill.recipe.PawnSatisfiesSkillRequirements(pawn))
+                else if (!building.prepared && building.activeBill.recipe.PawnSatisfiesSkillRequirements(pawn))
                 {
                     return JobMaker.MakeJob(DefDatabase<JobDef>.GetNamed("FFF_FinishAutonomousBill"), thing);
                 }

@@ -7,9 +7,9 @@ using Verse;
 using Verse.Noise;
 using Verse.Sound;
 using CombatExtended;
-using DMS;
+using Fortified;
 
-namespace DMSCE
+namespace FortifiedCE
 {
     public class CompAbilityEffect_ActiveProtectionSystem : CompAbilityEffect
     {
@@ -89,7 +89,7 @@ namespace DMSCE
                                 float angle = (Vector3.Lerp(Pawn.DrawPos, pos, 0.2f) - Pawn.DrawPos).AngleFlat() + Rand.Range(-90f, 90f);
 
                                 FleckCreationData dataStatic = FleckMaker.GetDataStatic(Pawn.DrawPos, Pawn.Map, FleckDefOf.AirPuff);
-                                dataStatic.spawnPosition = Pawn.DrawPos + DMS.CircleConst.GetAngle(angle) * 2f;
+                                dataStatic.spawnPosition = Pawn.DrawPos + Fortified.CircleConst.GetAngle(angle) * 2f;
                                 dataStatic.scale = Rand.Range(1f, 4.9f);
                                 dataStatic.rotationRate = Rand.Range(-30f, 30f) / dataStatic.scale;
                                 dataStatic.velocityAngle = angle;
@@ -106,7 +106,7 @@ namespace DMSCE
         public override string CompInspectStringExtra()
         {
             if (isActive)
-                return "DMS_APS_TickRemain".Translate(tickRemain.TicksToSeconds());
+                return "FFF_APS_TickRemain".Translate(tickRemain.TicksToSeconds());
             else
                 return base.CompInspectStringExtra();
         }

@@ -48,15 +48,15 @@ namespace Fortified
         {
             if (req.Def.GetModExtension<HeavyEquippableExtension>().EquippableDef.EquippableBaseBodySize == -1)
             {
-                return "DMS_MountedWeaponCanOnlyBeEquippedBySpecificApparelOrRaces".Translate();
+                return "FFF.MountedWeaponCanOnlyBeEquippedBySpecificApparelOrRaces".Translate();
             }
-            return "DMS_WeaponCanBeEquippedBySpecificApparelOrRaces".Translate();
+            return "FFF.WeaponCanBeEquippedBySpecificApparelOrRaces".Translate();
         }
         public override string GetStatDrawEntryLabel(StatDef stat, float value, ToStringNumberSense numberSense, StatRequest optionalReq, bool finalized = true)
         {
             if (optionalReq.Def.GetModExtension<HeavyEquippableExtension>().EquippableDef.EquippableBaseBodySize == -1)
             {
-                return "DMS_MountedWeapon".Translate();
+                return "FFF.MountedWeapon".Translate();
             }
             return optionalReq.Def.GetModExtension<HeavyEquippableExtension>().EquippableDef.EquippableBaseBodySize.ToString("0.##");
         }

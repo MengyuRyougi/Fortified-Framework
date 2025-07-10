@@ -3,6 +3,49 @@
   "WorkspaceRootPath": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{89063F8A-6EE5-439A-B1BB-60E44A6E7FB5}|..\\FortifiedCE\\FortifiedCE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortifiedce\\harmony_verb_shootce.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{89063F8A-6EE5-439A-B1BB-60E44A6E7FB5}|..\\FortifiedCE\\FortifiedCE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortifiedce\\harmony_turretgunce.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{89063F8A-6EE5-439A-B1BB-60E44A6E7FB5}|..\\FortifiedCE\\FortifiedCE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortifiedce\\harmony_deployableturretcompat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{89063F8A-6EE5-439A-B1BB-60E44A6E7FB5}|..\\FortifiedCE\\FortifiedCE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortifiedce\\projectilece_clusterbomb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{89063F8A-6EE5-439A-B1BB-60E44A6E7FB5}|..\\FortifiedCE\\FortifiedCE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortifiedce\\projectilece_explosivebycomps.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortified\\thing\\projectile\\specialexplosions\\projectile_clusterbomb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|solutionrelative:thing\\projectile\\specialexplosions\\projectile_clusterbomb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{89063F8A-6EE5-439A-B1BB-60E44A6E7FB5}|..\\FortifiedCE\\FortifiedCE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortifiedce\\compexplosivewithcompositece.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortified\\thing\\projectile\\specialexplosions\\modextension_expolsionwithconditions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|solutionrelative:thing\\projectile\\specialexplosions\\modextension_expolsionwithconditions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{89063F8A-6EE5-439A-B1BB-60E44A6E7FB5}|..\\FortifiedCE\\FortifiedCE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortifiedce\\compantiblastersmoke.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{89063F8A-6EE5-439A-B1BB-60E44A6E7FB5}|..\\FortifiedCE\\FortifiedCE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortifiedce\\compabilityeffect_activeprotectionsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{89063F8A-6EE5-439A-B1BB-60E44A6E7FB5}|..\\FortifiedCE\\FortifiedCE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortifiedce\\building_turretcapacityce.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortified\\thing\\bunkerfacility\\building_turretcapacity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|solutionrelative:thing\\bunkerfacility\\building_turretcapacity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortified\\thing\\bunkerfacility\\buildingturretcapacityutil.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|solutionrelative:thing\\bunkerfacility\\buildingturretcapacityutil.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortified\\fff_defof.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|solutionrelative:fff_defof.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -27,6 +70,179 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Harmony_Verb_ShootCE.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\Harmony_Verb_ShootCE.cs",
+              "RelativeDocumentMoniker": "..\\FortifiedCE\\Harmony_Verb_ShootCE.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\Harmony_Verb_ShootCE.cs",
+              "RelativeToolTip": "..\\FortifiedCE\\Harmony_Verb_ShootCE.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAQwB4AAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:27:01.243Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Harmony_TurretGunCE.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\Harmony_TurretGunCE.cs",
+              "RelativeDocumentMoniker": "..\\FortifiedCE\\Harmony_TurretGunCE.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\Harmony_TurretGunCE.cs",
+              "RelativeToolTip": "..\\FortifiedCE\\Harmony_TurretGunCE.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:26:41.912Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Harmony_DeployableTurretCompat.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\Harmony_DeployableTurretCompat.cs",
+              "RelativeDocumentMoniker": "..\\FortifiedCE\\Harmony_DeployableTurretCompat.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\Harmony_DeployableTurretCompat.cs",
+              "RelativeToolTip": "..\\FortifiedCE\\Harmony_DeployableTurretCompat.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:26:34.048Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProjectileCE_ClusterBomb.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\ProjectileCE_ClusterBomb.cs",
+              "RelativeDocumentMoniker": "..\\FortifiedCE\\ProjectileCE_ClusterBomb.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\ProjectileCE_ClusterBomb.cs",
+              "RelativeToolTip": "..\\FortifiedCE\\ProjectileCE_ClusterBomb.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAA1wBoAAABWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:25:37.277Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ProjectileCE_ExplosiveByComps.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\ProjectileCE_ExplosiveByComps.cs",
+              "RelativeDocumentMoniker": "..\\FortifiedCE\\ProjectileCE_ExplosiveByComps.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\ProjectileCE_ExplosiveByComps.cs",
+              "RelativeToolTip": "..\\FortifiedCE\\ProjectileCE_ExplosiveByComps.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAA3wCkAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:24:49.351Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Projectile_ClusterBomb.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Thing\\Projectile\\SpecialExplosions\\Projectile_ClusterBomb.cs",
+              "RelativeDocumentMoniker": "Thing\\Projectile\\SpecialExplosions\\Projectile_ClusterBomb.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Thing\\Projectile\\SpecialExplosions\\Projectile_ClusterBomb.cs",
+              "RelativeToolTip": "Thing\\Projectile\\SpecialExplosions\\Projectile_ClusterBomb.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:24:43.759Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CompExplosiveWithCompositeCE.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\CompExplosiveWithCompositeCE.cs",
+              "RelativeDocumentMoniker": "..\\FortifiedCE\\CompExplosiveWithCompositeCE.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\CompExplosiveWithCompositeCE.cs",
+              "RelativeToolTip": "..\\FortifiedCE\\CompExplosiveWithCompositeCE.cs",
+              "ViewState": "AgIAALIAAAAAAAAAAAAiwFAAAABOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:23:42.274Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ModExtension_ExpolsionWithConditions.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Thing\\Projectile\\SpecialExplosions\\ModExtension_ExpolsionWithConditions.cs",
+              "RelativeDocumentMoniker": "Thing\\Projectile\\SpecialExplosions\\ModExtension_ExpolsionWithConditions.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Thing\\Projectile\\SpecialExplosions\\ModExtension_ExpolsionWithConditions.cs",
+              "RelativeToolTip": "Thing\\Projectile\\SpecialExplosions\\ModExtension_ExpolsionWithConditions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:24:18.992Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CompAntiBlasterSmoke.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\CompAntiBlasterSmoke.cs",
+              "RelativeDocumentMoniker": "..\\FortifiedCE\\CompAntiBlasterSmoke.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\CompAntiBlasterSmoke.cs",
+              "RelativeToolTip": "..\\FortifiedCE\\CompAntiBlasterSmoke.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:23:41.437Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CompAbilityEffect_ActiveProtectionSystem.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\CompAbilityEffect_ActiveProtectionSystem.cs",
+              "RelativeDocumentMoniker": "..\\FortifiedCE\\CompAbilityEffect_ActiveProtectionSystem.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\CompAbilityEffect_ActiveProtectionSystem.cs",
+              "RelativeToolTip": "..\\FortifiedCE\\CompAbilityEffect_ActiveProtectionSystem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:23:40.799Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Building_TurretCapacityCE.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\Building_TurretCapacityCE.cs",
+              "RelativeDocumentMoniker": "..\\FortifiedCE\\Building_TurretCapacityCE.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\Building_TurretCapacityCE.cs",
+              "RelativeToolTip": "..\\FortifiedCE\\Building_TurretCapacityCE.cs",
+              "ViewState": "AgIAAIkAAAAAAAAAAAAmwJoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:22:46.215Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "BuildingTurretCapacityUtil.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Thing\\BunkerFacility\\BuildingTurretCapacityUtil.cs",
+              "RelativeDocumentMoniker": "Thing\\BunkerFacility\\BuildingTurretCapacityUtil.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Thing\\BunkerFacility\\BuildingTurretCapacityUtil.cs",
+              "RelativeToolTip": "Thing\\BunkerFacility\\BuildingTurretCapacityUtil.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:22:38.084Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Building_TurretCapacity.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Thing\\BunkerFacility\\Building_TurretCapacity.cs",
+              "RelativeDocumentMoniker": "Thing\\BunkerFacility\\Building_TurretCapacity.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Thing\\BunkerFacility\\Building_TurretCapacity.cs",
+              "RelativeToolTip": "Thing\\BunkerFacility\\Building_TurretCapacity.cs",
+              "ViewState": "AgIAAJcAAAAAAAAAAAAqwKMAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T17:22:33.319Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "FFF_DefOf.cs",
               "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\FFF_DefOf.cs",
               "RelativeDocumentMoniker": "FFF_DefOf.cs",
@@ -39,7 +255,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 14,
               "Title": "Patch_Verb_Shoot_Building_TurretCapacity.cs",
               "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Thing\\BunkerFacility\\Patch_Verb_Shoot_Building_TurretCapacity.cs",
               "RelativeDocumentMoniker": "Thing\\BunkerFacility\\Patch_Verb_Shoot_Building_TurretCapacity.cs",
@@ -47,8 +263,7 @@
               "RelativeToolTip": "Thing\\BunkerFacility\\Patch_Verb_Shoot_Building_TurretCapacity.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-10T15:06:23.055Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-10T15:06:23.055Z"
             }
           ]
         }

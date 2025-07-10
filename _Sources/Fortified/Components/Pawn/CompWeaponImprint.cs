@@ -85,14 +85,14 @@ namespace Fortified
         {
             if (ImprintedThingDef != null)
             {
-                return base.CompInspectStringExtra() + "DMS_WeaponImprinted".Translate(ImprintedThingDef.LabelCap, Level());
+                return base.CompInspectStringExtra() + "FFF.WeaponImprinted".Translate(ImprintedThingDef.LabelCap, Level());
             }
             else return base.CompInspectStringExtra();
         }
         void Inprint(CompEquippable equippable)
         {
             weaponDef = equippable.parent.def.defName;
-            Find.LetterStack.ReceiveLetter("DMS_Inprinted".Translate(this.parent.LabelCap), "DMS_InprintedDesc".Translate(this.parent.LabelCap), LetterDefOf.PositiveEvent, this.parent);
+            Find.LetterStack.ReceiveLetter("FFF.Inprinted".Translate(this.parent.LabelCap), "FFF.InprintedDesc".Translate(this.parent.LabelCap), LetterDefOf.PositiveEvent, this.parent);
         }
 
         public override void PostExposeData()

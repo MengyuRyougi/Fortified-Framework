@@ -6,7 +6,7 @@ using UnityEngine;
 using CombatExtended;
 using System.Reflection;
 
-namespace DMSCE
+namespace FortifiedCE
 {
     public class CompAntiBlasterSmoke : ThingComp
     {
