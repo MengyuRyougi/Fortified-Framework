@@ -11,10 +11,8 @@ namespace Fortified
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             Thing thing = job.GetTarget(TargetIndex.A).Thing;
-            if (!pawn.Reserve(job.GetTarget(TargetIndex.A), job, 1, -1, null, errorOnFailed))
-            {
-                return false;
-            }
+            if (thing == null) return false; ;
+            if (!pawn.Reserve(job.GetTarget(TargetIndex.A), job, 1, -1, null, errorOnFailed)) return false;
             if (thing != null && thing.def.hasInteractionCell && !pawn.ReserveSittableOrSpot(thing.InteractionCell, job, errorOnFailed))
             {
                 return false;
