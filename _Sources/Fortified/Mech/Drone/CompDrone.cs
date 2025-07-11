@@ -141,11 +141,10 @@ namespace Fortified
         }
         public override void CompTick()
         {
-            if (!parent.Spawned) return;
+            if (!parent.Spawned || (parent as Pawn).DeadOrDowned) return;
 
             if (!parent.IsHashIntervalTick(500)) return;
             if (!CanDraft && pawn.drafter != null) pawn.drafter.Drafted = false;
-            //if (powerCell.PowerTicksLeft < 5000) Log.Message(powerCell.PowerTicksLeft);
 
             if (pawn.CurJobDef != Props.returnToDraftPlatformJob && powerCell != null && powerCell.PowerTicksLeft < 5000)
             {
@@ -162,6 +161,7 @@ namespace Fortified
                 noPlatformWarning = true;
                 return;
             }
+            if (!HasPlatform) return;
 
             if (isApparelPlatform)
             {
