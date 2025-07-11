@@ -63,10 +63,7 @@ namespace Fortified
         {
             get
             {
-                if (ext == null)
-                {
-                    ext = InnerThing?.def.GetModExtension<MinifiedThingDeployableGraphicExt>();
-                }
+                ext ??= InnerThing?.def.GetModExtension<MinifiedThingDeployableGraphicExt>();
                 return ext;
             }
         }
@@ -109,6 +106,8 @@ namespace Fortified
             if (createdThing.def.CanHaveFaction)
             {
                 createdThing.SetFactionDirect(workerPawn.Faction);
+                createdThing.stackCount = 1;
+                if (createdThing.Destroyed) createdThing.PostMake();
             }
             Thing thing = GenSpawn.Spawn(createdThing, cell, map, workerPawn.Rotation, WipeMode.VanishOrMoveAside);
             if (thing.TryGetComp<CompMannable>() != null && !workerPawn.WorkTagIsDisabled(WorkTags.Violent))

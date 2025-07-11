@@ -75,10 +75,9 @@ namespace Fortified
                 Thing weapon = ThingMaker.MakeThing(Props.defaultWeapon);
                 pawn.equipment.AddEquipment((ThingWithComps)weapon);
             }
-
-            cachedVehicles.Add(((Pawn)parent).Drawer.renderer, this);
-            cachedPawns.Add(this, (Pawn)parent);
-            cachedVehicldesPawns.Add((Pawn)parent, this);
+            if (!cachedVehicles.ContainsKey((parent as Pawn).Drawer.renderer)) cachedVehicles.Add(((Pawn)parent).Drawer.renderer, this);
+            if (!cachedPawns.ContainsKey(this)) cachedPawns.Add(this, (Pawn)parent);
+            if (!cachedVehicldesPawns.ContainsKey((Pawn)parent)) cachedVehicldesPawns.Add((Pawn)parent, this);
         }
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
