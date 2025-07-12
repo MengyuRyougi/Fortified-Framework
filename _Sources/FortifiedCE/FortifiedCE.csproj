@@ -39,8 +39,9 @@
       <HintPath>..\..\..\_Dead-Man-Switch-AncientCorps\_source\Reference\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CombatExtended">
-      <HintPath>..\..\..\_Dead-Man-Switch-AncientCorps\_source\Reference\CombatExtended.dll</HintPath>
+    <Reference Include="CombatExtended, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Reference\CombatExtended.dll</HintPath>
     </Reference>
     <Reference Include="Fortified">
       <HintPath>..\..\1.6\Assemblies\Fortified.dll</HintPath>
@@ -78,6 +79,7 @@
     <Compile Include="Building_TurretCapacityCE.cs" />
     <Compile Include="CompAbilityEffect_ActiveProtectionSystem.cs" />
     <Compile Include="CompAntiBlasterSmoke.cs" />
+    <Compile Include="CompExplosiveOnMelee.cs" />
     <Compile Include="CompExplosiveWithCompositeCE.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="Harmony_DeployableTurretCompat.cs" />
