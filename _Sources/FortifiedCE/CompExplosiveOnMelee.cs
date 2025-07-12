@@ -1,12 +1,10 @@
 ﻿using RimWorld;
-using System;
 using System.Collections.Generic;
 using Verse;
-using Verse.Noise;
-using UnityEngine;
-using System.Linq;
+using CombatExtended;
+using System.Reflection;
 
-namespace Fortified
+namespace FortifiedCE
 {
     public class CompExplosiveOnMelee : ThingComp
     {
@@ -31,7 +29,7 @@ namespace Fortified
         {
             if (Pawn.equipment == null || Pawn.equipment.Primary == null) return;
 
-            if (Pawn.equipment.Primary.TryGetComp<CompExplosive>(out var comp))
+            if (Pawn.equipment.Primary.TryGetComp<CompExplosiveCE>(out var comp))
             {
                 Detonate(comp);
             }
@@ -42,7 +40,7 @@ namespace Fortified
             List<Thing> tmpThings = new List<Thing>();
             foreach (var item in Pawn.inventory.innerContainer)
             {
-                if (item.TryGetComp<CompExplosive>(out var comp))
+                if (item.TryGetComp<CompExplosiveCE>(out var comp))
                 {
                     tmpThings.Add(item);
                 }
@@ -50,31 +48,47 @@ namespace Fortified
             if (tmpThings.NullOrEmpty()) return;
             foreach (var thing in tmpThings)
             {
-                Detonate(thing.TryGetComp<CompExplosive>());
+                Detonate(thing.TryGetComp<CompExplosiveCE>());
             }
             Pawn.inventory.DestroyAll();
         }
-        protected virtual void Detonate(CompExplosive comp)
+
+        public static CompProperties_ExplosiveCE GetProps(CompExplosiveCE instance)
+        {
+            if (instance == null) return null;
+            PropertyInfo propInfo = typeof(CompExplosiveCE).GetProperty("Props", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (propInfo != null)
+            {
+                return propInfo.GetValue(instance) as CompProperties_ExplosiveCE;
+            }
+            return null;
+        }
+        protected virtual void Detonate(CompExplosiveCE comp)
         {
             detonated = true;
-            var compProperties_Explosive = comp.Props as CompProperties_Explosive;
-            var Props = comp.Props;
+            var compProperties_Explosive = GetProps(comp);
+            var Props = GetProps(comp);
             var map = parent.Map;
 
             if (comp.parent.def.projectileWhenLoaded != null)
             {
                 ThingDef i = comp.parent.def.projectileWhenLoaded;
-                if (i.HasComp<CompExplosive>())
+                if (i.HasComp<CompExplosiveCE>())
                 {
-                    compProperties_Explosive = i.GetCompProperties<CompProperties_Explosive>();
-                    Props = i.GetCompProperties<CompProperties_Explosive>();
+                    compProperties_Explosive = i.GetCompProperties<CompProperties_ExplosiveCE>();
+                    Props = i.GetCompProperties<CompProperties_ExplosiveCE>();
                 }
+            }
+            if (Props == null)
+            {
+                Log.Error($"CompExplosiveOnMelee: {comp.parent} has no CompProperties_ExplosiveCE defined.");
+                return;
             }
 
             IntVec3 positionHeld = parent.PositionHeld;
             DamageDef explosiveDamageType = compProperties_Explosive.explosiveDamageType;
-            int damageAmountBase = compProperties_Explosive.damageAmountBase;
-            float armorPenetrationBase = compProperties_Explosive.armorPenetrationBase;
+            int damageAmountBase = (int)compProperties_Explosive.damageAmountBase;
+            float armorPenetrationBase = compProperties_Explosive.GetExplosionArmorPenetration();
             SoundDef explosionSound = compProperties_Explosive.explosionSound;
             ThingDef postExplosionSpawnThingDef = compProperties_Explosive.postExplosionSpawnThingDef;
             float postExplosionSpawnChance = compProperties_Explosive.postExplosionSpawnChance;
@@ -89,12 +103,13 @@ namespace Fortified
             float chanceToStartFire = compProperties_Explosive.chanceToStartFire;
             bool damageFalloff = compProperties_Explosive.damageFalloff;
             List<Thing> ignoredThings = null;
-            bool doVisualEffects = compProperties_Explosive.doVisualEffects;
-            bool doSoundEffects = compProperties_Explosive.doSoundEffects;
-            float propagationSpeed = compProperties_Explosive.propagationSpeed;
-            ThingDef preExplosionSpawnSingleThingDef = compProperties_Explosive.preExplosionSpawnSingleThingDef;
-            ThingDef postExplosionSpawnSingleThingDef = compProperties_Explosive.postExplosionSpawnSingleThingDef;
-            GenExplosion.DoExplosion(positionHeld, map, comp.ExplosiveRadius(), explosiveDamageType, this.parent, damageAmountBase, armorPenetrationBase, explosionSound, null, null, null, postExplosionSpawnThingDef, postExplosionSpawnChance, postExplosionSpawnThingCount, postExplosionGasType, postExplosionGasRadiusOverride, postExplosionGasAmount, applyDamageToExplosionCellsNeighbors, preExplosionSpawnThingDef, preExplosionSpawnChance, preExplosionSpawnThingCount, chanceToStartFire, damageFalloff, null, ignoredThings, null, doVisualEffects, propagationSpeed, 0f, doSoundEffects, null, 1f, null, null, postExplosionSpawnSingleThingDef, preExplosionSpawnSingleThingDef);
+            bool doVisualEffects = false;
+            bool doSoundEffects = compProperties_Explosive.explosionSound != null;
+            float propagationSpeed = compProperties_Explosive.fragSpeedFactor;
+            ThingDef preExplosionSpawnSingleThingDef = compProperties_Explosive.preExplosionSpawnThingDef;
+            ThingDef postExplosionSpawnSingleThingDef = compProperties_Explosive.postExplosionSpawnThingDef;
+
+            GenExplosionCE.DoExplosion(positionHeld, map, Props.explosiveRadius, explosiveDamageType, this.parent, damageAmountBase, armorPenetrationBase, explosionSound, null, null,null, postExplosionSpawnThingDef, postExplosionSpawnChance, postExplosionSpawnThingCount, postExplosionGasType, postExplosionGasRadiusOverride, postExplosionGasAmount, applyDamageToExplosionCellsNeighbors, preExplosionSpawnThingDef, preExplosionSpawnChance, preExplosionSpawnThingCount, chanceToStartFire, damageFalloff, null, ignoredThings, null, doVisualEffects, propagationSpeed, 0f, doSoundEffects, null, 1f, null, null, postExplosionSpawnSingleThingDef, preExplosionSpawnSingleThingDef);
         }
     }
 }

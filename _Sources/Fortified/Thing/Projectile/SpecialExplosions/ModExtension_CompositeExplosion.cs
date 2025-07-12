@@ -31,6 +31,9 @@ namespace Fortified
         public float chanceToStartFire = 0;
         public bool damageFalloff = true;
         public FloatRange? affectedAngle = null;
+        public float? postExplosionGasRadiusOverride;
+        public int postExplosionGasAmount;
+        public bool applyDamageToExplosionCellsNeighbors;
     }
 
 }

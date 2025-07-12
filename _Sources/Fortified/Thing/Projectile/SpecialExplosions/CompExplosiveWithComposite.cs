@@ -292,37 +292,34 @@ namespace Fortified
         //複合爆炸
         private void CompositeExplosion(Map map)
         {
-            if (compCompositeExplosion != null)
-            {
-                foreach (CompositeExplosion compositeExplosion in compCompositeExplosion.compositeExplosions)
-                {
+            if (compCompositeExplosion == null) return;
 
-                    if (compositeExplosion.countdown == ticksToDetonation_ForComps)
-                    {
-                        GenExplosion.DoExplosion(parent.PositionHeld,
-                               map,
-                               compositeExplosion.radius,
-                               compositeExplosion.damamgeDef,
-                               (instigator == null || (instigator.HostileTo(parent.Faction) && parent.Faction != Faction.OfPlayer)) ? parent : instigator,
-                               compositeExplosion.amount,
-                               compositeExplosion.armorPenetration ?? (-1f),
-                               compositeExplosion.explosionSound,
-                               weapon: null,
-                               projectile: null,
-                               intendedTarget: null,
-                               compositeExplosion.postExplosionSpawnThingDef,
-                               compositeExplosion.postExplosionSpawnChance,
-                               compositeExplosion.postExplosionSpawnThingCount,
-                               postExplosionGasType: null,
-                                postExplosionGasRadiusOverride: null,
-                                postExplosionGasAmount: 0,
-                               applyDamageToExplosionCellsNeighbors: false,
-                               compositeExplosion.preExplosionSpawnThingDef,
-                               compositeExplosion.preExplosionSpawnChance,
-                               compositeExplosion.preExplosionSpawnThingCount,
-                               compositeExplosion.chanceToStartFire);
-                    }
-                }
+            foreach (CompositeExplosion compositeExplosion in compCompositeExplosion.compositeExplosions)
+            {
+
+                if (compositeExplosion.countdown != ticksToDetonation_ForComps) continue;
+                GenExplosion.DoExplosion(parent.PositionHeld,
+                       map,
+                       compositeExplosion.radius,
+                       compositeExplosion.damamgeDef,
+                       (instigator == null || (instigator.HostileTo(parent.Faction) && parent.Faction != Faction.OfPlayer)) ? parent : instigator,
+                       compositeExplosion.amount,
+                       compositeExplosion.armorPenetration ?? (-1f),
+                       compositeExplosion.explosionSound,
+                       weapon: null,
+                       projectile: null,
+                       intendedTarget: null,
+                       compositeExplosion.postExplosionSpawnThingDef,
+                       compositeExplosion.postExplosionSpawnChance,
+                       compositeExplosion.postExplosionSpawnThingCount,
+                       compositeExplosion.postExplosionGasType,
+                       compositeExplosion.postExplosionGasRadiusOverride,
+                       compositeExplosion.postExplosionGasAmount,
+                       compositeExplosion.applyDamageToExplosionCellsNeighbors,
+                       compositeExplosion.preExplosionSpawnThingDef,
+                       compositeExplosion.preExplosionSpawnChance,
+                       compositeExplosion.preExplosionSpawnThingCount,
+                       compositeExplosion.chanceToStartFire);
             }
         }
         //遍歷觸發事件
