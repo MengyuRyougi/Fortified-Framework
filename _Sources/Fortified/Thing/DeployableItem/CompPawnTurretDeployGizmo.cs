@@ -99,15 +99,10 @@ namespace Fortified
 
             DeployCECompatHook(this, createdThing);
 
-            if (!Destroyed)
-            {
-                Destroy();
-            }
             if (createdThing.def.CanHaveFaction)
             {
                 createdThing.SetFactionDirect(workerPawn.Faction);
                 createdThing.stackCount = 1;
-                if (createdThing.Destroyed) createdThing.PostMake();
             }
             Thing thing = GenSpawn.Spawn(createdThing, cell, map, workerPawn.Rotation, WipeMode.VanishOrMoveAside);
             if (thing.TryGetComp<CompMannable>() != null && !workerPawn.WorkTagIsDisabled(WorkTags.Violent))
@@ -116,6 +111,10 @@ namespace Fortified
                 Find.Selector.Select(thing, playSound: false, forceDesignatorDeselect: false);
                 Job job = JobMaker.MakeJob(RimWorld.JobDefOf.ManTurret, thing);
                 workerPawn.jobs.TryTakeOrderedJob(job, 0, true);
+            }
+            if (!Destroyed)
+            {
+                Destroy();
             }
             return true;
         }
