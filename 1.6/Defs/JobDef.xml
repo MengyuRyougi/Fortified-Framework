@@ -2,7 +2,7 @@
 <Defs>
   <WorkGiverDef>
     <defName>FFF_DoAutonomousBill</defName>
-    <label>make things at mech gestator</label>
+    <label>make things</label>
     <giverClass>Fortified.WorkGiver_DoAutonomousBill</giverClass>
     <workType>Smithing</workType>
     <priorityInType>210</priorityInType>
@@ -17,13 +17,13 @@
   <JobDef>
     <defName>FFF_DoAutonomousBill</defName>
     <driverClass>Fortified.JobDriver_DoAutonomousBill</driverClass>
-    <reportString>do.</reportString>
+    <reportString>working.</reportString>
   </JobDef>
 
   <JobDef>
     <defName>FFF_FinishAutonomousBill</defName>
     <driverClass>Fortified.JobDriver_FinishAutonomousBill</driverClass>
-    <reportString>do.</reportString>
+    <reportString>working.</reportString>
   </JobDef>
 
   

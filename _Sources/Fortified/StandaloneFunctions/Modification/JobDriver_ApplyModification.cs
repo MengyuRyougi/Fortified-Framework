@@ -39,8 +39,8 @@ namespace Fortified
 
         private void ApplyModification()
         {
-            if (Target.GetType().IsAssignableFrom(typeof(Pawn))) ModificationForPawn(Target as Pawn);
-            //else if (Target.def.IsRangedWeapon && Target.TryGetComp<CompWeaponMod>(out var w)) ModificationForWeapon(Target, w);
+            Pawn p = Target;
+            ModificationForPawn(p);
             Item.SplitOff(1).Destroy();
         }
         private void ModificationForPawn(Pawn p)
@@ -63,18 +63,5 @@ namespace Fortified
                 else p.health.AddHediff(comp.Props.hediffDef);
             }
         }
-        //internal virtual void ModificationForWeapon(Thing t, CompWeaponMod uniqueWeapon)
-        //{
-        //    var trait = Item.TryGetComp<CompTargetable_WeaponMod>().Apply();
-        //    uniqueWeapon.AddTrait(trait);
-        //    uniqueWeapon.PostPostMake();
-
-        //    var mod = trait?.GetModExtension<WeaponModificationExtension>();
-        //    if (mod != null)
-        //    {
-        //        uniqueWeapon.parent.SetStyleDef(mod.GetStyle(t));
-        //    }
-        //    Messages.Message("FFF.Message.Modification.Applied".Translate(t), t, MessageTypeDefOf.PositiveEvent);
-        //}
     }
 }
