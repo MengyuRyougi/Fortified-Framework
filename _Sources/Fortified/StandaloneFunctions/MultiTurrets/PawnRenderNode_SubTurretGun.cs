@@ -9,6 +9,7 @@ namespace Fortified
 {
     public class PawnRenderNode_SubTurretGun : PawnRenderNode
     {
+		
         public SubTurret subturret;
         public PawnRenderNode_SubTurretGun(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree) : base(pawn, props, tree)
 		{

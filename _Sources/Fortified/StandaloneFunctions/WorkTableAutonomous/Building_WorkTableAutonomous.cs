@@ -14,6 +14,7 @@ namespace Fortified
     {
 
         public CompPowerTrader Power;
+        public CompBreakdownable CompBreakdownable;
 
         public ThingOwner innerContainer;
 
@@ -41,6 +42,7 @@ namespace Fortified
         {
             base.SpawnSetup(map, respawningAfterLoad);
             this.TryGetComp<CompPowerTrader>(out Power);
+            this.TryGetComp<CompBreakdownable>(out CompBreakdownable);
             modExtension = def.GetModExtension<ModExtension_AutoWorkTable>();
             maintainTick = Rand.Range(0, 120);
         }
@@ -180,21 +182,19 @@ namespace Fortified
         protected override void TickInterval(int delta)
         {
             if (!prepared || !CanRun) return;
-            curWorkAmount -= delta;
+            curWorkAmount -= delta * (this.GetStatValue(StatDefOf.WorkTableEfficiencyFactor) > 1 ? this.GetStatValue(StatDefOf.WorkTableEfficiencyFactor) : 1);
             if (curWorkAmount <= 0f)
             {
                 curWorkAmount = 0f;
                 prepared = false;
-                if (totalWorkAmount <= 0f)
-                {
-                    modExtension?.GetEffecterDef_DoneTrigger(this.Rotation)?.SpawnAttached(this, this.Map).Trigger(this, this);
-                    //Messages.Message("FFF.Autofacturer.WorkerFinished".Translate(Label), this, MessageTypeDefOf.PositiveEvent);
-                }
+                if (totalWorkAmount <= 0f) modExtension?.GetEffecterDef_DoneTrigger(this.Rotation)?.SpawnAttached(this, this.Map).Trigger(this, this);
             }
         }
         private bool effectActive = false;
         protected override void Tick()
         {
+            if (!Spawned) return;
+            if (CompBreakdownable != null && CompBreakdownable.BrokenDown) return;
             if (this.IsHashIntervalTick(250))
             {
                 if (activeBill != null && prepared)

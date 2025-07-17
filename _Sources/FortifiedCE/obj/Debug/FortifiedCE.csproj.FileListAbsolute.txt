@@ -4,6 +4,7 @@ D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedC
 D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedCE\bin\Debug\FortifiedCE.pdb
 D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedCE\bin\Debug\CombatExtended.dll
 D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedCE\bin\Debug\Fortified.dll
-D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedCE\obj\Debug\Fortifie.87348B1B.Up2Date
 D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedCE\obj\Debug\FortifiedCE.dll
 D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedCE\obj\Debug\FortifiedCE.pdb
+D:\1.6\CE\Assemblies\FortifiedCE.dll
+D:\1.6\CE\Assemblies\FortifiedCE.pdb
