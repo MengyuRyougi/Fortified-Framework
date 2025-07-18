@@ -15,8 +15,6 @@ namespace Fortified
         {
             get
             {
-    
-
                 if (pawn.stances.curStance is Stance_Busy busy && busy.focusTarg.IsValid)
                 {
                     Vector3 targetPos;
@@ -28,16 +26,11 @@ namespace Fortified
                     {
                         targetPos = busy.focusTarg.Cell.ToVector3Shifted();
                     }
-
-                        
 					return (targetPos - pawn.DrawPos).AngleFlat();
-                    
                 }
-
                 return _turretFollowingAngle;
             }
         }
-
 
         private float _turretFollowingAngle = 0f;
 
@@ -48,17 +41,7 @@ namespace Fortified
 
         private Rot4 _lastRotation;
 
-        public static readonly Dictionary<PawnRenderer, CompVehicleWeapon> cachedVehicles = new Dictionary<PawnRenderer, CompVehicleWeapon>();
-        public static readonly Dictionary<CompVehicleWeapon, Pawn> cachedPawns = new Dictionary<CompVehicleWeapon, Pawn>();
-        public static readonly Dictionary<Pawn, CompVehicleWeapon> cachedVehicldesPawns = new Dictionary<Pawn, CompVehicleWeapon>();
-
-        public CompProperties_VehicleWeapon Props
-        {
-            get
-            {
-                return (CompProperties_VehicleWeapon)props;
-            }
-        }
+        public CompProperties_VehicleWeapon Props => (CompProperties_VehicleWeapon)props;
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
@@ -69,35 +52,15 @@ namespace Fortified
                 Log.Error("The CompVehicleWeapon is set on a non-pawn object.");
                 return;
             }
-
             if (pawn.equipment.Primary == null && Props.defaultWeapon != null)
             {
                 Thing weapon = ThingMaker.MakeThing(Props.defaultWeapon);
                 pawn.equipment.AddEquipment((ThingWithComps)weapon);
             }
-            if (!cachedVehicles.ContainsKey((parent as Pawn).Drawer.renderer)) cachedVehicles.Add(((Pawn)parent).Drawer.renderer, this);
-            if (!cachedPawns.ContainsKey(this)) cachedPawns.Add(this, (Pawn)parent);
-            if (!cachedVehicldesPawns.ContainsKey((Pawn)parent)) cachedVehicldesPawns.Add((Pawn)parent, this);
         }
-        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+        public override void CompTickInterval(int delta)
         {
-            base.PostDeSpawn(map, mode);
-            cachedVehicles.Remove(((Pawn)parent).Drawer.renderer);
-            cachedPawns.Remove(this);
-            cachedVehicldesPawns.Remove((Pawn)parent);
-        }
-
-        public override void PostDestroy(DestroyMode mode, Map previousMap)
-        {
-            base.PostDestroy(mode, previousMap);
-            cachedVehicles.Remove(((Pawn)parent).Drawer.renderer);
-            cachedPawns.Remove(this);
-            cachedVehicldesPawns.Remove((Pawn)parent);
-        }
-
-        public override void CompTick()
-        {
-            base.CompTick();
+            base.CompTickInterval(delta);
             if (pawn == null) return;
 
             if (Props.turretRotationFollowPawn)
@@ -108,17 +71,13 @@ namespace Fortified
             {
                 _turretFollowingAngle += _turretAnglePerFrame;
             }
-
             if (_lastRotation != pawn.Rotation)
             {
                 _lastRotation = pawn.Rotation;
                 _currentAngle = _turretFollowingAngle;
             }
-
-            _currentAngle = Mathf.SmoothDampAngle(_currentAngle, TargetAngle, ref _rotationSpeed, Props.rotationSmoothTime);
-
+            _currentAngle = Mathf.SmoothDampAngle(_currentAngle, TargetAngle, ref _rotationSpeed, Props.rotationSmoothTime * delta);
         }
-
         public override void CompTickRare()
         {
             base.CompTickRare();

@@ -20,6 +20,13 @@ namespace Fortified
             {
                 yield return GraphicFor(pawn);
             }
+            else
+            {
+                foreach (var graphic in base.GraphicsFor(pawn))
+                {
+                    yield return graphic;
+                }
+            }
         }
         public override Color ColorFor(Pawn pawn)
         {
