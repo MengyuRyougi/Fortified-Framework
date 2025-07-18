@@ -23,3 +23,6 @@ UnityEngine.dll
 .idea/
 *.vsidx
 *.cache
+*.db-shm
+*.db
+/_Sources/Fortified/.vs/Fortified/CopilotIndices
