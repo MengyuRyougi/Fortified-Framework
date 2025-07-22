@@ -26,3 +26,7 @@ UnityEngine.dll
 *.db-shm
 *.db
 /_Sources/Fortified/.vs/Fortified/CopilotIndices
+/_Sources/Fortified/.vs/ProjectEvaluation
+/_Sources/Fortified/.vs/Fortified/v17
+/_Sources/Fortified/.vs/Fortified/CopilotIndices
+/_Sources/Fortified/obj

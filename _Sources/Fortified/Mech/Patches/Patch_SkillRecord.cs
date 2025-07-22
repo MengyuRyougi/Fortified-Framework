@@ -2,9 +2,6 @@
 using RimWorld;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Verse;
 
 namespace Fortified
@@ -16,14 +13,14 @@ namespace Fortified
         [HarmonyPatch(nameof(SkillRecord.Learn))]
         public static bool RemoveLearnForMechanoid(Pawn ___pawn)
         {
-            return ___pawn != null && !___pawn.def.race.IsMechanoid;
+            return ___pawn is not IWeaponUsable;
         }
         [HarmonyPrefix]
-        [HarmonyPriority(501)]
+        [HarmonyPriority(400)]
         [HarmonyPatch(nameof(SkillRecord.Interval))]
         public static bool Interval(Pawn ___pawn)
         {
-            return ___pawn.story != null;
+            return ___pawn is not IWeaponUsable;
         }
     }
 }
