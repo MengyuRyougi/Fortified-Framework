@@ -41,6 +41,8 @@ namespace Fortified
 
         private Rot4 _lastRotation;
 
+        public static readonly Dictionary<Pawn, CompVehicleWeapon> cachedVehicldesPawns = new Dictionary<Pawn, CompVehicleWeapon>();
+
         public CompProperties_VehicleWeapon Props => (CompProperties_VehicleWeapon)props;
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -57,6 +59,19 @@ namespace Fortified
                 Thing weapon = ThingMaker.MakeThing(Props.defaultWeapon);
                 pawn.equipment.AddEquipment((ThingWithComps)weapon);
             }
+            if (respawningAfterLoad) cachedVehicldesPawns.Remove((Pawn)parent);
+            cachedVehicldesPawns.Add((Pawn)parent, this);
+        }
+
+        public override void PostDeSpawn(Map map, DestroyMode destroyMode = DestroyMode.Vanish)
+        {
+            base.PostDeSpawn(map);
+            cachedVehicldesPawns.Remove((Pawn)parent);
+        }
+        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        {
+            base.PostDestroy(mode, previousMap);
+            cachedVehicldesPawns.Remove((Pawn)parent);
         }
         public override void CompTickInterval(int delta)
         {

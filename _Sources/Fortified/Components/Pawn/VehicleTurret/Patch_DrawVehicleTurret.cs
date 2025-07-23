@@ -23,8 +23,7 @@ namespace Fortified
         [HarmonyPriority(600)]
         public static void Postfix(PawnRenderNode node, PawnDrawParms parms, Mesh mesh, Matrix4x4 matrix)
         {
-            if (!parms.pawn.Spawned) return;
-            CompVehicleWeapon compWeapon = parms.pawn.TryGetComp<CompVehicleWeapon>();
+            CompVehicleWeapon compWeapon = CompVehicleWeapon.cachedVehicldesPawns.TryGetValue(parms.pawn);
             if (compWeapon == null) return;
             if (parms.pawn.equipment != null && parms.pawn.equipment.Primary != null)
             {

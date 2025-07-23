@@ -16,7 +16,7 @@ namespace Fortified
             return ___pawn is not IWeaponUsable;
         }
         [HarmonyPrefix]
-        [HarmonyPriority(400)]
+        [HarmonyPriority(501)]
         [HarmonyPatch(nameof(SkillRecord.Interval))]
         public static bool Interval(Pawn ___pawn)
         {

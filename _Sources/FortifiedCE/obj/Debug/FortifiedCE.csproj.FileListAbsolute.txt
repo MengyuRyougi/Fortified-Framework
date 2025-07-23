@@ -8,3 +8,4 @@ D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedC
 D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedCE\obj\Debug\FortifiedCE.pdb
 D:\1.6\CE\Assemblies\FortifiedCE.dll
 D:\1.6\CE\Assemblies\FortifiedCE.pdb
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedCE\obj\Debug\Fortifie.87348B1B.Up2Date
