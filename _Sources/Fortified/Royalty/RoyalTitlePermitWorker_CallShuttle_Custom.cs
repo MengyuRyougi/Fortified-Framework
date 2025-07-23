@@ -14,7 +14,8 @@ namespace Fortified
 
         private static readonly Texture2D CommandTex = ContentFinder<Texture2D>.Get("UI/Commands/CallShuttle");
 
-        private ShuttlePermitExtension extension => this.def.GetModExtension<ShuttlePermitExtension>();
+        TransportShipDef shipDef => Extension.transportShipDef ?? TransportShipDefOf.Ship_Shuttle;
+        private ShuttlePermitExtension Extension => this.def.GetModExtension<ShuttlePermitExtension>();
         public override bool ValidateTarget(LocalTargetInfo target, bool showMessages = true)
         {
             if (!CanHitTarget(target))
@@ -39,7 +40,7 @@ namespace Fortified
         public override void DrawHighlight(LocalTargetInfo target)
         {
             GenDraw.DrawRadiusRing(caller.Position, base.RangeClamped, Color.white);
-            DrawShuttleGhost(target, map, extension.transportShipDef.shipThing, extension.transportShipDef.shipThing.defaultPlacingRot);
+            DrawShuttleGhost(target, map, shipDef.shipThing, shipDef.shipThing.defaultPlacingRot);
         }
 
         public override void OrderForceTarget(LocalTargetInfo target)
@@ -137,11 +138,11 @@ namespace Fortified
         {
             if (caller.Spawned)
             {
-                Thing thing = ThingMaker.MakeThing(extension.transportShipDef.shipThing);
+                Thing thing = ThingMaker.MakeThing(shipDef.shipThing);
                 CompShuttle compShuttle = thing.TryGetComp<CompShuttle>();
                 compShuttle.permitShuttle = true;
                 compShuttle.acceptChildren = true;
-                TransportShip transportShip = TransportShipMaker.MakeTransportShip(extension.transportShipDef, null, thing);
+                TransportShip transportShip = TransportShipMaker.MakeTransportShip(shipDef, null, thing);
                 transportShip.ArriveAt(landingCell, map.Parent);
                 transportShip.AddJobs(ShipJobDefOf.WaitForever, ShipJobDefOf.Unload_Destination, ShipJobDefOf.FlyAway);
                 caller.royalty.GetPermit(def, calledFaction).Notify_Used();
@@ -155,7 +156,7 @@ namespace Fortified
         private void CallShuttleToCaravan(Pawn caller, Faction faction, bool free)
         {
             Caravan caravan = caller.GetCaravan();
-            int maxLaunchDistance = extension.transportShipDef.maxLaunchDistance;
+            int maxLaunchDistance = shipDef.maxLaunchDistance;
             CameraJumper.TryJump(CameraJumper.GetWorldTarget(caravan));
             Find.WorldSelector.ClearSelection();
             PlanetTile caravanTile = caravan.Tile;
@@ -183,7 +184,7 @@ namespace Fortified
                 activeTransporterInfo.innerContainer.TryAddRangeOrTransfer(CaravanInventoryUtility.AllInventoryItems(caravan));
                 activeTransporterInfo.innerContainer.TryAddRangeOrTransfer(caravan.GetDirectlyHeldThings());
                 caravan.Destroy();
-                TravellingTransporters travellingTransporters = (TravellingTransporters)WorldObjectMaker.MakeWorldObject(extension.transportShipDef.worldObject);
+                TravellingTransporters travellingTransporters = (TravellingTransporters)WorldObjectMaker.MakeWorldObject(shipDef.worldObject);
                 travellingTransporters.Tile = caravan.Tile;
                 travellingTransporters.SetFaction(Faction.OfPlayer);
                 travellingTransporters.destinationTile = tile;
@@ -299,6 +300,6 @@ namespace Fortified
 
     public class ShuttlePermitExtension : DefModExtension
     {
-        public TransportShipDef transportShipDef = TransportShipDefOf.Ship_Shuttle;
+        public TransportShipDef transportShipDef = null;
     }
 }
