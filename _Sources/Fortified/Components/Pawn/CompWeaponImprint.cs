@@ -35,7 +35,9 @@ namespace Fortified
             {
                 CheckWeaponInprint(pawn.equipment.PrimaryEq);
 
-                BodyPartRecord bodyPartRecord = pawn.RaceProps.body.GetPartsWithDef(Props.bodyPart).FirstOrFallback();
+                BodyPartDef part = Props.bodyPart ?? BodyPartDefOf.Head;
+                BodyPartRecord bodyPartRecord = pawn.RaceProps.body.GetPartsWithDef(part).FirstOrFallback();
+
                 if (bodyPartRecord == null) return;
                 if (pawn.equipment.Primary.def != ImprintedThingDef) //沒拿武器或者沒有拿刻印武器的狀況。
                 {
@@ -106,7 +108,7 @@ namespace Fortified
     {
         public HediffDef imprintDef = null;
         public int pointRequire = 7200; // 7200 * 250 = 1800000 = 30 days
-        public BodyPartDef bodyPart = BodyPartDefOf.Head;
+        public BodyPartDef bodyPart = null;
         public CompProperties_WeaponImprint()
         {
             this.compClass = typeof(CompWeaponImprint);
