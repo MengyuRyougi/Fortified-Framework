@@ -18,5 +18,6 @@
 	<loadAfter>
 		<li>brrainz.harmony</li>
 		<li>Ludeon.RimWorld</li>
+		<li>CETeam.CombatExtended</li>
 	</loadAfter>
 </ModMetaData>
