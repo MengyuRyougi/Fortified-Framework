@@ -117,18 +117,9 @@ namespace Fortified
                 totalWorkAmount = 0f;
             }
 
-            Pawn_SkillTracker skills = handler.skills;
-            if (skills != null && modExtension != null)
-            {
-                foreach (KeyValuePair<SkillDef, int> skill2 in modExtension.skills)
-                {
-                    SkillRecord skill = skills.GetSkill(skill2.Key);
-                    if (skill != null && !skill.TotallyDisabled)
-                    {
-                        curWorkAmount -= skill.Level * skill2.Value;
-                    }
-                }
-            }
+            var factor = 1 / handler.GetStatValue(StatDefOf.WorkTableEfficiencyFactor, true);
+            curWorkAmount *= factor;
+
             if (curWorkAmount <= 0f)
             {
                 curWorkAmount = 0f;
