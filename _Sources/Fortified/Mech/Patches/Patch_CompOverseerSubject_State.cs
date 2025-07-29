@@ -10,13 +10,10 @@ namespace Fortified
         [HarmonyPostfix]
         public static void Postfix(ref OverseerSubjectState __result, CompOverseerSubject __instance)
         {
-            if (__instance.parent.TryGetComp<CompDeadManSwitch>() is CompDeadManSwitch comp && comp.woken)
-            {
-                __result = OverseerSubjectState.Overseen;
-            }
+            //如果是OverseerSubjectState.Overseen的話就不需要再檢查了。
+            if (__result == OverseerSubjectState.Overseen) return;
 
-            //甚至不確定有沒有效。
-            else if (__instance.parent is Pawn p && p.HostFaction == Faction.OfPlayer)
+            if (__instance.parent.TryGetComp<CompDeadManSwitch>() is CompDeadManSwitch comp && comp.woken)
             {
                 __result = OverseerSubjectState.Overseen;
             }
