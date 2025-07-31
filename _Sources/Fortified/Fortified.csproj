@@ -47,7 +47,7 @@
     <Compile Include="Royalty\RoyalTitlePermitWorker_Trader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4528" />
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4535" />
     <PackageReference Include="Lib.Harmony" Version="2.3.6" />
     <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
       <PrivateAssets>all</PrivateAssets>

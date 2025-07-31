@@ -8,12 +8,29 @@ namespace Fortified
 {
     public class PawnRenderNode_ApparelColor : Verse.PawnRenderNode_Apparel
     {
-        public PawnRenderNode_ApparelColor(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree, Apparel apparel) : base(pawn, props, tree, apparel)
+        public PawnRenderNode_ApparelColor(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree)
+            : base(pawn, props, tree)
         {
+            useHeadMesh = props.parentTagDef == PawnRenderNodeTagDefOf.ApparelHead;
+            meshSet = MeshSetFor(pawn);
         }
-        public PawnRenderNode_ApparelColor(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree, Apparel apparel, bool useHeadMesh) : base(pawn, props, tree, apparel, useHeadMesh)
+
+        public PawnRenderNode_ApparelColor(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree, Apparel apparel)
+            : base(pawn, props, tree)
         {
+            base.apparel = apparel;
+            useHeadMesh = props.parentTagDef == PawnRenderNodeTagDefOf.ApparelHead;
+            meshSet = MeshSetFor(pawn);
         }
+
+        public PawnRenderNode_ApparelColor(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree, Apparel apparel, bool useHeadMesh)
+            : base(pawn, props, tree)
+        {
+            base.apparel = apparel;
+            this.useHeadMesh = useHeadMesh;
+            meshSet = MeshSetFor(pawn);
+        }
+
         protected override IEnumerable<Graphic> GraphicsFor(Pawn pawn)
         {
             if (HasGraphic(tree.pawn))
