@@ -23,18 +23,13 @@ namespace Fortified
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            Building_WorkTableAutonomous building = base.TargetThingA as Building_WorkTableAutonomous;
-            AddEndCondition(delegate
-            {
-                Thing thing = GetActor().jobs.curJob.GetTarget(TargetIndex.A).Thing;
-                return (!(thing is Building) || thing.Spawned) ? JobCondition.Ongoing : JobCondition.Incompletable;
-            });
+            this.FailOnDestroyedOrNull(TargetIndex.A);
             this.FailOnBurningImmobile(TargetIndex.A);
             this.FailOn(delegate
             {
                 if (job.GetTarget(TargetIndex.A).Thing is IBillGiver billGiver)
                 {
-                    if (job.bill.DeletedOrDereferenced)
+                    if (job.bill != null && job.bill.DeletedOrDereferenced)
                     {
                         return true;
                     }
@@ -44,6 +39,12 @@ namespace Fortified
                     }
                 }
                 return false;
+            });
+            Building_WorkTableAutonomous building = base.TargetThingA as Building_WorkTableAutonomous;
+            AddEndCondition(delegate
+            {
+                Thing thing = GetActor().jobs.curJob.GetTarget(TargetIndex.A).Thing;
+                return (!(thing is Building) || thing.Spawned) ? JobCondition.Ongoing : JobCondition.Incompletable;
             });
             Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
             yield return Toils_Jump.JumpIf(gotoBillGiver, () => job.GetTargetQueue(TargetIndex.B).NullOrEmpty());
