@@ -61,7 +61,7 @@ namespace Fortified
         public override void PostMapGenerate(Map map)
         {
             base.PostMapGenerate(map);
-            if (map == null || !map.IsStartingMap) return;
+            if (map == null || !map.IsStartingMap || map.IsPocketMap) return;
 
             var prefab = this.maps.RandomElement();
 
