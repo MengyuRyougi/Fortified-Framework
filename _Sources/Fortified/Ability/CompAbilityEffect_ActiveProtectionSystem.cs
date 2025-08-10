@@ -20,9 +20,7 @@ namespace Fortified
             base.Apply(target, dest);
             tickRemain = Props.activeTicks;
             isActive = true;
-
         }
-
         public override bool AICanTargetNow(LocalTargetInfo target)
         {
             if (Pawn.Faction == Faction.OfPlayer)
@@ -36,8 +34,7 @@ namespace Fortified
                     List<Thing> list = Pawn.MapHeld.thingGrid.ThingsListAt(cell).Where((v) => v is Projectile).ToList();
                     for (int i = 0; i < list.Count; i++)
                     {
-                        Thing thing2 = list[i];
-                        if (IsTargetProjectile(thing2))
+                        if (IsTargetProjectile(list[i]))
                         {
                             return true;
                         }

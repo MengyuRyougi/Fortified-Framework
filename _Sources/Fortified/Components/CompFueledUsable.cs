@@ -18,30 +18,25 @@ namespace Fortified
     {
         public new CompProperties_FueledUsable Props => (CompProperties_FueledUsable)props;
 
-        private CompRefuelable CompFuel => parent.TryGetComp<CompRefuelable>();
+        private CompRefuelable compFuel;
 
-        private bool HasFuel
+        private bool HasFuel => compFuel == null || compFuel.HasFuel;
+        public override void PostSpawnSetup(bool respawningAfterLoad)
         {
-            get
-            {
-                if (CompFuel != null)
-                {
-                    return CompFuel.HasFuel;
-                }
-                return true;
-            }
+            base.PostSpawnSetup(respawningAfterLoad);
+            compFuel = parent.TryGetComp<CompRefuelable>();
         }
 
         public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn myPawn)
         {
-            if (CompFuel != null)
+            if (compFuel != null)
             {
                 if (!HasFuel)
                 {
                     yield return new FloatMenuOption(FloatMenuOptionLabel(myPawn) + "FFF.Reason.NotFueled".Translate(), null);
                     yield break;
                 }
-                if (CompFuel.Fuel < (float)Props.fuelCostsPerUse)
+                if (compFuel.Fuel < (float)Props.fuelCostsPerUse)
                 {
                     yield return new FloatMenuOption(FloatMenuOptionLabel(myPawn) + "FFF.Reason.NoEnoughFuel".Translate(), null);
                     yield break;
@@ -56,7 +51,7 @@ namespace Fortified
         public override void UsedBy(Pawn p)
         {
             base.UsedBy(p);
-            CompFuel.ConsumeFuel(Props.fuelCostsPerUse);
+            compFuel.ConsumeFuel(Props.fuelCostsPerUse);
         }
     }
 }

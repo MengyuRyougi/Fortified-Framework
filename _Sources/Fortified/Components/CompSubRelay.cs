@@ -10,6 +10,7 @@ namespace Fortified
     //機械體控制延伸，但這個不限於同個機械師的機體。
     public class CompSubRelay : ThingComp
     {
+        public static List<CompSubRelay> allSubRelays = new List<CompSubRelay>();
         public CompProperties_SubRelay Props => (CompProperties_SubRelay)this.props;
         public float CurrentRadius => Props.relayRange;
         public bool AnySelectedDraftedMechs
@@ -27,33 +28,65 @@ namespace Fortified
                 return false;
             }
         }
-        public float SquaredDistance
-        {
-            get
-            {
-                return cacheDistance != 0 ? cacheDistance : GetCacheDistance();
-            }
-        }
+        public float SquaredDistance => cacheDistance != 0 ? cacheDistance : GetCacheDistance();
         private float cacheDistance = 0;
         private float GetCacheDistance()
         {
             cacheDistance = Mathf.Pow(CurrentRadius, 2);
             return cacheDistance;
         }
-        public Pawn Pawn
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            if (!allSubRelays.Contains(this)) allSubRelays.Add(this);
+        }
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+        {
+            base.PostDeSpawn(map, mode);
+            if (this.parent is not Apparel a && allSubRelays.Contains(this)) allSubRelays.Remove(this);
+        }
+        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        {
+            base.PostDestroy(mode, previousMap);
+            if (allSubRelays.Contains(this)) allSubRelays.Remove(this);
+        }
+        public Map Map
         {
             get
             {
-                if (this.parent is Pawn p) return p; //本體
-                //if (this.parent is ThingWithComps t && t.TryGetComp<CompEquippable>(out var e)) return e.ParentHolder as Pawn ?? null; //腰帶
-                if (this.parent is Apparel a) return a.Wearer ?? null;//衣服
+                if (this.parent is Pawn p) return p.MapHeld;
+                if (this.parent is Apparel a && a.Wearer != null) return a.Wearer.MapHeld;
+                if (this.parent is ThingWithComps t && t.Spawned) return t.MapHeld;
                 return null;
             }
         }
+        public IntVec3 Position
+        {
+            get
+            {
+                if (this.parent is Pawn p) return p.PositionHeld;
+                if (this.parent is Apparel a && a.Wearer != null) return a.Wearer.PositionHeld;
+                if (this.parent is ThingWithComps t && t.Spawned) return t.PositionHeld;
+                return IntVec3.Invalid;
+            }
+        }
         public bool IsActive => isActive;
-        private bool isActive = false;
+        bool isActive = false;
         public override void CompTick()
         {
+            if (parent is Apparel a)
+            {
+                isActive = false;
+                if (parent.Spawned)
+                {
+                    if (allSubRelays.Contains(this)) allSubRelays.Remove(this);
+                    return;
+                } 
+                if (a.Wearer != null && !a.WornByCorpse && a.Wearer.Faction == Faction.OfPlayer)
+                {
+                    isActive = true;
+                }
+            }
             if (!parent.Spawned) return;
 
             if (parent is Building b)
@@ -61,8 +94,8 @@ namespace Fortified
                 isActive = true;
                 if (parent.Faction != Faction.OfPlayer) isActive = false;
                 if (b.TryGetComp<CompPowerTrader>(out var p) && !p.PowerOn) isActive = false;
-                if(b.IsBrokenDown()) isActive = false;
-                if(!b.IsWorking()) isActive = false;
+                if (b.IsBrokenDown()) isActive = false;
+                if (!b.IsWorking()) isActive = false;
             }
         }
         public override void PostDraw()
@@ -81,7 +114,7 @@ namespace Fortified
             base.CompDrawWornExtras();
             if (AnySelectedDraftedMechs)
             {
-                GenDraw.DrawRadiusRing(Pawn.Position, CurrentRadius, Color.white);
+                GenDraw.DrawRadiusRing(Position, CurrentRadius, Color.white);
             }
         }
         public void DrawCommandRadius()
@@ -89,6 +122,22 @@ namespace Fortified
             if (parent.Spawned && AnySelectedDraftedMechs)
             {
                 GenDraw.DrawRadiusRing(parent.Position, CurrentRadius, Color.white);
+            }
+        }
+        public override void Notify_DefsHotReloaded()
+        {
+            base.Notify_DefsHotReloaded();
+            foreach (var item in allSubRelays)
+            {
+                Log.Message(item.parent.ToString());
+            }
+        }
+        public override void PostExposeData()
+        {
+            Scribe_Values.Look(ref isActive, "isActive", false);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                if (!allSubRelays.Contains(this)) allSubRelays.Add(this);
             }
         }
     }

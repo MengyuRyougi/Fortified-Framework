@@ -38,14 +38,10 @@ namespace Fortified
                     return;
                 }
             }
-
-            foreach (Pawn p in mech.Map.mapPawns.SpawnedPawnsInFaction(RimWorld.Faction.OfPlayer))
+            if (CheckUtility.HasSubRelayInMapAndInbound(mech, target))
             {
-                if (CheckUtility.HasSubRelay(p, out CompSubRelay sub) && CheckUtility.InRange(p, target, sub.SquaredDistance))
-                {
-                    __result = true;
-                    return;
-                }
+                __result = true;
+                return;
             }
         }
     }

@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
+  <FFF.Drone.NoRestrict>无限制</FFF.Drone.NoRestrict>
+  <FFF.Drone.AllowedArea>允许活动区</FFF.Drone.AllowedArea>
+  <FFF.Drone.AllowedAreaDesc>设置许可活动区域，新部属以及部属中的无人机将自动同步平台的活动区设置。</FFF.Drone.AllowedAreaDesc>
 
   <FFF.Drone.NoControlPlatform>主控平台不可用</FFF.Drone.NoControlPlatform>
   <FFF.Drone.NoController>没有主控</FFF.Drone.NoController>

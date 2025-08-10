@@ -23,6 +23,17 @@ namespace Fortified
 
         private List<Thing> tmpResources = new List<Thing>();
 
+        private int selectedAreaId = -1;
+        public Area SelectedArea
+        {
+            get
+            {
+                return (parent?.Map != null && selectedAreaId >= 0)
+                ? parent.Map.areaManager.AllAreas.FirstOrDefault(a => a?.ID == selectedAreaId)
+                : null;
+            }
+        }
+
         public CompProperties_MechPlatform Props => (CompProperties_MechPlatform)props;
 
         public virtual AcceptanceReport CanSpawn
@@ -153,6 +164,12 @@ namespace Fortified
                 GenSpawn.Spawn(pawn, parent.Position, parent.Map);
                 spawnedPawns.Add(pawn);
                 lord?.AddPawn(pawn);
+
+                if (selectedAreaId != -1)
+                {
+                    pawn.playerSettings.AreaRestrictionInPawnCurrentMap = SelectedArea;
+                }
+
                 int num = Props.costPerPawn;
                 for (int j = 0; j < tmpResources.Count; j++)
                 {
@@ -193,7 +210,6 @@ namespace Fortified
             {
                 yield break;
             }
-
             foreach (Gizmo item in base.CompGetGizmosExtra())
             {
                 yield return item;
@@ -290,6 +306,54 @@ namespace Fortified
             }
 
             yield return act;
+
+
+            TaggedString currentLabel = SelectedArea != null ? SelectedArea.Label : "FFF.Drone.NoRestrict".Translate();
+            yield return new Command_Action
+            {
+                defaultLabel = currentLabel,
+                defaultDesc = "FFF.Drone.AllowedAreaDesc".Translate(),
+                icon = ContentFinder<Texture2D>.Get("UI/Drone_AreaAllowed", true),
+                defaultIconColor = SelectedArea?.Color ?? Color.white,
+                action = () =>
+                {
+                    var options = AreaOptions(parent.Map);
+                    if (options.NullOrEmpty()) return;
+                    Find.WindowStack.Add(new FloatMenu(options));
+                }
+            };
+        }
+
+        private List<FloatMenuOption> AreaOptions(Map map)
+        {
+            var list = new List<FloatMenuOption>();
+            list.Add(new FloatMenuOption("FFF.Drone.NoRestrict".Translate(), () =>
+            {
+                selectedAreaId = -1;
+            }));
+            foreach (var area in map.areaManager.AllAreas.Where(a=>a.AssignableAsAllowed()))
+            {
+                var label = area.Label;
+                var opt = new FloatMenuOption(label, () =>
+                {
+                    selectedAreaId = area.ID;
+                    foreach (var p in spawnedPawns)
+                    {
+                        p.playerSettings.AreaRestrictionInPawnCurrentMap = area;
+                    }
+                });
+                // 額外在右側畫出顏色預覽小方塊
+                opt.extraPartWidth = 24f;
+                opt.extraPartOnGUI = rect =>
+                {
+                    var colorRect = new Rect(rect.xMax - 20f, rect.y + (rect.height - 14f) / 2f, 14f, 14f);
+                    Widgets.DrawBoxSolidWithOutline(colorRect, area.Color, Color.black, 1);
+                    return false;
+                };
+
+                list.Add(opt);
+            }
+            return list;
         }
 
         public void GetChildHolders(List<IThingHolder> outChildren)
@@ -367,6 +431,7 @@ namespace Fortified
             Scribe_Values.Look(ref autoDeployTicks, "autoDeployTicks", 0);
             Scribe_Values.Look(ref autoDeployEnabled, "autoDeployEnabled", false);
             Scribe_Values.Look(ref maxToFill, "maxToFill", 0);
+            Scribe_Values.Look(ref selectedAreaId, "selectedAreaId", -1);
             Scribe_Collections.Look(ref spawnedPawns, "spawnedPawns", LookMode.Reference);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {

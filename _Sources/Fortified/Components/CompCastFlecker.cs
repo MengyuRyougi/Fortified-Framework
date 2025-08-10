@@ -5,6 +5,7 @@ using Verse.Noise;
 
 namespace Fortified
 {
+
     public class CompCastFlecker : ThingComp
     {
         public CompProperties_CastFlecker Props => (CompProperties_CastFlecker)this.props;

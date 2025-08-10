@@ -4,32 +4,30 @@ using System.Linq;
 using System.Collections.Generic;
 using RimWorld;
 using System;
+using static HarmonyLib.Code;
+using static UnityEngine.GraphicsBuffer;
+using UnityEngine;
 
 public static partial class CheckUtility
 {
-    public static bool InRange(Thing A, LocalTargetInfo B, float squaredRange)
+    public static bool InRange(LocalTargetInfo A, LocalTargetInfo B, float squaredRange)
     {
-        if ((float)IntVec3Utility.DistanceToSquared(A.Position, B.Cell) <= squaredRange)
+        if ((float)IntVec3Utility.DistanceToSquared(A.Cell, B.Cell) <= squaredRange)
         {
             return true;
         }
         return false;
     }
-    public static bool HasSubRelay(Pawn pawn,out CompSubRelay subRelay)
+    public static bool HasSubRelayInMapAndInbound(Pawn pawn, LocalTargetInfo target)
     {
-        subRelay = null;
-
-        if(pawn ==null) return false;
-
-        if (pawn.TryGetComp<CompSubRelay>(out subRelay)) return true;
-        if (pawn.apparel != null)
+        if (pawn == null) return false;
+        if (CompSubRelay.allSubRelays.NullOrEmpty()) return false;
+        foreach (var item in CompSubRelay.allSubRelays.Where(s => s.IsActive && s.Position != IntVec3.Invalid))
         {
-            foreach (var item in pawn.apparel.WornApparel)
+            if (item.parent.Spawned && item.Map != pawn.MapHeld) continue;
+            if (CheckUtility.InRange(item.Position, target, item.SquaredDistance))
             {
-                if (item.TryGetComp<CompSubRelay>(out subRelay))
-                {
-                    return true;
-                }
+                return true;
             }
         }
         return false;

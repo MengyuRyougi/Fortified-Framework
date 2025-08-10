@@ -26,7 +26,7 @@ namespace Fortified
         protected Effecter Effecter => effecter ??= modExtension?.GetEffecterDef_Phase(this.Rotation)?.SpawnMaintained(this, Map);
         private Effecter effecter;
         private int maintainTick = 0;
-
+        private CompAffectedByFacilities compFacility;
 
         public bool CanRun => Power == null || Power.PowerOn;
 
@@ -43,6 +43,7 @@ namespace Fortified
             base.SpawnSetup(map, respawningAfterLoad);
             this.TryGetComp<CompPowerTrader>(out Power);
             this.TryGetComp<CompBreakdownable>(out CompBreakdownable);
+            this.TryGetComp<CompAffectedByFacilities>(out compFacility);
             modExtension = def.GetModExtension<ModExtension_AutoWorkTable>();
             maintainTick = Rand.Range(0, 120);
         }
@@ -52,8 +53,8 @@ namespace Fortified
             activeBill = bill;
             totalWorkAmount = bill.GetWorkAmount(thing);
 
-            var factor = 1 / this.GetStatValue(StatDefOf.WorkTableWorkSpeedFactor, true);
-            Log.Message($"WorkTableEfficiencyFactor: {this.GetStatValue(StatDefOf.WorkTableWorkSpeedFactor, true)}");
+            float factor = 1 / this.GetStatValue(StatDefOf.WorkTableWorkSpeedFactor, true);
+            //Log.Message($"WorkTableEfficiencyFactor: {this.GetStatValue(StatDefOf.WorkTableWorkSpeedFactor, true)}");
             totalWorkAmount *= factor;
             ResetCurWorkAmount(handler);
             prepared = true;
@@ -68,23 +69,10 @@ namespace Fortified
                 innerContainer.CopyToList(list);
                 foreach (Thing item in GenRecipe.MakeRecipeProducts(activeBill.recipe, handler, list, CalculateDominantIngredient(list), this))
                 {
-                    if (item.TryGetComp<CompQuality>() is CompQuality comp) 
+                    CompQuality comp = item.TryGetComp<CompQuality>();
+                    if (comp != null)
                     {
-                        QualityCategory q = QualityCategory.Normal;
-                        if (this.TryGetComp<CompFacility>() is CompFacility compF) 
-                        {
-                            foreach (var building in compF.LinkedBuildings.FindAll(b => 
-                            b.def.defName == "DMS_MachineCabinet" //TODO，用一個Stat來控制。
-                            && (b.TryGetComp<CompPowerTrader>() == null ||
-                            b.TryGetComp<CompPowerTrader>().PowerOn)))
-                            {
-                                if (q != QualityCategory.Legendary && Rand.Chance(0.5f)) 
-                                {
-                                    q++;
-                                }
-                            }
-                        }
-                        comp.SetQuality(q, new ArtGenerationContext?(ArtGenerationContext.Outsider));
+                        SetQuality(comp);
                     }
                     GenPlace.TryPlaceThing(item, this.InteractionCell, base.Map, ThingPlaceMode.Near);
                 }
@@ -111,6 +99,25 @@ namespace Fortified
         {
             Messages.Message("FFF.Autofacturer.WorkerCanceled".Translate(Label), this, MessageTypeDefOf.RejectInput);
             base.Notify_BillDeleted(bill);
+        }
+        protected void SetQuality(CompQuality comp)
+        {
+            QualityCategory q = comp.Quality;
+            if (!compFacility.LinkedFacilitiesListForReading.NullOrEmpty())
+            {
+                var li = compFacility.LinkedFacilitiesListForReading.FindAll(b => b.def.HasModExtension<ModExtension_QualityChance>());
+                if (!li.Any()) return;
+                foreach (Thing building in li)
+                {
+                    if (building.TryGetComp<CompPowerTrader>() != null && !building.TryGetComp<CompPowerTrader>().PowerOn) continue;
+
+                    if (q != QualityCategory.Legendary && Rand.Chance(building.def.GetModExtension<ModExtension_QualityChance>().qualityChance))
+                    {
+                        q++;
+                    }
+                }
+            }
+            comp.SetQuality(q, null);
         }
 
         public int GetWorkTime()//互動的工作時間

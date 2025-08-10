@@ -35,70 +35,45 @@ public class CompFueledSpawner : ThingComp
 
     public CompProperties_FueledSpawner PropsSpawner => (CompProperties_FueledSpawner)props;
 
-    private CompPowerTrader CompPower => parent.TryGetComp<CompPowerTrader>();
-
-    private bool PowerOn
-    {
-        get
-        {
-            if (CompPower != null)
-            {
-                return CompPower.PowerOn;
-            }
-            return true;
-        }
-    }
-
-    private CompRefuelable CompFuel => parent.TryGetComp<CompRefuelable>();
-
+    private CompPowerTrader compPower;
+    private bool PowerOn => compPower == null || compPower.PowerOn;
+    private CompRefuelable compFuel;
     private bool HasFuel
     {
         get
         {
-            if (CompFuel != null)
+            if (compFuel != null)
             {
-                return CompFuel.HasFuel;
+                return compFuel.HasFuel;
             }
             return true;
         }
     }
-
+    CompCanBeDormant compCanBeDormant;
     public override void PostSpawnSetup(bool respawningAfterLoad)
     {
         if (!respawningAfterLoad)
         {
             ResetCountdown();
         }
+        compPower = parent.GetComp<CompPowerTrader>();
+        compFuel = parent.GetComp<CompRefuelable>();
+        compCanBeDormant = parent.GetComp<CompCanBeDormant>();
     }
-
     public override void CompTick()
     {
         TickInterval(1);
     }
-
     public override void CompTickRare()
     {
         TickInterval(250);
     }
-
     private void TickInterval(int interval)
     {
-        if (!parent.Spawned)
-        {
-            return;
-        }
-        CompCanBeDormant comp = parent.GetComp<CompCanBeDormant>();
-        if (comp != null)
-        {
-            if (!comp.Awake)
-            {
-                return;
-            }
-        }
-        else if (parent.Position.Fogged(parent.Map))
-        {
-            return;
-        }
+        if (!parent.Spawned) return;
+        if (compCanBeDormant != null && !compCanBeDormant.Awake) return;
+        if (parent.Position.Fogged(parent.Map)) return;
+
         if (PowerOn && HasFuel)
         {
             ticksUntilSpawn -= interval;
@@ -117,8 +92,6 @@ public class CompFueledSpawner : ThingComp
 
     public bool TryDoSpawn()
     {
-        if (!parent.Spawned) return false;
-
         if (PropsSpawner.spawnMaxAdjacent >= 0)
         {
             int num = 0;

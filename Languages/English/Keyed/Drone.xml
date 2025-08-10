@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
+  <FFF.Drone.NoRestrict>Unrestricted</FFF.Drone.NoRestrict>
+  <FFF.Drone.AllowedArea>Allowed area</FFF.Drone.AllowedArea>
+  <FFF.Drone.AllowedAreaDesc>Set the allow area for Drones, deployed Drone will comply with the platform's area settings.</FFF.Drone.AllowedAreaDesc>
+
   <FFF.Drone.NoControlPlatform>control platform unavailable</FFF.Drone.NoControlPlatform>
   <FFF.Drone.NoController>No control</FFF.Drone.NoController>
   <FFF.Drone.ControllerNotInControl>platform not controlled</FFF.Drone.ControllerNotInControl>

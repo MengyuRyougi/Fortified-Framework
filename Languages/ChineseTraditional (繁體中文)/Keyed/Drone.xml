@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
+  <FFF.Drone.NoRestrict>無限制</FFF.Drone.NoRestrict>
+  <FFF.Drone.AllowedArea>允許活動區</FFF.Drone.AllowedArea>
+  <FFF.Drone.AllowedAreaDesc>設置許可活動區域，新部屬以及部屬中的無人機將自動同步平台的活動區設置。</FFF.Drone.AllowedAreaDesc>
 
   <!-- EN: control platform unavailable -->
   <FFF.Drone.NoControlPlatform>主控平台不可用</FFF.Drone.NoControlPlatform>

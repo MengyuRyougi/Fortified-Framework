@@ -31,41 +31,42 @@ namespace Fortified
     public class CompIncidentMaker : ThingComp
     {
         private bool isActive;
-
         private int ticksUntilTrigger;
-
         private int ticksUntilCooldown;
-
         public CompProperties_IncidentMaker Props => (CompProperties_IncidentMaker)props;
-
-        private CompPowerTrader CompPower => parent.TryGetComp<CompPowerTrader>();
-
+        private CompPowerTrader compPower;
+        private CompCanBeDormant compCanBeDormant;
         private bool PowerOn
         {
             get
             {
-                if (CompPower != null)
+                if (compPower != null)
                 {
-                    return CompPower.PowerOn;
+                    return compPower.PowerOn;
                 }
                 return true;
             }
         }
-
-        private CompRefuelable CompFuel => parent.TryGetComp<CompRefuelable>();
+        private CompRefuelable compFuel;
 
         private bool HasFuel
         {
             get
             {
-                if (CompFuel != null)
+                if (compFuel != null)
                 {
-                    return CompFuel.HasFuel;
+                    return compFuel.HasFuel;
                 }
                 return true;
             }
         }
-
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            compPower = parent.GetComp<CompPowerTrader>();
+            compCanBeDormant = parent.GetComp<CompCanBeDormant>();
+            compFuel = parent.GetComp<CompRefuelable>();
+        }
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             if (DebugSettings.ShowDevGizmos)
@@ -106,7 +107,6 @@ namespace Fortified
             };
             yield return command_Action3;
         }
-
         public override string CompInspectStringExtra()
         {
             string text = "";
@@ -136,22 +136,11 @@ namespace Fortified
 
         private void TickInterval(int interval)
         {
-            if (!parent.Spawned)
-            {
-                return;
-            }
-            CompCanBeDormant comp = parent.GetComp<CompCanBeDormant>();
-            if (comp != null)
-            {
-                if (!comp.Awake)
-                {
-                    return;
-                }
-            }
-            else if (parent.Position.Fogged(parent.Map))
-            {
-                return;
-            }
+            if (!parent.Spawned) return;
+
+            if (compCanBeDormant != null && !compCanBeDormant.Awake) return;
+
+            if (parent.Position.Fogged(parent.Map)) return;
             if (PowerOn && HasFuel)
             {
                 if (isActive)

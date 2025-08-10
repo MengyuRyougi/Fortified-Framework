@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Fortified
@@ -8,22 +9,20 @@ namespace Fortified
         private Effecter _effect;
         public CompProperties_Effector Props => props as CompProperties_Effector;
 
+        private CompPowerTrader compPower; 
+        private bool PowerOn => compPower == null || compPower.PowerOn;
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+            compPower = parent.TryGetComp<CompPowerTrader>();
             if (_effect == null)
             {
                 MakeEffector();
             }
         }
-        public override void CompTick()
+        public override void CompTickInterval(int delta)
         {
-            if (!parent.Spawned || parent.Map == null) return;
-
-            if (_effect == null)
-            {
-                MakeEffector();
-            }
+            if (!parent.Spawned) return;
             _effect.EffectTick(parent, parent);
         }
         private void MakeEffector()
