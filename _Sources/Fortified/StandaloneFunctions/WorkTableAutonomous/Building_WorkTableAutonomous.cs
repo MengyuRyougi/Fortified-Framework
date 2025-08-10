@@ -73,7 +73,7 @@ namespace Fortified
                         QualityCategory q = QualityCategory.Normal;
                         if (this.TryGetComp<CompFacility>() is CompFacility compF) 
                         {
-                            foreach (var building in compF.LinkedBuildings.FindAll(b => b.def.defName == "DMS_MachineCabinet"
+                            foreach (var building in compF.LinkedBuildings.FindAll(b => b.def.defName == "DMS_MachineCabinet" //TODO，用一個Stat來控制。
                             && (b.TryGetComp<CompPowerTrader>() == null ||
                             b.TryGetComp<CompPowerTrader>().PowerOn)))
                             {
