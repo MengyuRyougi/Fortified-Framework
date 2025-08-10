@@ -51,6 +51,10 @@ namespace Fortified
         {
             activeBill = bill;
             totalWorkAmount = bill.GetWorkAmount(thing);
+
+            var factor = 1 / this.GetStatValue(StatDefOf.WorkTableWorkSpeedFactor, true);
+            Log.Message($"WorkTableEfficiencyFactor: {this.GetStatValue(StatDefOf.WorkTableWorkSpeedFactor, true)}");
+            totalWorkAmount *= factor;
             ResetCurWorkAmount(handler);
             prepared = true;
         }
@@ -116,9 +120,6 @@ namespace Fortified
                 curWorkAmount = totalWorkAmount;
                 totalWorkAmount = 0f;
             }
-
-            var factor = 1 / handler.GetStatValue(StatDefOf.WorkTableEfficiencyFactor, true);
-            curWorkAmount *= factor;
 
             if (curWorkAmount <= 0f)
             {
@@ -267,7 +268,7 @@ namespace Fortified
             {
                 if (prepared)
                 {
-                    stringBuilder.AppendInNewLine("FFF.Autofacturer.Information".Translate(((int)curWorkAmount).ToStringTicksToPeriodVerbose(true, true), Mathf.CeilToInt(totalWorkAmount / GetAmountPerStage())));
+                    stringBuilder.AppendInNewLine("FFF.Autofacturer.Information".Translate(((int)curWorkAmount).ToStringTicksToPeriodVerbose(true, true), Mathf.CeilToInt(totalWorkAmount / GetWorkAmountStage())));
                 }
                 else
                 {
@@ -279,11 +280,6 @@ namespace Fortified
                 }
             }
             return stringBuilder.ToString().Trim();
-        }
-        private float GetAmountPerStage()
-        {
-            if (modExtension != null) return (float)modExtension.workAmountPerStage;
-            return 10000f; // Default value if ModExtension is not set
         }
         public void GetChildHolders(List<IThingHolder> outChildren)
         {
