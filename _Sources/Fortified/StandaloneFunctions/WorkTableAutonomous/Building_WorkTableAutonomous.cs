@@ -68,6 +68,23 @@ namespace Fortified
                 innerContainer.CopyToList(list);
                 foreach (Thing item in GenRecipe.MakeRecipeProducts(activeBill.recipe, handler, list, CalculateDominantIngredient(list), this))
                 {
+                    if (item.TryGetComp<CompQuality>() is CompQuality comp) 
+                    {
+                        QualityCategory q = QualityCategory.Normal;
+                        if (this.TryGetComp<CompFacility>() is CompFacility compF) 
+                        {
+                            foreach (var building in compF.LinkedBuildings.FindAll(b => b.def.defName == "DMS_MachineCabinet"
+                            && (b.TryGetComp<CompPowerTrader>() == null ||
+                            b.TryGetComp<CompPowerTrader>().PowerOn)))
+                            {
+                                if (q != QualityCategory.Legendary && Rand.Chance(0.5f)) 
+                                {
+                                    q++;
+                                }
+                            }
+                        }
+                        comp.SetQuality(q, new ArtGenerationContext?(ArtGenerationContext.Outsider));
+                    }
                     GenPlace.TryPlaceThing(item, this.InteractionCell, base.Map, ThingPlaceMode.Near);
                 }
                 if (activeBill.repeatMode == BillRepeatModeDefOf.RepeatCount)
