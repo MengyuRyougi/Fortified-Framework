@@ -40,6 +40,7 @@ namespace Fortified
                     IncidentDefOf.TraderCaravanArrival.Worker.TryExecute(incidentParms);
                 }
             }
+            caller.royalty.GetPermit(def, faction).Notify_Used();
             if (!free)
             {
                 caller.royalty.TryRemoveFavor(faction, def.royalAid.favorCost);
