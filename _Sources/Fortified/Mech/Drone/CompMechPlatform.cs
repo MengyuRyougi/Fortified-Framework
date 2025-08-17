@@ -59,15 +59,15 @@ namespace Fortified
                 }
                 else if (parent is Building building)
                 {
-                    if (!building.TryGetComp<CompPowerTrader>().PowerOn)
+                    if (building.TryGetComp<CompPowerTrader>(out var _power)&& !_power.PowerOn )
                     {
                         return "NoPower".Translate();
                     }
-                    if (building.TryGetComp<CompBreakdownable>().BrokenDown)
+                    if (building.TryGetComp<CompBreakdownable>(out var _broke)&& _broke.BrokenDown)
                     {
                         return "BrokenDown".Translate();
                     }
-                    if (building.TryGetComp<CompFlickable>().SwitchIsOn == false)
+                    if (building.TryGetComp<CompFlickable>(out var _flick)&& !_flick.SwitchIsOn)
                     {
                         return "Deactivated".Translate();
                     }
