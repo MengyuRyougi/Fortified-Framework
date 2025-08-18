@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortified\\mech\\drone\\compmechplatform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|solutionrelative:mech\\drone\\compmechplatform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortified\\mech\\ui\\command_selectappareloutfit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|solutionrelative:mech\\ui\\command_selectappareloutfit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortified\\mech\\drone\\compmechplatform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|solutionrelative:mech\\drone\\compmechplatform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortified\\ability\\compabilityeffect_directionalexplosion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -142,37 +142,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Command_SelectApparelOutfit.cs",
               "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Mech\\UI\\Command_SelectApparelOutfit.cs",
               "RelativeDocumentMoniker": "Mech\\UI\\Command_SelectApparelOutfit.cs",
               "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Mech\\UI\\Command_SelectApparelOutfit.cs",
               "RelativeToolTip": "Mech\\UI\\Command_SelectApparelOutfit.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABgAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T14:45:28.391Z"
+              "WhenOpened": "2025-08-10T14:45:28.391Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "CompMechPlatform.cs",
               "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Mech\\Drone\\CompMechPlatform.cs",
               "RelativeDocumentMoniker": "Mech\\Drone\\CompMechPlatform.cs",
               "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Mech\\Drone\\CompMechPlatform.cs",
               "RelativeToolTip": "Mech\\Drone\\CompMechPlatform.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAxwEUAAABgAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAEUAAABgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-10T14:41:29.161Z",
               "EditorCaption": ""
@@ -187,7 +184,8 @@
               "RelativeToolTip": "Ability\\CompAbilityEffect_DirectionalExplosion.cs",
               "ViewState": "AgIAADEAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T14:30:54.462Z"
+              "WhenOpened": "2025-08-10T14:30:54.462Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -199,7 +197,8 @@
               "RelativeToolTip": "Ability\\CompAbilityEffect_ActiveProtectionSystem.cs",
               "ViewState": "AgIAABoAAAAAAAAAAAAkwCQAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T14:28:29.047Z"
+              "WhenOpened": "2025-08-10T14:28:29.047Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -211,7 +210,8 @@
               "RelativeToolTip": "Components\\CompAntiBlasterSmoke.cs",
               "ViewState": "AgIAAHkAAAAAAAAAAAAwwEoAAABQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T14:27:07.894Z"
+              "WhenOpened": "2025-08-10T14:27:07.894Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -223,7 +223,8 @@
               "RelativeToolTip": "Components\\CompCastEffecter.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T14:27:07.431Z"
+              "WhenOpened": "2025-08-10T14:27:07.431Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -235,7 +236,8 @@
               "RelativeToolTip": "Components\\CompFlyingFleckThrower.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T14:27:06.208Z"
+              "WhenOpened": "2025-08-10T14:27:06.208Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -247,7 +249,8 @@
               "RelativeToolTip": "StandaloneFunctions\\WorkTableAutonomous\\ModExtension_QualityChance.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T14:17:30.382Z"
+              "WhenOpened": "2025-08-10T14:17:30.382Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -259,7 +262,8 @@
               "RelativeToolTip": "StandaloneFunctions\\WorkTableAutonomous\\ModExtension_AutoWorkTable.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T14:08:43.286Z"
+              "WhenOpened": "2025-08-10T14:08:43.286Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -271,7 +275,8 @@
               "RelativeToolTip": "Components\\CompFueledSpawner.cs",
               "ViewState": "AgIAAKYAAAAAAAAAAAAiwLYAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T13:34:54.886Z"
+              "WhenOpened": "2025-08-10T13:34:54.886Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -283,7 +288,8 @@
               "RelativeToolTip": "Components\\CompCastFlecker.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T13:25:09.513Z"
+              "WhenOpened": "2025-08-10T13:25:09.513Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -295,7 +301,8 @@
               "RelativeToolTip": "Components\\CompTargetable_SingleMechCorpse.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T13:34:19.695Z"
+              "WhenOpened": "2025-08-10T13:34:19.695Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -307,7 +314,8 @@
               "RelativeToolTip": "Components\\CompSubRelay.cs",
               "ViewState": "AgIAAHkAAAAAAAAAAAAtwIsAAABJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T11:58:29.823Z"
+              "WhenOpened": "2025-08-10T11:58:29.823Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -319,7 +327,8 @@
               "RelativeToolTip": "StandaloneFunctions\\WorkTableAutonomous\\Building_WorkTableAutonomous.cs",
               "ViewState": "AgIAAH4AAAAAAAAAAAAIwAoAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T16:31:29.39Z"
+              "WhenOpened": "2025-07-28T16:31:29.39Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -331,7 +340,8 @@
               "RelativeToolTip": "Components\\CompFueledUsable.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAAowBYAAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T13:04:46.599Z"
+              "WhenOpened": "2025-08-10T13:04:46.599Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -343,7 +353,8 @@
               "RelativeToolTip": "Ability\\CompAbilityEffect_DropMech.cs",
               "ViewState": "AgIAAFQAAAAAAAAAAAAowE4AAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T13:33:31.81Z"
+              "WhenOpened": "2025-08-10T13:33:31.81Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -355,7 +366,8 @@
               "RelativeToolTip": "Components\\CompCastPushHeat.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T13:25:08.568Z"
+              "WhenOpened": "2025-08-10T13:25:08.568Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -365,9 +377,10 @@
               "RelativeDocumentMoniker": "Components\\SignalTower\\CompSignalTower.cs",
               "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Components\\SignalTower\\CompSignalTower.cs",
               "RelativeToolTip": "Components\\SignalTower\\CompSignalTower.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAYwCYAAAASAAAAAAAAAA==",
+              "ViewState": "AgIAABgAAAAAAAAAAAA1wCYAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T13:08:55.491Z"
+              "WhenOpened": "2025-08-10T13:08:55.491Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -379,7 +392,8 @@
               "RelativeToolTip": "Utility\\CheckUtility.cs",
               "ViewState": "AgIAABYAAAAAAAAAAAAYwCUAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T12:06:10.68Z"
+              "WhenOpened": "2025-08-10T12:06:10.68Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -391,7 +405,8 @@
               "RelativeToolTip": "Components\\CompIncidentMaker.cs",
               "ViewState": "AgIAAJgAAAAAAAAAAAAmwKQAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T13:00:24.111Z"
+              "WhenOpened": "2025-08-10T13:00:24.111Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -403,7 +418,8 @@
               "RelativeToolTip": "StandaloneFunctions\\WorkTableAutonomous\\WorkGiver_DoAutonomousBill.cs",
               "ViewState": "AgIAAA4AAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T08:51:00.093Z"
+              "WhenOpened": "2025-08-10T08:51:00.093Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -415,7 +431,8 @@
               "RelativeToolTip": "Mech\\Patches\\Patch_InMechanitorCommandRange.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAD4vygAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T18:15:14.775Z"
+              "WhenOpened": "2025-07-29T18:15:14.775Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -427,7 +444,8 @@
               "RelativeToolTip": "StandaloneFunctions\\WorkTableAutonomous\\JobDriver_DoAutonomousBill.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T08:51:06.014Z"
+              "WhenOpened": "2025-08-10T08:51:06.014Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -439,7 +457,8 @@
               "RelativeToolTip": "Thing\\PawnRenderNode_Attachment.cs",
               "ViewState": "AgIAABIAAAAAAAAAAAAYwB8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-31T08:14:36.879Z"
+              "WhenOpened": "2025-07-31T08:14:36.879Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -451,7 +470,8 @@
               "RelativeToolTip": "Mech\\Patches\\Patch_CompOverseerSubject_State.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T18:15:51.731Z"
+              "WhenOpened": "2025-07-29T18:15:51.731Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -463,7 +483,8 @@
               "RelativeToolTip": "Mech\\Patches\\Patch_IsColonyMechPlayerControlled.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T18:15:42.033Z"
+              "WhenOpened": "2025-07-29T18:15:42.033Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -475,7 +496,8 @@
               "RelativeToolTip": "Mech\\MechanitorCommand\\CompMechanitorRange.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T18:14:31.046Z"
+              "WhenOpened": "2025-07-29T18:14:31.046Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -487,7 +509,8 @@
               "RelativeToolTip": "GameComponent\\GameComponent_DMS.cs",
               "ViewState": "AgIAACwAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T18:13:57.295Z"
+              "WhenOpened": "2025-07-29T18:13:57.295Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -498,7 +521,8 @@
               "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Fortified.csproj",
               "RelativeToolTip": "Fortified.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-07-27T18:48:42.53Z"
+              "WhenOpened": "2025-07-27T18:48:42.53Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -510,7 +534,8 @@
               "RelativeToolTip": "Components\\Pawn\\CompWeaponImprint.cs",
               "ViewState": "AgIAABMAAAAAAAAAAAAtwBwAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-27T18:46:26.121Z"
+              "WhenOpened": "2025-07-27T18:46:26.121Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -520,9 +545,10 @@
               "RelativeDocumentMoniker": "Royalty\\RoyalTitlePermitWorker_CallShuttle_Custom.cs",
               "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Royalty\\RoyalTitlePermitWorker_CallShuttle_Custom.cs",
               "RelativeToolTip": "Royalty\\RoyalTitlePermitWorker_CallShuttle_Custom.cs",
-              "ViewState": "AgIAAAoBAAAAAAAAAIBJwA8BAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAcBAAAAAAAAAIBZwA8BAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-23T09:47:57.785Z"
+              "WhenOpened": "2025-07-23T09:47:57.785Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -534,7 +560,8 @@
               "RelativeToolTip": "Mech\\WeaponUsable\\WeaponUsableMech.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAB3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-23T05:46:02.231Z"
+              "WhenOpened": "2025-07-23T05:46:02.231Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -546,7 +573,8 @@
               "RelativeToolTip": "Mech\\Patches\\Patch_SkillRecord.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-23T05:35:17.387Z"
+              "WhenOpened": "2025-07-23T05:35:17.387Z",
+              "EditorCaption": ""
             }
           ]
         }
