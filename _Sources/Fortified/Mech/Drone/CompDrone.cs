@@ -5,6 +5,7 @@ using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Verse.Noise;
 
 namespace Fortified
 {
@@ -95,9 +96,9 @@ namespace Fortified
             if (parentPlatform == null) return new AcceptanceReport("FFF.Drone.NoController".Translate());
             if (!parentPlatform.Spawned) return new AcceptanceReport("FFF.Drone.ControllerNotInMap".Translate());
             if (parentPlatform.Faction != Faction.OfPlayer) return new AcceptanceReport("FFF.Drone.ControllerNotInControl".Translate());
-            if (!parentPlatform.TryGetComp<CompPowerTrader>().PowerOn) return new AcceptanceReport("FFF.Drone.ControllerNotInControl".Translate());
-            if (parentPlatform.TryGetComp<CompBreakdownable>().BrokenDown) return new AcceptanceReport("FFF.Drone.ControllerNotInControl".Translate());
-            if (parentPlatform.TryGetComp<CompFlickable>().SwitchIsOn == false) return new AcceptanceReport("FFF.Drone.ControllerNotInControl".Translate());
+            if (!parentPlatform.TryGetComp<CompPowerTrader>(out var _t) && _t.PowerOn) return new AcceptanceReport("FFF.Drone.ControllerNotInControl".Translate());
+            if (parentPlatform.TryGetComp<CompBreakdownable>(out var _p) && _p.BrokenDown) return new AcceptanceReport("FFF.Drone.ControllerNotInControl".Translate());
+            if (parentPlatform.TryGetComp<CompFlickable>(out var _f) && _f.SwitchIsOn == false) return new AcceptanceReport("FFF.Drone.ControllerNotInControl".Translate());
             return true;
         }
 

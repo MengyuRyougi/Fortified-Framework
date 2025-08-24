@@ -4,10 +4,6 @@
     <defName>FFF_DroneConstant</defName>
     <thinkRoot Class="ThinkNode_Priority">
       <subNodes>
-        <!-- Despawned -->
-        <li Class="ThinkNode_Subtree">
-          <treeDef>Despawned</treeDef>
-        </li>
         <li Class="ThinkNode_ConditionalCanDoConstantThinkTreeJobNow">
           <subNodes>
             <li Class="ThinkNode_ConditionalOfPlayerFaction">
@@ -16,7 +12,12 @@
                   <invert>true</invert>
                   <jobDef>FFF_ReturnToDronePlatform</jobDef>
                   <subNodes>
+                    <li Class="JobGiver_SeekAllowedArea" />
+                    <!-- Do a queued job -->
                     <li Class="ThinkNode_QueuedJob" />
+                    <li Class="JobGiver_Work">
+                      <emergency>true</emergency>
+                    </li>
                     <li Class="JobGiver_Work" />
                   </subNodes>
                 </li>
