@@ -81,7 +81,8 @@ namespace Fortified
                         }
                         comp.SetQuality(q, new ArtGenerationContext?(ArtGenerationContext.Outsider));
                     }
-                    GenPlace.TryPlaceThing(item, this.InteractionCell, base.Map, ThingPlaceMode.Near);
+                    GenPlace.TryPlaceThing(item, this.InteractionCell ,
+                        base.Map, ThingPlaceMode.Near,null,null,null,30);
                 }
                 if (activeBill.repeatMode == BillRepeatModeDefOf.RepeatCount)
                 {
