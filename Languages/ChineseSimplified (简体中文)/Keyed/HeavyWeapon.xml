@@ -16,6 +16,6 @@
     <FFF.Req_NoWeaponFilter>没有其他装备限制</FFF.Req_NoWeaponFilter>
 
     <!-- EN: bodysize not supported (need:{0}) -->
-    <FFF.Reason.BodysizeNotSupported>体型尺寸不支持(需要:{0})</FFF.Reason.BodysizeNotSupported>
+    <FFF.BodysizeNotSupported>体型尺寸不支持(需要:{0})</FFF.BodysizeNotSupported>
 
 </LanguageData>

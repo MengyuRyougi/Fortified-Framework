@@ -16,6 +16,6 @@
     <FFF.Req_NoWeaponFilter>No other weapon restrictions</FFF.Req_NoWeaponFilter>
 
     <!-- EN: bodysize not supported (need:{0}) -->
-    <FFF.Reason.BodysizeNotSupported>bodysize not supported (need:{0})</FFF.Reason.BodysizeNotSupported>
+    <FFF.BodysizeNotSupported>bodysize not supported (need:{0})</FFF.BodysizeNotSupported>
 
 </LanguageData>
