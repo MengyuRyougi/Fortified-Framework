@@ -74,7 +74,8 @@ namespace Fortified
                     {
                         SetQuality(comp);
                     }
-                    GenPlace.TryPlaceThing(item, this.InteractionCell, base.Map, ThingPlaceMode.Near);
+                    GenPlace.TryPlaceThing(item, this.InteractionCell ,
+                        base.Map, ThingPlaceMode.Near,null,null,null,30);
                 }
                 if (activeBill.repeatMode == BillRepeatModeDefOf.RepeatCount)
                 {
