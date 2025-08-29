@@ -48,22 +48,12 @@
     <Compile Include="Verb\Verb_CastAbilityArcSprayProjectile.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref">
-      <Version>1.6.4565-beta</Version>
-    </PackageReference>
-    <PackageReference Include="Lib.Harmony">
-      <Version>2.4.1</Version>
-    </PackageReference>
+    <Reference Include="0Harmony, Version=2.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Fortified\packages\Lib.Harmony.2.4.1\lib\net48\0Harmony.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="CombatExtended">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\3495749827\Assemblies\CombatExtended.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Fortified">
-      <HintPath>..\..\1.6\Assemblies\Fortified.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

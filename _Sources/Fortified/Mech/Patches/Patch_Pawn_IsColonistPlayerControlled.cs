@@ -1,33 +1,20 @@
 ﻿using HarmonyLib;
-using RimWorld;
+using Verse;
 
 namespace Fortified
 {
-    //[HarmonyPatch(typeof(Pawn), nameof(Pawn.IsColonistPlayerControlled), MethodType.Getter)]
-    //public static class Patch_Pawn_IsColonistPlayerControlled
-    //{
-    //    public static void Postfix(ref bool __result, Pawn __instance)
-    //    {
-    //        if (!__result)
-    //        {
-    //            if (__instance.IsColonyMechPlayerControlled)
-    //            {
-    //                __result = true;
-    //            }
-    //        }
-    //    }
-    //}
-    [HarmonyPatch(typeof(Pawn_StyleTracker), nameof(Pawn_StyleTracker.CanDesireLookChange), MethodType.Getter)]
-    public static class Patch_Pawn_StyleTracker_CanDesireLookChange
+    [HarmonyPatch(typeof(Pawn), nameof(Pawn.IsColonistPlayerControlled), MethodType.Getter)]
+    public static class Patch_Pawn_IsColonistPlayerControlled
     {
-        public static bool Prefix(Pawn_StyleTracker __instance, ref bool __result)
+        public static void Postfix(ref bool __result, Pawn __instance)
         {
-            if (__instance.pawn is HumanlikeMech)
+            if (!__result)
             {
-                __result = false;
-                return false;
+                if (__instance is HumanlikeMech && __instance.IsColonyMechPlayerControlled)
+                {
+                    __result = true;
+                }
             }
-            return true;
         }
     }
 }

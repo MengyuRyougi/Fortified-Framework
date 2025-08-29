@@ -14,7 +14,7 @@ namespace Fortified
 
         private static readonly Texture2D CommandTex = ContentFinder<Texture2D>.Get("UI/Commands/CallShuttle");
 
-        TransportShipDef shipDef => Extension.transportShipDef ?? TransportShipDefOf.Ship_Shuttle;
+        TransportShipDef ShipDef => Extension.transportShipDef ?? TransportShipDefOf.Ship_Shuttle;
         private ShuttlePermitExtension Extension => this.def.GetModExtension<ShuttlePermitExtension>();
         public override bool ValidateTarget(LocalTargetInfo target, bool showMessages = true)
         {
@@ -24,23 +24,20 @@ namespace Fortified
                 {
                     Messages.Message(def.LabelCap + ": " + "AbilityCannotHitTarget".Translate(), MessageTypeDefOf.RejectInput);
                 }
-
                 return false;
             }
-
             AcceptanceReport acceptanceReport = ShuttleCanLandHere(target, map);
             if (!acceptanceReport.Accepted)
             {
                 Messages.Message(acceptanceReport.Reason, new LookTargets(target.Cell, map), MessageTypeDefOf.RejectInput, historical: false);
             }
-
             return acceptanceReport.Accepted;
         }
 
         public override void DrawHighlight(LocalTargetInfo target)
         {
             GenDraw.DrawRadiusRing(caller.Position, base.RangeClamped, Color.white);
-            DrawShuttleGhost(target, map, shipDef.shipThing, shipDef.shipThing.defaultPlacingRot);
+            DrawShuttleGhost(target, map, ShipDef.shipThing, ShipDef.shipThing.defaultPlacingRot);
         }
 
         public override void OrderForceTarget(LocalTargetInfo target)
@@ -63,13 +60,11 @@ namespace Fortified
                 yield return new FloatMenuOption(def.LabelCap + ": " + "CommandCallRoyalAidMapUnreachable".Translate(faction.Named("FACTION")), null);
                 yield break;
             }
-
             if (faction.HostileTo(Faction.OfPlayer))
             {
                 yield return new FloatMenuOption(def.LabelCap + ": " + "CommandCallRoyalAidFactionHostile".Translate(faction.Named("FACTION")), null);
                 yield break;
             }
-
             string description = def.LabelCap + ": ";
             Action action = null;
             if (FillAidOption(pawn, faction, ref description, out var free))
@@ -79,7 +74,6 @@ namespace Fortified
                     BeginCallShuttle(pawn, pawn.MapHeld, faction, free);
                 };
             }
-
             yield return new FloatMenuOption(description, action, faction.def.FactionIcon, faction.Color);
         }
 
@@ -101,17 +95,14 @@ namespace Fortified
                 {
                     command_Action.Disable("CommandCallRoyalAidMapUnreachable".Translate(faction.Named("FACTION")));
                 }
-
                 if (faction.HostileTo(Faction.OfPlayer))
                 {
                     command_Action.Disable("CommandCallRoyalAidFactionHostile".Translate(faction.Named("FACTION")));
                 }
-
                 if (disableNotEnoughFavor)
                 {
                     command_Action.Disable("CommandCallRoyalAidNotEnoughFavor".Translate());
                 }
-
                 yield return command_Action;
             }
         }
@@ -138,11 +129,11 @@ namespace Fortified
         {
             if (caller.Spawned)
             {
-                Thing thing = ThingMaker.MakeThing(shipDef.shipThing);
+                Thing thing = ThingMaker.MakeThing(ShipDef.shipThing);
                 CompShuttle compShuttle = thing.TryGetComp<CompShuttle>();
                 compShuttle.permitShuttle = true;
                 compShuttle.acceptChildren = true;
-                TransportShip transportShip = TransportShipMaker.MakeTransportShip(shipDef, null, thing);
+                TransportShip transportShip = TransportShipMaker.MakeTransportShip(ShipDef, null, thing);
                 transportShip.ArriveAt(landingCell, map.Parent);
                 transportShip.AddJobs(ShipJobDefOf.WaitForever, ShipJobDefOf.Unload_Destination, ShipJobDefOf.FlyAway);
                 caller.royalty.GetPermit(def, calledFaction).Notify_Used();
@@ -156,7 +147,7 @@ namespace Fortified
         private void CallShuttleToCaravan(Pawn caller, Faction faction, bool free)
         {
             Caravan caravan = caller.GetCaravan();
-            int maxLaunchDistance = shipDef.maxLaunchDistance;
+            int maxLaunchDistance = ShipDef.maxLaunchDistance;
             CameraJumper.TryJump(CameraJumper.GetWorldTarget(caravan));
             Find.WorldSelector.ClearSelection();
             PlanetTile caravanTile = caravan.Tile;
@@ -167,7 +158,7 @@ namespace Fortified
                     PlanetTile center = caravanTile;
                     if (caravanTile.Layer != Find.WorldSelector.SelectedLayer)
                     {
-                        center = Find.WorldSelector.SelectedLayer.GetClosestTile(caravanTile);
+                        center = Find.WorldSelector.SelectedLayer.GetClosestTile_NewTemp(caravanTile);
                     }
 
                     GenDraw.DrawWorldRadiusRing(center, maxLaunchDistance);
@@ -184,7 +175,7 @@ namespace Fortified
                 activeTransporterInfo.innerContainer.TryAddRangeOrTransfer(CaravanInventoryUtility.AllInventoryItems(caravan));
                 activeTransporterInfo.innerContainer.TryAddRangeOrTransfer(caravan.GetDirectlyHeldThings());
                 caravan.Destroy();
-                TravellingTransporters travellingTransporters = (TravellingTransporters)WorldObjectMaker.MakeWorldObject(shipDef.worldObject);
+                TravellingTransporters travellingTransporters = (TravellingTransporters)WorldObjectMaker.MakeWorldObject(ShipDef.worldObject);
                 travellingTransporters.Tile = caravan.Tile;
                 travellingTransporters.SetFaction(Faction.OfPlayer);
                 travellingTransporters.destinationTile = tile;
