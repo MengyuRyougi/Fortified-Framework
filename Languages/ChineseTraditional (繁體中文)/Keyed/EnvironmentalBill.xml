@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <FFF.Message.BillSuspendedInNonVacuum>{1}無法執行{0}: 需要在真空環境中</FFF.Message.BillSuspendedInNonVacuum>
+  <FFF.Cannot.TableNotInVacuum>無法運行: 需要在真空環境中</FFF.Cannot.TableNotInVacuum>
+
+  <FFF.Message.BillSuspendedInNonMicroGravity>{1}無法執行{0}: 需要在微重力環境中</FFF.Message.BillSuspendedInNonMicroGravity>
+  <FFF.Cannot.TableNotInMicroGravity>無法運行: 需要在微重力環境中</FFF.Cannot.TableNotInMicroGravity>
+
+</LanguageData>

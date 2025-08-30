@@ -10,6 +10,7 @@ using UnityEngine;
 
 public static partial class CheckUtility
 {
+
     public static bool InRange(LocalTargetInfo A, LocalTargetInfo B, float squaredRange)
     {
         if ((float)IntVec3Utility.DistanceToSquared(A.Cell, B.Cell) <= squaredRange)

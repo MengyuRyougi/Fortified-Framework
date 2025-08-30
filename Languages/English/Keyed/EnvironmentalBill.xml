@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <FFF.Message.BillSuspendedInNonVacuum>{0} on {1} is suspended: require Vacuum environment</FFF.Message.BillSuspendedInNonVacuum>
+  <FFF.Cannot.TableNotInVacuum>Cannot operate: require in vacuum environment</FFF.Cannot.TableNotInVacuum>
+
+  <FFF.Message.BillSuspendedInNonMicroGravity>{0} on {1} is suspended: require in Orbit or Microgravity environment</FFF.Message.BillSuspendedInNonMicroGravity>
+  <FFF.Cannot.TableNotInMicroGravity>Cannot operate: require micro gravity environment</FFF.Cannot.TableNotInMicroGravity>
+
+</LanguageData>
