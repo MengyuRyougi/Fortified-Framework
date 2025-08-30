@@ -12,7 +12,6 @@ namespace Fortified
 {
     public class Building_WorkTableAutonomous : Building_WorkTable, IThingHolder, INotifyHauledTo
     {
-
         public CompPowerTrader Power;
         public CompBreakdownable CompBreakdownable;
 

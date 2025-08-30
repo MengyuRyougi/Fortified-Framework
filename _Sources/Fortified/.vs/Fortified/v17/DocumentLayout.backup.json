@@ -7,8 +7,8 @@
       "RelativeMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|solutionrelative:standalonefunctions\\tablerecipeforspecialspace\\recipeworker_vacuum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortified\\standalonefunctions\\worktableautonomous\\building_worktableautonomous.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|solutionrelative:standalonefunctions\\worktableautonomous\\building_worktableautonomous.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortified\\standalonefunctions\\tablerecipeforspecialspace\\recipeworker_microgravity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|solutionrelative:standalonefunctions\\tablerecipeforspecialspace\\recipeworker_microgravity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{42386F22-1DFB-5DB7-665F-DF3880365B65}|Fortified.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_fortified-framework\\_sources\\fortified\\mech\\patches\\patch_pawn_cantakeorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -169,11 +169,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RecipeWorker_MicroGravity.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\StandaloneFunctions\\TableRecipeForSpecialSpace\\RecipeWorker_MicroGravity.cs",
+              "RelativeDocumentMoniker": "StandaloneFunctions\\TableRecipeForSpecialSpace\\RecipeWorker_MicroGravity.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\StandaloneFunctions\\TableRecipeForSpecialSpace\\RecipeWorker_MicroGravity.cs",
+              "RelativeToolTip": "StandaloneFunctions\\TableRecipeForSpecialSpace\\RecipeWorker_MicroGravity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-30T11:22:27.459Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -183,22 +196,10 @@
               "RelativeDocumentMoniker": "StandaloneFunctions\\TableRecipeForSpecialSpace\\RecipeWorker_Vacuum.cs",
               "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\StandaloneFunctions\\TableRecipeForSpecialSpace\\RecipeWorker_Vacuum.cs",
               "RelativeToolTip": "StandaloneFunctions\\TableRecipeForSpecialSpace\\RecipeWorker_Vacuum.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-30T09:44:36.773Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Patch_Pawn_DraftController_ShowDraftGizmo.cs",
-              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Mech\\Patches\\Patch_Pawn_DraftController_ShowDraftGizmo.cs",
-              "RelativeDocumentMoniker": "Mech\\Patches\\Patch_Pawn_DraftController_ShowDraftGizmo.cs",
-              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Mech\\Patches\\Patch_Pawn_DraftController_ShowDraftGizmo.cs",
-              "RelativeToolTip": "Mech\\Patches\\Patch_Pawn_DraftController_ShowDraftGizmo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-29T00:18:40.609Z"
             },
             {
               "$type": "Document",
@@ -234,21 +235,19 @@
               "RelativeToolTip": "Mech\\Patches\\Patch_Pawn_CanTakeOrder.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-29T00:14:45.958Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-29T00:14:45.958Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Building_WorkTableAutonomous.cs",
-              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\StandaloneFunctions\\WorkTableAutonomous\\Building_WorkTableAutonomous.cs",
-              "RelativeDocumentMoniker": "StandaloneFunctions\\WorkTableAutonomous\\Building_WorkTableAutonomous.cs",
-              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\StandaloneFunctions\\WorkTableAutonomous\\Building_WorkTableAutonomous.cs",
-              "RelativeToolTip": "StandaloneFunctions\\WorkTableAutonomous\\Building_WorkTableAutonomous.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAYwAwAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 6,
+              "Title": "Patch_Pawn_DraftController_ShowDraftGizmo.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Mech\\Patches\\Patch_Pawn_DraftController_ShowDraftGizmo.cs",
+              "RelativeDocumentMoniker": "Mech\\Patches\\Patch_Pawn_DraftController_ShowDraftGizmo.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\Fortified\\Mech\\Patches\\Patch_Pawn_DraftController_ShowDraftGizmo.cs",
+              "RelativeToolTip": "Mech\\Patches\\Patch_Pawn_DraftController_ShowDraftGizmo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T16:31:29.39Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-29T00:18:40.609Z"
             },
             {
               "$type": "Document",
@@ -261,10 +260,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-29T00:28:10.071Z"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             },
             {
               "$type": "Document",

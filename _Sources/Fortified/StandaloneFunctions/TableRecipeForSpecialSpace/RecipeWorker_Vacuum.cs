@@ -14,14 +14,6 @@ namespace Fortified
             }
             return base.AvailableReport(thing, part);
         }
-        public override bool AvailableOnNow(Thing thing, BodyPartRecord part = null)
-        {
-            if (IsInVacuum(thing))
-            {
-                return base.AvailableOnNow(thing, part);
-            }
-            return false;
-        }
         private bool IsInVacuum(Thing thing)
         {
             if (!ModsConfig.OdysseyActive) Log.WarningOnce($"Warning, {thing} is using RecipeWorker_Vacuum without OdysseyActive.", 123456);
