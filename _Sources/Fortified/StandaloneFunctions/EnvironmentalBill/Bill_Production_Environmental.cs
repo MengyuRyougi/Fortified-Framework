@@ -1,6 +1,7 @@
 ﻿using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Verse;
 
 namespace Fortified
@@ -60,8 +61,22 @@ namespace Fortified
                 }
             }
             if (Extension.OnlyInDarkness)
-            { 
-                //WIP
+            {
+                if (Mathf.Clamp01(WorkBench.Map.glowGrid.GroundGlowAt(WorkBench.Position)) > 0.25f)
+                {
+                    suspended = true;
+                    Messages.Message("FFF.Message.BillSuspendedInLight".Translate(Label, WorkBench.Label), MessageTypeDefOf.CautionInput);
+                    return false;
+                }
+            }
+            if (Extension.OnlyInCleanliness)
+            {
+                if (WorkBench.GetStatValue(StatDefOf.Cleanliness) < 0)
+                {
+                    suspended = true;
+                    Messages.Message("FFF.Message.BillSuspendedInDirtiness".Translate(Label, WorkBench.Label), MessageTypeDefOf.CautionInput);
+                    return false;
+                }
             }
             return true;
         }
