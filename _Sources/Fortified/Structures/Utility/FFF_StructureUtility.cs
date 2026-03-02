@@ -42,9 +42,9 @@ namespace Fortified.Structures
                 {
                     Thing t = thingList[i];
                     if (!t.Spawned || !t.def.destroyable) continue;
-                    
+
                     // 1. 只删除植物、污垢、碎石
-                    if (t.def.category == ThingCategory.Plant || 
+                    if (t.def.category == ThingCategory.Plant ||
                         t.def.category == ThingCategory.Filth ||
                         (t.def.thingCategories != null && t.def.thingCategories.Contains(ThingCategoryDefOf.Chunks)))
                     {
@@ -59,7 +59,7 @@ namespace Fortified.Structures
                             t.Destroy(DestroyMode.Vanish);
                             continue;
                         }
-                        
+
                         IntVec3 oldPos = t.Position;
                         t.DeSpawn();
                         // 尝试在附近找空位放下，防止稀有残骸被新建筑覆盖
@@ -97,15 +97,15 @@ namespace Fortified.Structures
         private static void SpawnThings(Map map, Sketch sketch, IntVec3 offset, Faction faction)
         {
             var sortedThings = sketch.Things.OrderBy(t => t.SpawnOrder).ToList();
-            
+
             if (Prefs.DevMode)
                 Log.Message($"[FFF] SpawnThings: 尝试生成 {sortedThings.Count} 个物体");
-            
+
             int spawnedCount = 0;
             foreach (var skThing in sortedThings)
             {
                 IntVec3 pos = skThing.pos + offset;
-                
+
                 // 边界检查
                 CellRect thingRect = GenAdj.OccupiedRect(pos, skThing.rot, skThing.def.size);
                 if (!thingRect.InBounds(map))
@@ -115,14 +115,14 @@ namespace Fortified.Structures
                 }
 
                 Thing thing = skThing.Instantiate();
-                if (faction != null && thing.def.CanHaveFaction) 
+                if (faction != null && thing.def.CanHaveFaction)
                     thing.SetFactionDirect(faction);
-                
+
                 GenSpawn.Spawn(thing, pos, map, skThing.rot, WipeMode.VanishOrMoveAside);
                 InitializeBuildingState(thing);
                 spawnedCount++;
             }
-            
+
             if (Prefs.DevMode)
                 Log.Message($"[FFF] SpawnThings: 成功生成 {spawnedCount}/{sortedThings.Count}");
         }
@@ -156,6 +156,8 @@ namespace Fortified.Structures
             }
             else
             {
+                if (def is FFF_StructureDef f && f.disableSuggestedRoof) return;
+
                 foreach (IntVec3 roofCell in sketch.GetSuggestedRoofCells())
                 {
                     IntVec3 c = roofCell + offset;

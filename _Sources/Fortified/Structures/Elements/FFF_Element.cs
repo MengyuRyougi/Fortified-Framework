@@ -22,17 +22,28 @@ namespace Fortified.Structures
         CounterClockwise
     }
 
-    public class FFF_Element_Thing : FFF_Element
+    public class FFF_Element_Thing : FFF_Element, IFFF_TaskProvider
     {
         public FFF_Element_Thing() { }
         public ThingDef def;
         public IntVec3 pos;
         public Rot4 rot = Rot4.North;
         public ThingDef stuff;
+        public float? targetTemperature;
 
         public override void AddToSketch(Sketch sketch)
         {
             if (def != null) sketch.AddThing(def, pos, rot, stuff);
+        }
+
+        public List<IFFF_GenerationTask> GetTasks(Rot4 rot, IntVec3 offset)
+        {
+            List<IFFF_GenerationTask> tasks = new List<IFFF_GenerationTask>();
+            if (targetTemperature.HasValue)
+            {
+                tasks.Add(new Task_SetTempControl { pos = pos.RotatedBy(rot) + offset, targetTemperature = targetTemperature.Value });
+            }
+            return tasks;
         }
     }
 
@@ -49,7 +60,7 @@ namespace Fortified.Structures
     }
 
     // 矩形块优化版本
-    public class FFF_Element_ThingRect : FFF_Element
+    public class FFF_Element_ThingRect : FFF_Element, IFFF_TaskProvider
     {
         public FFF_Element_ThingRect() { }
         public ThingDef def;
@@ -57,12 +68,27 @@ namespace Fortified.Structures
         public IntVec2 size;
         public Rot4 rot = Rot4.North;
         public ThingDef stuff;
+        public float? targetTemperature;
 
         public override void AddToSketch(Sketch sketch)
         {
             if (def == null) return;
             CellRect rect = new CellRect(pos.x, pos.z, size.x, size.z);
             foreach (IntVec3 p in rect) sketch.AddThing(def, p, rot, stuff);
+        }
+
+        public List<IFFF_GenerationTask> GetTasks(Rot4 rot, IntVec3 offset)
+        {
+            List<IFFF_GenerationTask> tasks = new List<IFFF_GenerationTask>();
+            if (targetTemperature.HasValue)
+            {
+                CellRect rect = new CellRect(pos.x, pos.z, size.x, size.z);
+                foreach (IntVec3 p in rect)
+                {
+                    tasks.Add(new Task_SetTempControl { pos = p.RotatedBy(rot) + offset, targetTemperature = targetTemperature.Value });
+                }
+            }
+            return tasks;
         }
     }
 
@@ -81,11 +107,130 @@ namespace Fortified.Structures
         }
     }
 
+    public class FFF_Element_TerrainColor : FFF_Element
+    {
+        public FFF_Element_TerrainColor() { }
+        public ColorDef color;
+        public IntVec3 pos;
+
+        public override void AddToSketch(Sketch sketch) { }
+    }
+
     public class FFF_Element_TerrainColorRect : FFF_Element
     {
         public FFF_Element_TerrainColorRect() { }
         public ColorDef color;
-        public CellRect rect;
+        public IntVec3 pos;
+        public IntVec2 size;
+
+        public override void AddToSketch(Sketch sketch) { }
+    }
+
+    public class FFF_Element_Roof : FFF_Element, IFFF_TaskProvider
+    {
+        public FFF_Element_Roof() { }
+        public RoofDef def;
+        public IntVec3 pos;
+        public bool force = true; // 强制覆盖现有屋顶
+
+        public override void AddToSketch(Sketch sketch) { }
+        public List<IFFF_GenerationTask> GetTasks(Rot4 rot, IntVec3 offset)
+        {
+            return new List<IFFF_GenerationTask> { new Task_ApplyRoof { pos = pos.RotatedBy(rot) + offset, roofDef = def, force = force } };
+        }
+    }
+
+    public class FFF_Element_RoofRect : FFF_Element, IFFF_TaskProvider
+    {
+        public FFF_Element_RoofRect() { }
+        public RoofDef def;
+        public IntVec3 pos;
+        public IntVec2 size;
+        public bool force = true;
+
+        public override void AddToSketch(Sketch sketch) { }
+        public List<IFFF_GenerationTask> GetTasks(Rot4 rot, IntVec3 offset)
+        {
+            List<IFFF_GenerationTask> tasks = new List<IFFF_GenerationTask>();
+            CellRect rect = new CellRect(pos.x, pos.z, size.x, size.z);
+            foreach (IntVec3 p in rect)
+            {
+                tasks.Add(new Task_ApplyRoof { pos = p.RotatedBy(rot) + offset, roofDef = def, force = force });
+            }
+            return tasks;
+        }
+    }
+
+    public class FFF_Element_RoofScatter : FFF_Element, IFFF_TaskProvider
+    {
+        public FFF_Element_RoofScatter() { }
+        public RoofDef def;
+        public List<IntVec3> posList = new List<IntVec3>();
+        public bool force = true;
+
+        public override void AddToSketch(Sketch sketch) { }
+        public List<IFFF_GenerationTask> GetTasks(Rot4 rot, IntVec3 offset)
+        {
+            List<IFFF_GenerationTask> tasks = new List<IFFF_GenerationTask>();
+            if (!posList.NullOrEmpty())
+            {
+                foreach (IntVec3 p in posList)
+                {
+                    tasks.Add(new Task_ApplyRoof { pos = p.RotatedBy(rot) + offset, roofDef = def, force = force });
+                }
+            }
+            return tasks;
+        }
+    }
+
+    // 散点聚合
+    public class FFF_Element_ThingScatter : FFF_Element, IFFF_TaskProvider
+    {
+        public FFF_Element_ThingScatter() { }
+        public ThingDef def;
+        public List<IntVec3> posList = new List<IntVec3>();
+        public Rot4 rot = Rot4.North;
+        public ThingDef stuff;
+        public float? targetTemperature;
+
+        public override void AddToSketch(Sketch sketch)
+        {
+            if (def == null || posList.NullOrEmpty()) return;
+            foreach (IntVec3 pos in posList) sketch.AddThing(def, pos, rot, stuff);
+        }
+
+        public List<IFFF_GenerationTask> GetTasks(Rot4 rot, IntVec3 offset)
+        {
+            List<IFFF_GenerationTask> tasks = new List<IFFF_GenerationTask>();
+            if (targetTemperature.HasValue && !posList.NullOrEmpty())
+            {
+                foreach (IntVec3 p in posList)
+                {
+                    tasks.Add(new Task_SetTempControl { pos = p.RotatedBy(rot) + offset, targetTemperature = targetTemperature.Value });
+                }
+            }
+            return tasks;
+        }
+    }
+
+    public class FFF_Element_TerrainScatter : FFF_Element
+    {
+        public FFF_Element_TerrainScatter() { }
+        public TerrainDef def;
+        public List<IntVec3> posList = new List<IntVec3>();
+
+        public override void AddToSketch(Sketch sketch)
+        {
+            if (def == null || posList.NullOrEmpty()) return;
+            foreach (IntVec3 pos in posList) sketch.AddTerrain(def, pos);
+        }
+    }
+
+    public class FFF_Element_TerrainColorScatter : FFF_Element
+    {
+        public FFF_Element_TerrainColorScatter() { }
+        public ColorDef color;
+        public List<IntVec3> posList = new List<IntVec3>();
 
         public override void AddToSketch(Sketch sketch) { }
     }
@@ -168,7 +313,7 @@ namespace Fortified.Structures
         protected Rot4 GetFacingRot()
         {
             if (facingMode == FFF_FacingMode.None) return Rot4.North;
-            
+
             // 简单的径向判定
             if (Mathf.Abs(pos.x) > Mathf.Abs(pos.z))
             {

@@ -16,6 +16,7 @@ namespace Fortified.Structures
         public List<string> zoneTags = new List<string>(); // 适用区域标签
         public float baseWeight = 1f; // 基础出现权重
         public int frontDist = 0; // 离正门距离
+        public bool disableSuggestedRoof = false; // 是否禁止引擎自动建屋顶（当有单独导出屋顶时设为true）
 
         public int FrontDist => frontDist;
         public IntVec2 Size => size;
@@ -75,10 +76,10 @@ namespace Fortified.Structures
 
         public List<FFF_PawnGenRequest> GetPawns(Rot4 rot, IntVec3 offset)
         {
-            return GetPawns().ConvertAll(p => new FFF_PawnGenRequest 
-            { 
-                Kind = p.Kind, 
-                Faction = p.Faction, 
+            return GetPawns().ConvertAll(p => new FFF_PawnGenRequest
+            {
+                Kind = p.Kind,
+                Faction = p.Faction,
                 Position = p.Position.RotatedBy(rot) + offset,
                 DefendSpawnPoint = p.DefendSpawnPoint
             });

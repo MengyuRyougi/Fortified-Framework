@@ -28,7 +28,7 @@ namespace Fortified.Structures
             if (crate == null) return;
 
             if (makerDef?.root == null) return;
-            
+
             ThingSetMakerParams parms = new ThingSetMakerParams();
             List<Thing> things = makerDef.root.Generate(parms);
             foreach (var thing in things)
@@ -69,7 +69,7 @@ namespace Fortified.Structures
 
             Pawn pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(pk, faction, PawnGenerationContext.NonPlayer, map.Tile));
             GenSpawn.Spawn(pawn, manPos, map);
-            
+
             // 指派操作任务
             pawn.mindState.duty = new Verse.AI.PawnDuty(DutyDefOf.ManClosestTurret, actualPos);
 
@@ -112,7 +112,7 @@ namespace Fortified.Structures
                 {
                     if (forbidden) t.SetForbidden(true, false);
                 }
-                
+
                 if (quality.HasValue && t.TryGetComp<CompQuality>() is CompQuality comp)
                 {
                     comp.SetQuality(quality.Value, ArtGenerationContext.Outsider);
@@ -216,7 +216,7 @@ namespace Fortified.Structures
         {
             IntVec3 actualPos = pos + offset;
             if (!actualPos.InBounds(map)) return;
-            
+
             // 检查是否已有电缆
             if (actualPos.GetFirstThing(map, ThingDefOf.PowerConduit) != null) return;
 
@@ -253,6 +253,33 @@ namespace Fortified.Structures
         public IFFF_GenerationTask Transformed(Rot4 rot, IntVec3 offset)
         {
             return new Task_ApplyRoof { pos = pos.RotatedBy(rot) + offset, roofDef = roofDef, force = force };
+        }
+    }
+
+    // 设置制冷机机等目标温度任务
+    public class Task_SetTempControl : IFFF_GenerationTask
+    {
+        public IntVec3 pos;
+        public float targetTemperature;
+
+        public void Execute(Map map, IntVec3 offset)
+        {
+            IntVec3 actualPos = pos + offset;
+            if (!actualPos.InBounds(map)) return;
+
+            foreach (Thing t in actualPos.GetThingList(map))
+            {
+                var comp = t.TryGetComp<CompTempControl>();
+                if (comp != null)
+                {
+                    comp.targetTemperature = targetTemperature;
+                }
+            }
+        }
+
+        public IFFF_GenerationTask Transformed(Rot4 rot, IntVec3 offset)
+        {
+            return new Task_SetTempControl { pos = pos.RotatedBy(rot) + offset, targetTemperature = targetTemperature };
         }
     }
 }
