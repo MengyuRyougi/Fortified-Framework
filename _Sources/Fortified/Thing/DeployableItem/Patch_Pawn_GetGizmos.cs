@@ -15,7 +15,7 @@ namespace Fortified
         {
             foreach (Gizmo g in __result) yield return g;
             Pawn pawn = __instance.pawn;
-			if (pawn.Spawned && Find.Selector.SingleSelectedThing == pawn && pawn.Faction == Faction.OfPlayerSilentFail)
+			if (pawn.Spawned && Find.Selector.SingleSelectedThing == pawn && pawn.RaceProps.intelligence >= Intelligence.ToolUser && pawn.Faction == Faction.OfPlayerSilentFail)
             {
                 foreach (Thing thing in __instance.innerContainer)
                 {
@@ -25,6 +25,10 @@ namespace Fortified
 						if (gizmo1 != null) yield return gizmo1;
 					}
                 }
+				if(pawn.equipment == null)
+				{
+					yield break;
+				}
                 foreach (Thing thing in pawn.equipment.AllEquipmentListForReading)
                 {
 					if (thing is IGizmoGiver giver2)
