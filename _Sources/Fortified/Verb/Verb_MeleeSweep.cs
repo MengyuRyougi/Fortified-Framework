@@ -3,18 +3,19 @@ using RimWorld;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Fortified
 {
     public class Verb_MeleeSweep : Verb_MeleeAttack
     {
-        private EffecterDef ExplosionEffect => EquipmentSource.GetComp<Comp_MeleeSweep>().Props.explosionEffect;
-        private DamageDef DamageDef => EquipmentSource.GetComp<Comp_MeleeSweep>().Props.damageDef;
-        private float Radius => EquipmentSource.GetComp<Comp_MeleeSweep>().Props.radius;
-        private float Angle => EquipmentSource.GetComp<Comp_MeleeSweep>().Props.angle;
-        private float Damage => EquipmentSource.GetComp<Comp_MeleeSweep>().Props.damage;
-        private float ArmorPenetration => EquipmentSource.GetComp<Comp_MeleeSweep>().Props.armorPenetration;
+        private Comp_MeleeSweep cachedSweepComp;
+        private Comp_MeleeSweep SweepComp => cachedSweepComp ??= EquipmentSource.GetComp<Comp_MeleeSweep>();
+        private EffecterDef ExplosionEffect => SweepComp.Props.explosionEffect;
+        private DamageDef DamageDef => SweepComp.Props.damageDef;
+        private float Radius => SweepComp.Props.radius;
+        private float Angle => SweepComp.Props.angle;
+        private float Damage => SweepComp.Props.damage;
+        private float ArmorPenetration => SweepComp.Props.armorPenetration;
         public override bool TryStartCastOn(LocalTargetInfo castTarg, LocalTargetInfo destTarg, bool surpriseAttack = false, bool canHitNonTargetPawns = true, bool preventFriendlyFire = false, bool nonInterruptingSelfCast = false)
         {
             return base.TryStartCastOn(castTarg, destTarg, surpriseAttack, canHitNonTargetPawns, preventFriendlyFire, nonInterruptingSelfCast);
@@ -51,25 +52,33 @@ namespace Fortified
             result = target.Thing.TakeDamage(new DamageInfo(DamageDef, Damage, armorPenetration: ArmorPenetration, weapon: EquipmentSource.def, instigator: CasterPawn, weaponQuality: q));
             if (EquipmentSource != null && !EquipmentSource.Destroyed)
             {
-                //友傷判斷
+                // 友伤判断
                 List<Thing> AvoidThings = new List<Thing>();
                 AvoidThings.Add(CasterPawn);
+                Faction casterFaction = CasterPawn.Faction;
+                ThingGrid thingGrid = CasterPawn.MapHeld.thingGrid;
                 foreach (IntVec3 cell in CasterPawn.OccupiedRect().ExpandedBy((int)Radius))
                 {
-                    List<Thing> list = CasterPawn.MapHeld.
-                        thingGrid.ThingsListAt(cell).Where((v) =>
-                        (v is Pawn pawn && (pawn.DeadOrDowned || (CasterPawn.Faction != null && pawn.Faction != null && !pawn.Faction.HostileTo(CasterPawn.Faction))))
-                        ||
-                        (v.def.category == ThingCategory.Item)
-                        ).ToList();
-                    if (!list.NullOrEmpty()) AvoidThings.AddRange(list);
+                    List<Thing> things = thingGrid.ThingsListAt(cell);
+                    for (int idx = 0; idx < things.Count; idx++)
+                    {
+                        Thing v = things[idx];
+                        if (v is Pawn pawn && (pawn.DeadOrDowned || (casterFaction != null && pawn.Faction != null && !pawn.Faction.HostileTo(casterFaction))))
+                        {
+                            AvoidThings.Add(v);
+                        }
+                        else if (v.def.category == ThingCategory.Item)
+                        {
+                            AvoidThings.Add(v);
+                        }
+                    }
                 }
 
                 if (target.Pawn == null)
                 {
                     pos += Rot4.FromAngleFlat(direction).Opposite.FacingCell; //面對非Pawn目標的範圍會更大。
                 }
-                GenExplosion.DoExplosion(pos, CasterPawn.Map, Radius, DamageDef, CasterPawn, (int)Damage, armorPenetration: ArmorPenetration, screenShakeFactor: 0, doVisualEffects: false, ignoredThings: AvoidThings, explosionSound: SoundDefOf.Pawn_Melee_Punch_Miss, affectedAngle: new FloatRange(direction - (Angle / 2f)-10, direction + (Angle / 2f)+10), direction: direction, propagationSpeed: 0.6f);
+                GenExplosion.DoExplosion(pos, CasterPawn.Map, Radius, DamageDef, CasterPawn, (int)Damage, armorPenetration: ArmorPenetration, screenShakeFactor: 0, doVisualEffects: false, ignoredThings: AvoidThings, explosionSound: SoundDefOf.Pawn_Melee_Punch_Miss, affectedAngle: new FloatRange(direction - (Angle / 2f) - 10, direction + (Angle / 2f) + 10), direction: direction, propagationSpeed: 0.6f);
             }
         }
     }
