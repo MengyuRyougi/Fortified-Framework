@@ -1,15 +1,24 @@
-﻿using RimWorld;
+using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
+using Multiplayer.API;
+using HarmonyLib;
+
 
 namespace Fortified
 {
+    [StaticConstructorOnStartup]
     public class CompMechPlatform : ThingComp, IThingHolder
     {
+        static CompMechPlatform()
+        {
+            if (!MP.enabled) return;
+            MP.RegisterAll();
+        }
         private const int LowIngredientCountThreshold = 75;
 
         private int cooldownTicksRemaining;
@@ -114,7 +123,7 @@ namespace Fortified
                 {
                     this.autoDeployEnabled = true;
                     c = Props.maxIngredientCount;
-                } 
+                }
 
                 innerContainer = new ThingOwner<Thing>(this, oneStackOnly: false);
                 if (c > 0)
@@ -234,7 +243,7 @@ namespace Fortified
                 Command_Action command_Action = new Command_Action
                 {
                     action = delegate
-                    {
+                    { [SyncMethod] void SyncRetract() {
                         foreach (Pawn item in spawnedPawns)
                         {
                             if (item.TryGetComp<CompDrone>(out var d))
@@ -242,7 +251,10 @@ namespace Fortified
                                 d.ReturnToPlatform();
                             }
                         }
+                    }
+                    SyncRetract();
                     },
+
                     hotKey = KeyBindingDefOf.Misc3,
                     icon = ContentFinder<Texture2D>.Get(Props.gizmoIconPath_Retract),
                     defaultLabel = "FFF.RetractDrones".Translate(Props.spawnPawnKind.labelPlural),
@@ -257,7 +269,8 @@ namespace Fortified
                 cooldownPercentGetter = () => Mathf.InverseLerp(Props.cooldownTicks, 0f, cooldownTicksRemaining),
                 action = delegate
                 {
-                    TrySpawnPawns();
+                    [SyncMethod] void SyncedTrySpawnPawns() { TrySpawnPawns(); }
+                    SyncedTrySpawnPawns();
                 },
                 hotKey = KeyBindingDefOf.Misc2,
                 Disabled = !canSpawn.Accepted,
@@ -277,7 +290,8 @@ namespace Fortified
                 isActive = () => autoDeployEnabled,
                 toggleAction = () =>
                 {
-                    autoDeployEnabled = !autoDeployEnabled;
+                    [SyncMethod] void SyncToggle() { autoDeployEnabled = !autoDeployEnabled; }
+                    SyncToggle();
                 }
             };
             yield return command_Toggle;
@@ -300,14 +314,17 @@ namespace Fortified
                 command_Action2.defaultLabel = "DEV: Fill with " + Props.fixedIngredient.label;
                 command_Action2.action = delegate
                 {
-                    while (IngredientCount < Props.maxIngredientCount)
-                    {
+                    [SyncMethod] void SyncFill() { while (IngredientCount < Props.maxIngredientCount)
+                        {
                         int stackCount = Mathf.Min(Props.maxIngredientCount - IngredientCount, Props.fixedIngredient.stackLimit);
                         Thing thing = ThingMaker.MakeThing(Props.fixedIngredient);
                         thing.stackCount = stackCount;
                         innerContainer.TryAdd(thing, thing.stackCount);
+                        }
                     }
+                SyncFill();
                 };
+
                 yield return command_Action2;
                 Command_Action command_Action3 = new Command_Action();
                 command_Action3.defaultLabel = "DEV: Empty " + Props.fixedIngredient.label;
@@ -342,20 +359,24 @@ namespace Fortified
             var list = new List<FloatMenuOption>
             {
                 new FloatMenuOption("FFF.Drone.NoRestrict".Translate(), () =>
-            {
-                selectedAreaId = -1;
-            })
+                {
+                    [SyncMethod] void SyncUnrestricted(CompMechPlatform self) { self.selectedAreaId = -1; }
+                    SyncUnrestricted(this);
+                })
             };
             foreach (var area in map.areaManager.AllAreas.Where(a=>a.AssignableAsAllowed()))
             {
                 var label = area.Label;
                 var opt = new FloatMenuOption(label, () =>
                 {
-                    selectedAreaId = area.ID;
-                    foreach (var p in spawnedPawns)
-                    {
-                        p.playerSettings.AreaRestrictionInPawnCurrentMap = area;
+                    [SyncMethod] void SyncSelectedArea(Area area, CompMechPlatform self) {
+                        self.selectedAreaId = area.ID;
+                        foreach (var p in self.spawnedPawns)
+                        {
+                            p.playerSettings.AreaRestrictionInPawnCurrentMap = area;
+                        }
                     }
+                    SyncSelectedArea(area, this);
                 });
                 // 額外在右側畫出顏色預覽小方塊
                 opt.extraPartWidth = 24f;
@@ -429,7 +450,7 @@ namespace Fortified
             {
                 return;
             }
-            
+
 
             for (int i = 0; i < spawnedPawns.Count; i++)
             {
@@ -521,7 +542,7 @@ namespace Fortified
                     excess -= innerContainer[0].stackCount;
                 }
                 else
-                { 
+                {
                     t = innerContainer[0].SplitOff(excess);
                     excess = 0;
                 }
