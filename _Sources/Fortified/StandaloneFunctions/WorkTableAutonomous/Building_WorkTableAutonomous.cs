@@ -7,6 +7,7 @@ using Verse.Sound;
 using Verse;
 using UnityEngine;
 using Verse.Noise;
+using Multiplayer.API;
 
 namespace Fortified
 {
@@ -171,7 +172,8 @@ namespace Fortified
                     icon = FFF_Icons.icon_Cancel,
                     action = delegate
                     {
-                        Cancel();
+                        [SyncMethod] void SyncCancelBill() { Cancel(); }
+                        SyncCancelBill();
                     }
                 };
             }
@@ -183,8 +185,9 @@ namespace Fortified
                     icon = FFF_Icons.icon_Cancel,
                     action = delegate
                     {
-                        var v = this.modExtension.GetEffecterDef_DoneTrigger(this.Rotation)?.SpawnMaintained(this, this);
-                        v.Trigger(this, this);
+                        [SyncMethod] void SyncTestDone() { var v = this.modExtension.GetEffecterDef_DoneTrigger(this.Rotation)?.SpawnMaintained(this, this);
+                        v.Trigger(this, this); }
+                        SyncTestDone();
                     }
                 };
                 yield return new Command_Action
@@ -193,7 +196,8 @@ namespace Fortified
                     icon = FFF_Icons.icon_Cancel,
                     action = delegate
                     {
-                        PlayEffecter();
+                        [SyncMethod] void SyncTestDone() { PlayEffecter(); }
+                        SyncTestDone();
                     }
                 };
             }
