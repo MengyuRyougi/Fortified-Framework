@@ -9,6 +9,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>10.0</LangVersion>
     <BaseOutputPath>\..\..\1.6\Assemblies</BaseOutputPath>
+    <DefineConstants>$(DefineConstants);MULTIPLAYER</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -53,6 +54,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="RimWorld.MultiplayerAPI" Version="0.6.0" />
 
     <Publicize Include="Assembly-CSharp:RimWorld.CompTargetable.selectedTarget" />
     <Publicize Include="Assembly-CSharp:RimWorld.LordToil_Siege.SetAsDefender" />

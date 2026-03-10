@@ -5,18 +5,11 @@ using System.Linq;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using static RimWorld.MechClusterSketch;
 
 namespace Fortified
 {
     public class CompMultipleTurretGun : ThingComp
     {
-        internal const bool DebugLog = false;
-        internal static void DLog(string message)
-        {
-            if (DebugLog)
-                Verse.Log.Message($"[MultiTurret] {message}");
-        }
         public bool IsApparel => this.parent.def.IsApparel;
         public Pawn PawnOwner
         {
@@ -290,14 +283,6 @@ namespace Fortified
             }
             else
             {
-                if (TurretProp == null)
-                {
-                    CompMultipleTurretGun.DLog("null TurretProp");
-                }
-                if (parent == null)
-                {
-                    CompMultipleTurretGun.DLog("null parent");
-                }
                 this.curRotation = this.TurretProp.angleOffset + this.TurretProp.IdleAngleOffset + PawnOwner.Rotation.AsAngle;
             }
             this.CurrentEffectiveVerb.VerbTick();

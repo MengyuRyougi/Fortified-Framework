@@ -30,20 +30,24 @@ namespace Fortified.Structures
             for (int i = 0; i < ext.spawnCount; i++)
             {
                 Site wo = (Site)WorldObjectMaker.MakeWorldObject(def);
+                
+                // 在设置Tile前先设置Faction，确保后续生成的Thing能正确继承Faction
+                Faction faction = null;
                 if (ext.spawnPartOfFaction != null)
                 {
-                    wo.SetFaction(Find.FactionManager.FirstFactionOfDef(ext.spawnPartOfFaction));
+                    faction = Find.FactionManager.FirstFactionOfDef(ext.spawnPartOfFaction);
+                    wo.SetFaction(faction);
                 }
                 
                 wo.Tile = RandomTileFor(ext);
                 if (wo.Tile <= 0) continue;
 
-                AddPartsToSite(wo, ext);
+                AddPartsToSite(wo, ext, faction);
                 Find.WorldObjects.Add(wo);
             }
         }
 
-        private void AddPartsToSite(Site wo, SpawnAtWorldGen ext)
+        private void AddPartsToSite(Site wo, SpawnAtWorldGen ext, Faction faction)
         {
             SitePartParams parms = new SitePartParams { points = 500f };
             foreach (var part in ext.parts)

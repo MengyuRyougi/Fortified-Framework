@@ -3,7 +3,7 @@
 <Defs>
   <WorldGenStepDef>
     <defName>FFF_SpawnWorldObjects</defName>
-    <order>100</order> <!-- After settlements and basic stuff -->
+    <order>80</order> <!-- After settlements and basic stuff -->
     <worldGenStep Class="Fortified.Structures.WorldGenStep_FFFSpawnWorldObjects"/>
   </WorldGenStepDef>
 </Defs>
