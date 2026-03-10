@@ -72,10 +72,6 @@ namespace Fortified.Structures
                         {
                             t.Destroy(DestroyMode.Vanish);
                         }
-                        //IntVec3 oldPos = t.Position;
-                        //t.DeSpawn();
-                        //// 尝试在附近找空位放下，防止稀有残骸被新建筑覆盖
-                        //GenPlace.TryPlaceThing(t, oldPos, map, ThingPlaceMode.Near);
                     }
                 }
                 if (pos.InBounds(map)) map.terrainGrid.SetTerrain(pos, terrain.def);
