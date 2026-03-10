@@ -1,12 +1,16 @@
 using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
-using Multiplayer.API;
 using HarmonyLib;
+
+#if MULTIPLAYER
+using Multiplayer.API;
+#endif
 
 
 namespace Fortified
@@ -16,8 +20,17 @@ namespace Fortified
     {
         static CompMechPlatform()
         {
-            if (!MP.enabled) return;
-            MP.RegisterAll();
+            try
+            {
+#if MULTIPLAYER
+                if (!MP.enabled) return;
+                MP.RegisterAll();
+#endif
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"Failed to initialize Multiplayer support in CompMechPlatform: {ex.Message}");
+            }
         }
         private const int LowIngredientCountThreshold = 75;
 
@@ -119,7 +132,7 @@ namespace Fortified
             {
                 var c = Props.startingIngredientCount;
 
-                if (!parent.Faction.IsPlayer) //NPCÈô£ÁáüËá™ÂãïÂ°´Êªø„ÄÇ
+                if (!parent.Faction.IsPlayer) //NPC∞}¿Á¶€∞ ∂Ò∫°°C
                 {
                     this.autoDeployEnabled = true;
                     c = Props.maxIngredientCount;
@@ -243,7 +256,19 @@ namespace Fortified
                 Command_Action command_Action = new Command_Action
                 {
                     action = delegate
-                    { [SyncMethod] void SyncRetract() {
+                    {
+#if MULTIPLAYER
+                        [SyncMethod] void SyncRetract() {
+                            foreach (Pawn item in spawnedPawns)
+                            {
+                                if (item.TryGetComp<CompDrone>(out var d))
+                                {
+                                    d.ReturnToPlatform();
+                                }
+                            }
+                        }
+                        SyncRetract();
+#else
                         foreach (Pawn item in spawnedPawns)
                         {
                             if (item.TryGetComp<CompDrone>(out var d))
@@ -251,8 +276,7 @@ namespace Fortified
                                 d.ReturnToPlatform();
                             }
                         }
-                    }
-                    SyncRetract();
+#endif
                     },
 
                     hotKey = KeyBindingDefOf.Misc3,
@@ -269,8 +293,12 @@ namespace Fortified
                 cooldownPercentGetter = () => Mathf.InverseLerp(Props.cooldownTicks, 0f, cooldownTicksRemaining),
                 action = delegate
                 {
+#if MULTIPLAYER
                     [SyncMethod] void SyncedTrySpawnPawns() { TrySpawnPawns(); }
                     SyncedTrySpawnPawns();
+#else
+                    TrySpawnPawns();
+#endif
                 },
                 hotKey = KeyBindingDefOf.Misc2,
                 Disabled = !canSpawn.Accepted,
@@ -290,8 +318,12 @@ namespace Fortified
                 isActive = () => autoDeployEnabled,
                 toggleAction = () =>
                 {
+#if MULTIPLAYER
                     [SyncMethod] void SyncToggle() { autoDeployEnabled = !autoDeployEnabled; }
                     SyncToggle();
+#else
+                    autoDeployEnabled = !autoDeployEnabled;
+#endif
                 }
             };
             yield return command_Toggle;
@@ -314,6 +346,7 @@ namespace Fortified
                 command_Action2.defaultLabel = "DEV: Fill with " + Props.fixedIngredient.label;
                 command_Action2.action = delegate
                 {
+#if MULTIPLAYER
                     [SyncMethod] void SyncFill() { while (IngredientCount < Props.maxIngredientCount)
                         {
                         int stackCount = Mathf.Min(Props.maxIngredientCount - IngredientCount, Props.fixedIngredient.stackLimit);
@@ -322,7 +355,16 @@ namespace Fortified
                         innerContainer.TryAdd(thing, thing.stackCount);
                         }
                     }
-                SyncFill();
+                    SyncFill();
+#else
+                    while (IngredientCount < Props.maxIngredientCount)
+                    {
+                        int stackCount = Mathf.Min(Props.maxIngredientCount - IngredientCount, Props.fixedIngredient.stackLimit);
+                        Thing thing = ThingMaker.MakeThing(Props.fixedIngredient);
+                        thing.stackCount = stackCount;
+                        innerContainer.TryAdd(thing, thing.stackCount);
+                    }
+#endif
                 };
 
                 yield return command_Action2;
@@ -360,8 +402,12 @@ namespace Fortified
             {
                 new FloatMenuOption("FFF.Drone.NoRestrict".Translate(), () =>
                 {
+#if MULTIPLAYER
                     [SyncMethod] void SyncUnrestricted(CompMechPlatform self) { self.selectedAreaId = -1; }
                     SyncUnrestricted(this);
+#else
+                    selectedAreaId = -1;
+#endif
                 })
             };
             foreach (var area in map.areaManager.AllAreas.Where(a=>a.AssignableAsAllowed()))
@@ -369,6 +415,7 @@ namespace Fortified
                 var label = area.Label;
                 var opt = new FloatMenuOption(label, () =>
                 {
+#if MULTIPLAYER
                     [SyncMethod] void SyncSelectedArea(Area area, CompMechPlatform self) {
                         self.selectedAreaId = area.ID;
                         foreach (var p in self.spawnedPawns)
@@ -377,8 +424,15 @@ namespace Fortified
                         }
                     }
                     SyncSelectedArea(area, this);
+#else
+                    selectedAreaId = area.ID;
+                    foreach (var p in spawnedPawns)
+                    {
+                        p.playerSettings.AreaRestrictionInPawnCurrentMap = area;
+                    }
+#endif
                 });
-                // È°çÂ§ñÂú®Âè≥ÂÅ¥Áï´Âá∫È°èËâ≤È†êË¶ΩÂ∞èÊñπÂ°ä
+                // √B•~¶b•k∞ºµe•X√C¶‚πwƒ˝§p§Ë∂Ù
                 opt.extraPartWidth = 24f;
                 opt.extraPartOnGUI = rect =>
                 {
@@ -462,7 +516,7 @@ namespace Fortified
         }
         protected void CleanupSpawnedPawns()
         {
-            // Ê∏ÖÁêÜÂ§±ÊïàÁöÑÁîüÊàêÂñÆ‰Ωç
+            // ≤M≤z•¢Æƒ™∫•Õ¶®≥Ê¶Ï
             List<Pawn> pawns = spawnedPawns;
             if (pawns == null || pawns.Count <= 0) return;
             for (int i = pawns.Count - 1; i >= 0; i--)
@@ -503,13 +557,13 @@ namespace Fortified
         private bool autoDeployEnabled = false;
         public override void CompTickInterval(int delta)
         {
-            // Âø´ÈÄüÊ™¢Êü•ÊòØÂê¶ÈúÄË¶ÅËôïÁêÜÂÜ∑Âçª
+            // ß÷≥t¿À¨d¨Oß_ª›≠n≥B≤zßN´o
             if (cooldownTicksRemaining > 0)
             {
                 cooldownTicksRemaining -= delta;
                 return;
             }
-            // Ëá™ÂãïÈÉ®ÁΩ≤ÈÇèËºØ
+            // ¶€∞ ≥°∏p≈ﬁøË
             if (autoDeployEnabled)
             {
                 if (autoDeployTicks > 0)
@@ -517,10 +571,10 @@ namespace Fortified
                     autoDeployTicks -= delta;
                     return;
                 }
-                // Ê™¢Êü•ÊòØÂê¶ÂèØ‰ª•ÁîüÊàêÊñ∞ÂñÆ‰Ωç
+                // ¿À¨d¨Oß_•i•H•Õ¶®∑s≥Ê¶Ï
                 if (spawnedPawns != null && spawnedPawns.Count < Props.maxPawnsToSpawn * 2 && CanSpawn.Accepted)
                 {
-                    autoDeployTicks = Props.cooldownTicks * 2; // ‰ΩøÁî®Êï¥Êï∏‰πòÊ≥ï‰ª£ÊõøÊµÆÈªûÊï∏
+                    autoDeployTicks = Props.cooldownTicks * 2; // ®œ•Œæ„º∆≠º™k•N¥¿ØB¬Iº∆
                     TrySpawnPawns();
                 }
             }

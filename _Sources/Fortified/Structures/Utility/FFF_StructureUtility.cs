@@ -44,45 +44,15 @@ namespace Fortified.Structures
                     if (!t.Spawned || !t.def.destroyable) continue;
 
                     // 1. 只删除植物、污垢、碎石
-                    if (t.def.category == ThingCategory.Plant ||
-                        t.def.category == ThingCategory.Filth ||
+                    if (
+                        //t.def.category == ThingCategory.Plant ||
+                        //t.def.category == ThingCategory.Filth ||
                         (t.def.thingCategories != null && t.def.thingCategories.Contains(ThingCategoryDefOf.Chunks)))
                     {
                         t.Destroy(DestroyMode.Vanish);
                     }
-                    // 2. 其它非天然建筑/属性物件：移动到附近，而不是直接消失
-                    else if (t.def.category == ThingCategory.Building || t.def.category == ThingCategory.Item)
-                    {
-                        // 如果是天然岩石（山体），在这种情况下我们需要“挖掘”它，否则建筑无法嵌入山内
-                        if (t.def.building?.isNaturalRock ?? false)
-                        {
-                            t.Destroy(DestroyMode.Vanish);
-                            continue;
-                        }
-
-                        IntVec3 oldPos = t.Position;
-                        t.DeSpawn();
-                        // 尝试在附近找空位放下，防止稀有残骸被新建筑覆盖
-                        GenPlace.TryPlaceThing(t, oldPos, map, ThingPlaceMode.Near);
-                    }
                 }
             }
-        }
-
-        private static void MoveNonDestroyables(Map map, CellRect rect, HashSet<Thing> nonDestroyables)
-        {
-            // 已废弃，保留以防需要
-        }
-
-        private static void DestroyDestroyables(Map map, CellRect rect)
-        {
-            // 已废弃，保留以防需要
-        }
-
-        private static bool IsRemovable(ThingDef def)
-        {
-            // 已废弃，保留以防需要
-            return false;
         }
 
         private static void SpawnTerrain(Map map, Sketch sketch, IntVec3 offset)
@@ -90,11 +60,29 @@ namespace Fortified.Structures
             foreach (var terrain in sketch.Terrain)
             {
                 IntVec3 pos = terrain.pos + offset;
+                List<Thing> thingList = pos.GetThingList(map).ToList();
+                if (!thingList.NullOrEmpty())
+                {
+                    for (int i = 0; i < thingList.Count; i++)
+                    {
+                        Thing t = thingList[i];
+                        if (!t.Spawned || !t.def.destroyable) continue;
+                        // 删除占位的天然岩石（如果有），以免影响地形生成
+                        if (t.def.building?.isNaturalRock ?? false)
+                        {
+                            t.Destroy(DestroyMode.Vanish);
+                        }
+                        //IntVec3 oldPos = t.Position;
+                        //t.DeSpawn();
+                        //// 尝试在附近找空位放下，防止稀有残骸被新建筑覆盖
+                        //GenPlace.TryPlaceThing(t, oldPos, map, ThingPlaceMode.Near);
+                    }
+                }
                 if (pos.InBounds(map)) map.terrainGrid.SetTerrain(pos, terrain.def);
             }
         }
 
-        private static void SpawnThings(Map map, Sketch sketch, IntVec3 offset, Faction faction)
+private static void SpawnThings(Map map, Sketch sketch, IntVec3 offset, Faction faction)
         {
             var sortedThings = sketch.Things.OrderBy(t => t.SpawnOrder).ToList();
 
@@ -104,23 +92,30 @@ namespace Fortified.Structures
             int spawnedCount = 0;
             foreach (var skThing in sortedThings)
             {
-                IntVec3 pos = skThing.pos + offset;
-
-                // 边界检查
-                CellRect thingRect = GenAdj.OccupiedRect(pos, skThing.rot, skThing.def.size);
-                if (!thingRect.InBounds(map))
+                try
                 {
-                    if (Prefs.DevMode) Log.Warning($"[FFF] 跳过越界物体: {skThing.def.defName} at {pos}");
-                    continue;
+                    IntVec3 pos = skThing.pos + offset;
+
+                    // 边界检查
+                    CellRect thingRect = GenAdj.OccupiedRect(pos, skThing.rot, skThing.def.size);
+                    if (!thingRect.InBounds(map))
+                    {
+                        if (Prefs.DevMode) Log.Warning($"[FFF] skip out bound: {skThing.def.defName} at {pos}");
+                        continue;
+                    }
+
+                    Thing thing = skThing.Instantiate();
+                    if (faction != null && thing.def.CanHaveFaction)
+                        thing.SetFactionDirect(faction);
+
+                    GenSpawn.Spawn(thing, pos, map, skThing.rot, WipeMode.VanishOrMoveAside);
+                    InitializeBuildingState(thing);
+                    spawnedCount++;
                 }
-
-                Thing thing = skThing.Instantiate();
-                if (faction != null && thing.def.CanHaveFaction)
-                    thing.SetFactionDirect(faction);
-
-                GenSpawn.Spawn(thing, pos, map, skThing.rot, WipeMode.VanishOrMoveAside);
-                InitializeBuildingState(thing);
-                spawnedCount++;
+                catch (Exception e)
+                {
+                    Log.Error($"[FFF] Error spawning thing {skThing.def.defName}: {e}");
+                }
             }
 
             if (Prefs.DevMode)
@@ -136,15 +131,28 @@ namespace Fortified.Structures
             {
                 if (!req.Position.InBounds(map)) continue;
 
-                Faction pawnFaction = faction;
-                if (req.Faction != null) pawnFaction = Find.FactionManager.FirstFactionOfDef(req.Faction);
-                if (pawnFaction == null) pawnFaction = Faction.OfPlayer;
+                try
+                {
+                    Faction pawnFaction = faction;
+                    if (req.Faction != null) pawnFaction = Find.FactionManager.FirstFactionOfDef(req.Faction);
+                    if (pawnFaction == null) pawnFaction = Faction.OfPlayer;
 
-                Pawn pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(req.Kind, pawnFaction, PawnGenerationContext.NonPlayer, -1));
-                GenSpawn.Spawn(pawn, req.Position, map, WipeMode.VanishOrMoveAside);
+                    Pawn pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(req.Kind, pawnFaction, PawnGenerationContext.NonPlayer, -1));
+                    if (pawn == null)
+                    {
+                        Log.Error($"[FFF] Failed to generate pawn: {req.Kind?.defName ?? "null"}");
+                        continue;
+                    }
 
-                if (req.DefendSpawnPoint && pawn.mindState != null)
-                    pawn.mindState.duty = new PawnDuty(DutyDefOf.Defend, req.Position, -1f);
+                    GenSpawn.Spawn(pawn, req.Position, map, WipeMode.VanishOrMoveAside);
+
+                    if (req.DefendSpawnPoint && pawn.mindState != null)
+                        pawn.mindState.duty = new PawnDuty(DutyDefOf.Defend, req.Position, -1f);
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"[FFF] Error spawning pawn at {req.Position}: {e}");
+                }
             }
         }
 
@@ -191,6 +199,9 @@ namespace Fortified.Structures
                     catch (Exception e) { Log.Error($"[FFF] Error executing task {task.GetType().Name}: {e}"); }
                 }
             }
+
+            // 结构生成完成后重新计算雾效
+            map.fogGrid.Refog(map.BoundsRect());
         }
 
         private static void InitializeBuildingState(Thing thing)
