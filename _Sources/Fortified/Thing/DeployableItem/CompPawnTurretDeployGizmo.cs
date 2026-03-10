@@ -4,6 +4,7 @@ using Verse;
 using Verse.AI;
 using UnityEngine;
 using System;
+using Multiplayer.API;
 
 namespace Fortified
 {
@@ -42,9 +43,11 @@ namespace Fortified
                             defaultLabel = deployable.InnerThing.Label,
                             targetingParams = TargetParam(parentpawn),
                             icon = deployable.InnerThing.def.GetUIIconForStuff(null),
-                            action = delegate (LocalTargetInfo target)  //may need syncing for MP?
+                            action = delegate (LocalTargetInfo target)  //may need syncing for MP? Im not sure what this does, but it looks like it should be synced
                             {
                                 deployable.Deploy(target.Cell, parentpawn);
+                                //[SyncMethod] void SyncTargetUnknown() { deployable.Deploy(target.Cell, parentpawn); }
+                                //SyncTargetUnknown();
                             }
                         };
                         yield return command_Target;
@@ -96,9 +99,11 @@ namespace Fortified
 				defaultLabel = this.InnerThing.Label,
 				targetingParams = CompPawnTurretDeployGizmo.TargetParam(pawn),
 				icon = this.InnerThing.def.GetUIIconForStuff(null),
-				action = delegate (LocalTargetInfo target) //another needed sync maybe for MP
+				action = delegate (LocalTargetInfo target)
 				{
-					this.Deploy(target.Cell, pawn);
+                    this.Deploy(target.Cell, pawn);
+					//[SyncMethod] void SyncTurretTarget() { this.Deploy(target.Cell, pawn); }
+					//SyncTurretTarget();
 				}
 			};
 			if (!pawn.Drafted) command_Target.Disable("FFF.DisabledUndrafted".Translate());

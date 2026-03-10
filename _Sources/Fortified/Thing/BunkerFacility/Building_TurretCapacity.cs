@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using Verse;
+using Multiplayer.API;
 
 namespace Fortified
 {
@@ -118,7 +119,8 @@ namespace Fortified
                     icon = ExitFacilityIcon,
                     action = delegate ()
                     {
-                        this.GetOut();
+                        [SyncMethod] void SyncBunkerExit() { this.GetOut(); } //sync button to exit bunker facility
+                        SyncBunkerExit();
                     }
                 };
             }

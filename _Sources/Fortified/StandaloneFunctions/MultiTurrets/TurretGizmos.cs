@@ -119,7 +119,7 @@ namespace Fortified
 
             Rect targetRect = new Rect(autofireRect);
             targetRect.x += autofireRect.width + 5f;
-            if (subTurret.forcedTarget == LocalTargetInfo.Invalid)
+            if (subTurret.forcedTarget == LocalTargetInfo.Invalid)  //maybe sync?
             {
                 DrawSubGizmo(targetRect, ForceAttack.Texture, delegate () { subTurret.Targetting(); });
             }
@@ -165,7 +165,7 @@ namespace Fortified
             foreach (var turret in this.subTurrets)
             {
                 string text = turret.ID;
-                yield return new FloatMenuOption(text, delegate ()
+                yield return new FloatMenuOption(text, delegate () //Float menu for switching between turrets
                 {
 
                     [SyncMethod] void SyncCurrentTurret(CompMultipleTurretGun comp, string turretId) { comp.currentTurret = turretId; }
