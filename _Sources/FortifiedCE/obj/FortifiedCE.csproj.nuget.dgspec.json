@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\FortifiedCE.csproj": {}
+    "/home/boris/.local/share/Steam/steamapps/common/RimWorld/Mods/Fortified-Framework/_Sources/FortifiedCE/FortifiedCE.csproj": {}
   },
   "projects": {
-    "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\FortifiedCE.csproj": {
+    "/home/boris/.local/share/Steam/steamapps/common/RimWorld/Mods/Fortified-Framework/_Sources/FortifiedCE/FortifiedCE.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\FortifiedCE.csproj",
+        "projectUniqueName": "/home/boris/.local/share/Steam/steamapps/common/RimWorld/Mods/Fortified-Framework/_Sources/FortifiedCE/FortifiedCE.csproj",
         "projectName": "FortifiedCE",
-        "projectPath": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\FortifiedCE.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Fortified-Framework\\_Sources\\FortifiedCE\\obj\\",
+        "projectPath": "/home/boris/.local/share/Steam/steamapps/common/RimWorld/Mods/Fortified-Framework/_Sources/FortifiedCE/FortifiedCE.csproj",
+        "packagesPath": "/home/boris/.nuget/packages/",
+        "outputPath": "/home/boris/.local/share/Steam/steamapps/common/RimWorld/Mods/Fortified-Framework/_Sources/FortifiedCE/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/boris/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net472"
@@ -52,9 +52,15 @@
               "include": "Compile, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "target": "Package",
               "version": "[2.4.2, )"
+            },
+            "Microsoft.NETFramework.ReferenceAssemblies": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.0.3, )",
+              "autoReferenced": true
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.310\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.311/RuntimeIdentifierGraph.json"
         }
       }
     }

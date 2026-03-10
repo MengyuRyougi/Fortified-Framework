@@ -8,6 +8,7 @@ using System.Linq;
 using RimWorld.Planet;
 using System;
 using Fortified;
+using Multiplayer.API;
 
 namespace Fortified
 {
@@ -145,9 +146,11 @@ namespace Fortified
                     defaultLabel = "Debug: Check State",
                     action = () =>
                     {
-                        Log.Message(this.woken);
+                        [SyncMethod] void SyncCheckState() { Log.Message(this.woken);
                         Log.Message(this.woken_Lurk);
                         Log.Message(this.timeToWake);
+                        }
+                        SyncCheckState();
                     }
                 };
                 yield return new Command_Action()
@@ -155,7 +158,8 @@ namespace Fortified
                     defaultLabel = "Debug: Wake",
                     action = () =>
                     {
-                        this.Wake();
+                        [SyncMethod] void SyncWake() { this.Wake(); }
+                        SyncWake();
                     }
                 };
                 yield return new Command_Action()
@@ -163,8 +167,10 @@ namespace Fortified
                     defaultLabel = "Debug: Outgoing",
                     action = () =>
                     {
-                        this.outgoing = true;
+                        [SyncMethod] void SyncOutgoing () { this.outgoing = true;
                         this.outgoingTime = 60000 * 2;
+                        }
+                        SyncOutgoing();
                     }
                 };
             }

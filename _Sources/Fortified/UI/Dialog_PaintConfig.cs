@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using RimWorld;
+using Multiplayer.API;
 
 namespace Fortified
 {
@@ -739,7 +740,7 @@ namespace Fortified
             confirmed = true;
 
             // 设置请求状态
-            comp.activePaintRequest = true;
+            [SyncMethod] void SyncActivePaint () { comp.activePaintRequest = true;
             comp.requestColor = baseColor;
             comp.requestColor2 = baseColor2;
             comp.requestColor3 = baseColor3;
@@ -749,7 +750,8 @@ namespace Fortified
 
 
             // 通知刷新
-            comp.Notify_ColorChanged();
+            comp.Notify_ColorChanged(); }
+            SyncActivePaint();
 
             // 弹出提示
             Messages.Message("FFF_PaintRequestSent".Translate(), comp.parent, MessageTypeDefOf.NeutralEvent, false);

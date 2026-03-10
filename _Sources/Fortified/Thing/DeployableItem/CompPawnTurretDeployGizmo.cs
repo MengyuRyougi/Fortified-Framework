@@ -42,7 +42,7 @@ namespace Fortified
                             defaultLabel = deployable.InnerThing.Label,
                             targetingParams = TargetParam(parentpawn),
                             icon = deployable.InnerThing.def.GetUIIconForStuff(null),
-                            action = delegate (LocalTargetInfo target)
+                            action = delegate (LocalTargetInfo target)  //may need syncing for MP?
                             {
                                 deployable.Deploy(target.Cell, parentpawn);
                             }
@@ -96,7 +96,7 @@ namespace Fortified
 				defaultLabel = this.InnerThing.Label,
 				targetingParams = CompPawnTurretDeployGizmo.TargetParam(pawn),
 				icon = this.InnerThing.def.GetUIIconForStuff(null),
-				action = delegate (LocalTargetInfo target)
+				action = delegate (LocalTargetInfo target) //another needed sync maybe for MP
 				{
 					this.Deploy(target.Cell, pawn);
 				}

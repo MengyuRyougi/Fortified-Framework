@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Verse;
+using Multiplayer.API;
 
 namespace Fortified
 {
@@ -101,6 +102,8 @@ namespace Fortified
                 if (autofire)
                 {
                     subTurret.SwitchAutoFire();
+                    //[SyncMethod] void SyncAutoFire() { subTurret.SwitchAutoFire(); } //autofire sync not working yet
+                    //SyncAutoFire();
                 }
             }
             else
@@ -164,7 +167,9 @@ namespace Fortified
                 string text = turret.ID;
                 yield return new FloatMenuOption(text, delegate ()
                 {
-                    comp.currentTurret = turret.ID;
+
+                    [SyncMethod] void SyncCurrentTurret(CompMultipleTurretGun comp, string turretId) { comp.currentTurret = turretId; }
+                    SyncCurrentTurret(comp, turret.ID);
                 });
             }
             yield break;

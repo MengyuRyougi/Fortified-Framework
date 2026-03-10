@@ -93,7 +93,7 @@ namespace Fortified
 				command_Toggle.defaultLabel = (Props.commandKey + "_Label").Translate();
 				command_Toggle.defaultDesc = (Props.commandKey + "_Desc").Translate();
 				command_Toggle.isActive = () => active;
-				command_Toggle.toggleAction = delegate
+				command_Toggle.toggleAction = delegate  //does not need MP syncing, i think uses a vanilla gizmo to activate
 				{
 					active = !active;
 					if (!active)

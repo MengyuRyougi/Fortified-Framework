@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
+using Multiplayer.API;
 
 namespace Fortified
 {
@@ -362,7 +363,8 @@ namespace Fortified
                     defaultLabel = "DEV: Trigger countdown",
                     action = delegate
                     {
-                        countdownTicksLeft = 1;
+                        [SyncMethod] void SyncTriggerCountdown() {countdownTicksLeft = 1;} //button sync for multiplayer
+                        SyncTriggerCountdown();
                     }
                 };
                 yield return command_Action;
