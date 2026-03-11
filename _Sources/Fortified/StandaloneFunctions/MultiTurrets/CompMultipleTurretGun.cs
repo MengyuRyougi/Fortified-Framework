@@ -378,28 +378,20 @@ namespace Fortified
         public void SwitchAutoFire()
         {
             this.fireAtWill = !this.fireAtWill;
-            //[SyncMethod] void SyncFireAtWill() { this.fireAtWill = !this.fireAtWill; }
-            //SyncFireAtWill();
         }
 
         public void Targetting()
         {
             
             var tar = Find.Targeter;
+
             tar.BeginTargeting(this.CurrentEffectiveVerb.targetParams,(t) => { this.forcedTarget = t; this.currentTarget = t; });
-            //[SyncMethod] void SyncTargetting() {var tar = Find.Targeter;
-                //tar.BeginTargeting(this.CurrentEffectiveVerb.targetParams,(t) => { this.forcedTarget = t; this.currentTarget = t; });
-            //}
-           // SyncTargetting();
         }
 
         public void ClearTarget()
         {
             this.forcedTarget = LocalTargetInfo.Invalid;
             this.currentTarget = LocalTargetInfo.Invalid;
-            //[SyncMethod] void SyncClearTarget() { this.forcedTarget = LocalTargetInfo.Invalid;
-            //this.currentTarget = LocalTargetInfo.Invalid; }
-            //SyncClearTarget();
         }
         //
 

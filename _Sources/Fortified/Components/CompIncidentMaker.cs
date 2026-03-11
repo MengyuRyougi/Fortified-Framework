@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
+using Multiplayer.API;
 
 namespace Fortified
 {
@@ -76,7 +77,9 @@ namespace Fortified
                 command_Action.icon = TexCommand.DesirePower;
                 command_Action.action = delegate
                 {
-                    TryDoIncident();
+                    //TryDoIncident();
+                    [SyncMethod] void SyncTriggerIncident() { TryDoIncident(); }
+                    SyncTriggerIncident();
                 };
                 yield return command_Action;
             }
@@ -87,8 +90,11 @@ namespace Fortified
                 command_Action2.icon = ContentFinder<Texture2D>.Get(Props.iconPathDeactive);
                 command_Action2.action = delegate
                 {
-                    ResetCountdown();
-                    isActive = false;
+                    //ResetCountdown();
+                    //isActive = false;
+                    [SyncMethod] void SyncStopWarmup() { ResetCountdown();
+                    isActive = false; }
+                    SyncStopWarmup();
                 };
                 yield return command_Action2;
                 yield break;
@@ -102,8 +108,11 @@ namespace Fortified
             }
             command_Action3.action = delegate
             {
-                ResetCountdown();
-                isActive = true;
+                //ResetCountdown();
+                //isActive = true;
+                [SyncMethod] void SyncStartWarmup() { ResetCountdown();
+                isActive = true; }
+                SyncStartWarmup();
             };
             yield return command_Action3;
         }

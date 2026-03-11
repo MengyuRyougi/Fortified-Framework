@@ -5,6 +5,7 @@ using System;
 using UnityEngine;
 using Verse;
 using System.Linq;
+using Multiplayer.API;
 
 namespace Fortified
 {
@@ -44,7 +45,9 @@ namespace Fortified
             {
                 action = delegate
                 {
-                    BeginCallPawn(pawn, faction, map, free);
+                    //BeginCallPawn(pawn, faction, map, free);
+                    [SyncMethod] void SyncCallFaction() { BeginCallPawn(pawn, faction, map, free); }
+                    SyncCallFaction();
                 };
             }
 
@@ -72,7 +75,9 @@ namespace Fortified
                 icon = CommandTex,
                 action = delegate
                 {
-                    CallPawnToCaravan(pawn, faction, free);
+                    //CallPawnToCaravan(pawn, faction, free);
+                    [SyncMethod] void SyncPawnToCaravan() { CallPawnToCaravan(pawn, faction, free); }
+                    SyncPawnToCaravan();
                 }
             };
             if (faction.HostileTo(Faction.OfPlayer))

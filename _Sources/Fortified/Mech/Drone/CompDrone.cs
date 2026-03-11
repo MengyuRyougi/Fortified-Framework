@@ -6,6 +6,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.Noise;
+using Multiplayer.API;
 
 namespace Fortified
 {
@@ -134,7 +135,9 @@ namespace Fortified
                     icon = ContentFinder<Texture2D>.Get(Props.returnGizmoPath),
                     action = () =>
                     {
-                        ReturnToPlatform();
+                        //ReturnToPlatform();
+                        [SyncMethod] void SyncReturnToPlatform() { ReturnToPlatform(); }
+                        SyncReturnToPlatform();
                     }
                 };
                 yield return draftGizmo;
@@ -157,26 +160,35 @@ namespace Fortified
         {
             if (!HasPlatform && !noPlatformWarning)
             {
-                //如果沒有平台則警告
+                //如果沒有平台則警告 (Translation: Warning if no platform is available)
                 Messages.Message("FFF.Drone.NoPlatform".Translate(parent.Label), MessageTypeDefOf.RejectInput, false);
                 noPlatformWarning = true;
                 return;
             }
             if (!HasPlatform) return;
 
-            // 低电量时尝试强制中断当前工作，防止机械体沉迷工作忘记充电
+            // 低电量时尝试强制中断当前工作，防止机械体沉迷工作忘记充电 (Translation?: Forces to stop task when battery low)
             if (forceInterrupt)
             {
                 Pawn.jobs.StopAll();
+
+                //[SyncMethod] void SyncJobStop() { Pawn.jobs.StopAll(); }
+                //SyncJobStop();
             }
 
             if (isApparelPlatform)
             {
                 Pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner, Apparel), JobTag.DraftedOrder);
+
+                //[SyncMethod] void SyncApparelPlatformJob() { Pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner, Apparel), JobTag.DraftedOrder);| }
+                //SyncApparelPlatformJob();
             }
             else
             {
                 Pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner), JobTag.DraftedOrder);
+
+                //[SyncMethod] void SyncPlatformJob() { Pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner), JobTag.DraftedOrder); }
+                //SyncPlatformJob();
             }
         }
         public override void PostExposeData()

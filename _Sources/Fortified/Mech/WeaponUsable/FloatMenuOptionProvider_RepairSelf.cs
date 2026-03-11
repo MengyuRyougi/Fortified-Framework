@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Verse;
 using Verse.AI;
+using Multiplayer.API;
 
 namespace Fortified
 {
@@ -18,15 +19,20 @@ namespace Fortified
             return MechRepairUtility.CanRepair(context.FirstSelectedPawn);
         }
 
-        //提供的選項。
+        //提供的選項。(Translation: options provided.) (yums note: I have no idea what that means lol)
         protected override FloatMenuOption GetSingleOptionFor(Pawn clickedPawn, FloatMenuContext context)
         {
             if (clickedPawn != context.FirstSelectedPawn) return null;
 
             return new FloatMenuOption("RepairMech".Translate(clickedPawn.LabelShortCap), () =>
             {
-                Job job = JobMaker.MakeJob(FFF_DefOf.FFF_RepairSelf, clickedPawn);
-                clickedPawn.jobs.StartJob(job);
+                //Job job = JobMaker.MakeJob(FFF_DefOf.FFF_RepairSelf, clickedPawn);
+                //clickedPawn.jobs.StartJob(job);
+                [SyncMethod] void SyncRepairMech() {
+                    Job job = JobMaker.MakeJob(FFF_DefOf.FFF_RepairSelf, clickedPawn);
+                    clickedPawn.jobs.StartJob(job);
+                }
+                SyncRepairMech();
             });
         }
     }
