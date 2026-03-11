@@ -7,31 +7,15 @@ using Verse;
 using Verse.AI;
 using Verse.AI.Group;
 using HarmonyLib;
-
-#if MULTIPLAYER
 using Multiplayer.API;
-#endif
+
 
 
 namespace Fortified
 {
     [StaticConstructorOnStartup]
     public class CompMechPlatform : ThingComp, IThingHolder
-    {
-        static CompMechPlatform()
-        {
-            try
-            {
-#if MULTIPLAYER
-                if (!MP.enabled) return;
-                MP.RegisterAll();
-#endif
-            }
-            catch (Exception ex)
-            {
-                Log.Warning($"Failed to initialize Multiplayer support in CompMechPlatform: {ex.Message}");
-            }
-        }
+
         private const int LowIngredientCountThreshold = 75;
 
         private int cooldownTicksRemaining;

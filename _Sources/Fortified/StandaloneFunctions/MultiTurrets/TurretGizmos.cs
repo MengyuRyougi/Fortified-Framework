@@ -121,11 +121,20 @@ namespace Fortified
             targetRect.x += autofireRect.width + 5f;
             if (subTurret.forcedTarget == LocalTargetInfo.Invalid)  //maybe sync?
             {
-                DrawSubGizmo(targetRect, ForceAttack.Texture, delegate () { subTurret.Targetting(); });
+                DrawSubGizmo(targetRect, ForceAttack.Texture, delegate () {
+
+                    //subTurret.Targetting();
+                    [SyncMethod] void SyncTargetting() { subTurret.Targetting(); }
+                    SyncTargetting();
+                });
             }
             else
             {
-                DrawSubGizmo(targetRect, TexCommand.ClearPrioritizedWork, delegate () { subTurret.ClearTarget(); });
+                DrawSubGizmo(targetRect, TexCommand.ClearPrioritizedWork, delegate () {
+                    //subTurret.ClearTarget();
+                    [SyncMethod] void SyncClearTarget() { subTurret.ClearTarget(); }
+                    SyncClearTarget();
+                });
             }
 
             //

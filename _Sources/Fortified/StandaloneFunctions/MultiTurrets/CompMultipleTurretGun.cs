@@ -375,9 +375,11 @@ namespace Fortified
             });
             return result;
         }
-        public void SwitchAutoFire()
+        public void SwitchAutoFire()   //TODO: THESE 3 BUTTONS ARE NOT WORKING WITH SYNC ADDED!!
         {
-            this.fireAtWill = !this.fireAtWill;
+            //this.fireAtWill = !this.fireAtWill;
+            [SyncMethod] void SyncSwitchAutoFire() { this.fireAtWill = !this.fireAtWill; }
+            SyncSwitchAutoFire();
         }
 
         public void Targetting()
@@ -385,13 +387,19 @@ namespace Fortified
             
             var tar = Find.Targeter;
 
-            tar.BeginTargeting(this.CurrentEffectiveVerb.targetParams,(t) => { this.forcedTarget = t; this.currentTarget = t; });
+            tar.BeginTargeting(this.CurrentEffectiveVerb.targetParams,(t) => { [SyncMethod] void SyncTarget() { this.forcedTarget = t; this.currentTarget = t; } SyncTarget(); } );
         }
+
 
         public void ClearTarget()
         {
-            this.forcedTarget = LocalTargetInfo.Invalid;
-            this.currentTarget = LocalTargetInfo.Invalid;
+            //this.forcedTarget = LocalTargetInfo.Invalid;
+            //this.currentTarget = LocalTargetInfo.Invalid;
+            [SyncMethod] void SyncClearTarget() {
+                this.forcedTarget = LocalTargetInfo.Invalid;
+                this.currentTarget = LocalTargetInfo.Invalid;
+                }
+            SyncClearTarget();
         }
         //
 
