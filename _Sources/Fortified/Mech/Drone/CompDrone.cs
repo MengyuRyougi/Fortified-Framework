@@ -135,9 +135,7 @@ namespace Fortified
                     icon = ContentFinder<Texture2D>.Get(Props.returnGizmoPath),
                     action = () =>
                     {
-                        //ReturnToPlatform();
-                        [SyncMethod] void SyncReturnToPlatform() { ReturnToPlatform(); }
-                        SyncReturnToPlatform();
+                        ReturnToPlatform();
                     }
                 };
                 yield return draftGizmo;
@@ -156,6 +154,7 @@ namespace Fortified
             }
         }
         bool noPlatformWarning = false;
+        [SyncMethod]
         public void ReturnToPlatform(bool forceInterrupt = false)
         {
             if (!HasPlatform && !noPlatformWarning)
@@ -171,24 +170,18 @@ namespace Fortified
             if (forceInterrupt)
             {
                 Pawn.jobs.StopAll();
-
-                //[SyncMethod] void SyncJobStop() { Pawn.jobs.StopAll(); }
-                //SyncJobStop();
+               
             }
 
             if (isApparelPlatform)
             {
                 Pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner, Apparel), JobTag.DraftedOrder);
 
-                //[SyncMethod] void SyncApparelPlatformJob() { Pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner, Apparel), JobTag.DraftedOrder);| }
-                //SyncApparelPlatformJob();
             }
             else
             {
                 Pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner), JobTag.DraftedOrder);
 
-                //[SyncMethod] void SyncPlatformJob() { Pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.returnToDraftPlatformJob, PlatformOwner), JobTag.DraftedOrder); }
-                //SyncPlatformJob();
             }
         }
         public override void PostExposeData()
