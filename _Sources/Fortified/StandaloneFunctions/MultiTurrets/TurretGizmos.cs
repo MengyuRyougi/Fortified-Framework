@@ -101,9 +101,9 @@ namespace Fortified
 
                 if (autofire)
                 {
-                    subTurret.SwitchAutoFire();
-                    //[SyncMethod] void SyncAutoFire() { subTurret.SwitchAutoFire(); } //autofire sync not working yet
-                    //SyncAutoFire();
+                    //subTurret.SwitchAutoFire();
+                    [SyncMethod] void SyncAutoFire(SubTurret subTurret) { subTurret.SwitchAutoFire(); } //autofire sync not working yet
+                    SyncAutoFire(subTurret);
                 }
             }
             else
@@ -119,21 +119,21 @@ namespace Fortified
 
             Rect targetRect = new Rect(autofireRect);
             targetRect.x += autofireRect.width + 5f;
-            if (subTurret.forcedTarget == LocalTargetInfo.Invalid)  //maybe sync?
+            if (subTurret.forcedTarget == LocalTargetInfo.Invalid)  
             {
                 DrawSubGizmo(targetRect, ForceAttack.Texture, delegate () {
 
-                    //subTurret.Targetting();
-                    [SyncMethod] void SyncTargetting() { subTurret.Targetting(); }
-                    SyncTargetting();
+                    subTurret.Targetting();
+                    //[SyncMethod] void SyncTargetting() { subTurret.Targetting(); }
+                    //SyncTargetting();
                 });
             }
             else
             {
                 DrawSubGizmo(targetRect, TexCommand.ClearPrioritizedWork, delegate () {
-                    //subTurret.ClearTarget();
-                    [SyncMethod] void SyncClearTarget() { subTurret.ClearTarget(); }
-                    SyncClearTarget();
+                    subTurret.ClearTarget();
+                    //[SyncMethod] void SyncClearTarget(SubTurret subTurret) { subTurret.ClearTarget(); }
+                    //SyncClearTarget(subTurret);
                 });
             }
 

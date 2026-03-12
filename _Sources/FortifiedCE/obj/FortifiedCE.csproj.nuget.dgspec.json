@@ -60,7 +60,7 @@
               "autoReferenced": true
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.311/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/var/run/host/usr/share/dotnet/sdk/9.0.311/RuntimeIdentifierGraph.json"
         }
       }
     }

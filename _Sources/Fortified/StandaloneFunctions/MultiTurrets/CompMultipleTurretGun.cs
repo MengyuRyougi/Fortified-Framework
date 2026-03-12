@@ -377,9 +377,9 @@ namespace Fortified
         }
         public void SwitchAutoFire()   //TODO: THESE 3 BUTTONS ARE NOT WORKING WITH SYNC ADDED!!
         {
-            //this.fireAtWill = !this.fireAtWill;
-            [SyncMethod] void SyncSwitchAutoFire() { this.fireAtWill = !this.fireAtWill; }
-            SyncSwitchAutoFire();
+            this.fireAtWill = !this.fireAtWill;
+            //[SyncMethod] void SyncSwitchAutoFire() { this.fireAtWill = !this.fireAtWill; }
+            //SyncSwitchAutoFire();
         }
 
         public void Targetting()
@@ -387,7 +387,15 @@ namespace Fortified
             
             var tar = Find.Targeter;
 
-            tar.BeginTargeting(this.CurrentEffectiveVerb.targetParams,(t) => { [SyncMethod] void SyncTarget() { this.forcedTarget = t; this.currentTarget = t; } SyncTarget(); } );
+            tar.BeginTargeting(this.CurrentEffectiveVerb.targetParams, (t) =>
+            {
+                //this.forcedTarget = t; this.currentTarget = t;
+                [SyncMethod]
+                void SyncTarget(LocalTargetInfo t, SubTurret self)
+                {
+                    self.forcedTarget = t; self.currentTarget = t; } 
+                SyncTarget(t, this);
+            } );
         }
 
 
@@ -395,11 +403,10 @@ namespace Fortified
         {
             //this.forcedTarget = LocalTargetInfo.Invalid;
             //this.currentTarget = LocalTargetInfo.Invalid;
-            [SyncMethod] void SyncClearTarget() {
-                this.forcedTarget = LocalTargetInfo.Invalid;
-                this.currentTarget = LocalTargetInfo.Invalid;
+            [SyncMethod] void SyncClearTarget( SubTurret self) {
+                self.forcedTarget = LocalTargetInfo.Invalid; self.currentTarget = LocalTargetInfo.Invalid;
                 }
-            SyncClearTarget();
+            SyncClearTarget(this);
         }
         //
 
