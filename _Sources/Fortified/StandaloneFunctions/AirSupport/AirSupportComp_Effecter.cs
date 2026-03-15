@@ -1,4 +1,4 @@
-﻿using Verse;
+using Verse;
 
 namespace Fortified
 {
@@ -19,7 +19,7 @@ namespace Fortified
                 target = target,
                 triggerTick = Find.TickManager.TicksGame,
                 triggerer = triggerer,
-                triggerFaction = triggerer.Faction,
+                triggerFaction = triggerer?.Faction,
             });
         }
     }

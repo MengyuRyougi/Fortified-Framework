@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using Verse;
 
 namespace Fortified
@@ -27,7 +27,7 @@ namespace Fortified
                     target = useTempOriginCache ? def.tempOriginCache.ToIntVec3() : target.Cell + GenRadial.RadialPattern[Rand.RangeInclusive(0, c)],
                     triggerTick = Find.TickManager.TicksGame + delayRange.RandomInRange,
                     triggerer = triggerer,
-                    triggerFaction = triggerer.Faction,
+                    triggerFaction = triggerer?.Faction,
                 });
             }
         }
