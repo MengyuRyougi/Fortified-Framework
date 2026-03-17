@@ -345,7 +345,7 @@ namespace Fortified
                     {
                         int stackCount = Mathf.Min(Props.maxIngredientCount - IngredientCount, Props.fixedIngredient.stackLimit);
                         Thing thing = ThingMaker.MakeThing(Props.fixedIngredient);
-                        thing.stackCount = stackCount;warm
+                        thing.stackCount = stackCount;
                         innerContainer.TryAdd(thing, thing.stackCount);
                     }
 #endif
