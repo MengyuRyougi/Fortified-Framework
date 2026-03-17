@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
 
@@ -96,4 +96,10 @@
 
   <FFF.Armor.CE>{0}毫米等效均质钢</FFF.Armor.CE>
   <FFF.Armor.Vanilla>{0}%防护</FFF.Armor.Vanilla>
+
+  <FFF_NextRaidIn>预计发起袭击时间: {0}</FFF_NextRaidIn>
+  <FFF_NextStrikeIn>预计投射打击时间: {0}</FFF_NextStrikeIn>
+  <FFF_NextStrikeStatus>空袭支援状态: {0}</FFF_NextStrikeStatus>
+  <FFF_Status_Standby>待机 (等待目标)</FFF_Status_Standby>
+  <FFF_Site_LocalMonitoring>本地监考中 (离线)</FFF_Site_LocalMonitoring>
 </LanguageData>

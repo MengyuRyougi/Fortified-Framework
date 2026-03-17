@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
 
@@ -59,4 +59,10 @@
   
   <FFF.Armor.CE>{0}mmRha armor</FFF.Armor.CE>
   <FFF.Armor.Vanilla>{0}% protection</FFF.Armor.Vanilla>
+
+  <FFF_NextRaidIn>Estimated raid time: {0}</FFF_NextRaidIn>
+  <FFF_NextStrikeIn>Estimated strike time: {0}</FFF_NextStrikeIn>
+  <FFF_NextStrikeStatus>Air support status: {0}</FFF_NextStrikeStatus>
+  <FFF_Status_Standby>Standby (Waiting for target)</FFF_Status_Standby>
+  <FFF_Site_LocalMonitoring>Local monitoring (Offline)</FFF_Site_LocalMonitoring>
 </LanguageData>

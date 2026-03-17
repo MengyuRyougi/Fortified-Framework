@@ -7,7 +7,7 @@ using Verse;
 
 namespace Fortified.Structures
 {
-    // 场景部分：开局添加结构
+    // 场景部分开局添加结构逻辑
     public class ScenPart_AddStartingStructure : ScenPart
     {
         public string structureLabel;
@@ -20,6 +20,7 @@ namespace Fortified.Structures
         // 地图生成后处理结构生成
         public override void PostMapGenerate(Map map)
         {
+            if (map == null || !map.IsStartingMap || map.IsPocketMap) return;
             if (chooseFrom.NullOrEmpty()) return;
 
             var layout = DefDatabase<StructureLayoutDef>.GetNamedSilentFail(chooseFrom.RandomElement());
@@ -62,7 +63,7 @@ namespace Fortified.Structures
         }
     }
 
-    // 场景部分：强制派系好感度
+    // 场景部分强制派系好感度逻辑
     public class ScenPart_ForcedFactionGoodwill : ScenPart
     {
         public FactionDef factionDef;

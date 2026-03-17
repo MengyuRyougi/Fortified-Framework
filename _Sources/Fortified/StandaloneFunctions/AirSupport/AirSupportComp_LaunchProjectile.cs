@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -43,7 +43,7 @@ namespace Fortified
                     target = GenRadial.RadialPattern[Rand.RangeInclusive(0, c)] + target.Cell,
                     triggerTick = delay,
                     triggerer = triggerer,
-                    triggerFaction = triggerer.Faction,
+                    triggerFaction = triggerer?.Faction,
                     origin = def.tempOriginCache
                 });
                 int interval = burstInterval.RandomInRange;
@@ -54,7 +54,7 @@ namespace Fortified
                     target = def.tempOriginCache.ToIntVec3(),
                     triggerTick = Find.TickManager.TicksGame + delayRangeSound.RandomInRange + interval,
                     triggerer = triggerer,
-                    triggerFaction = triggerer.Faction,
+                    triggerFaction = triggerer?.Faction,
                 });
 
                 delay += interval;
@@ -94,7 +94,7 @@ namespace Fortified
                     target = GenRadial.RadialPattern[Rand.RangeInclusive(0, c)] + target.Cell,
                     triggerTick = delay,
                     triggerer = triggerer,
-                    triggerFaction = triggerer.Faction,
+                    triggerFaction = triggerer?.Faction,
                     origin = def.tempOriginCache
                 });
 
@@ -105,7 +105,7 @@ namespace Fortified
                     target = def.tempOriginCache.ToIntVec3(),
                     triggerTick = delay,
                     triggerer = triggerer,
-                    triggerFaction = triggerer.Faction,
+                    triggerFaction = triggerer?.Faction,
                 });
 
                 delay += burstInterval;
@@ -120,7 +120,7 @@ namespace Fortified
                     target = target.Cell,
                     triggerTick = delay + flyByDelay,
                     triggerer = triggerer,
-                    triggerFaction = triggerer.Faction,
+                    triggerFaction = triggerer?.Faction,
                     origin = def.tempOriginCache
                 });
             }
@@ -150,80 +150,79 @@ namespace Fortified
 
         public override void Trigger(AirSupportDef def, Thing triggerer, Map map, LocalTargetInfo target)
         {
+            if (flyByThingDef == null) return;
+
             int totalBurstingTime = (burstCount - 1) * burstInterval;
             int vehicleFlightTime = (int)((target.Cell.ToVector3Shifted() - def.tempOriginCache).Yto0().magnitude * 60 / flyByThingDef.skyfaller.speed);
             int actualFlyByTick = Find.TickManager.TicksGame + delayRange.RandomInRange + Mathf.Max(vehicleFlightTime, totalBurstingTime);
-            if (flyByThingDef != null)
+
+            var vehicleSpawnTick = actualFlyByTick - vehicleFlightTime;
+            var d = new AirSupportData_SpawnFlyBy()
             {
-                var vehicleSpawnTick = actualFlyByTick - vehicleFlightTime;
-                var d = new AirSupportData_SpawnFlyBy()
+                thingDef = flyByThingDef,
+                map = map,
+                target = target.Cell,
+                triggerTick = vehicleSpawnTick,
+                triggerer = triggerer,
+                triggerFaction = triggerer?.Faction,
+                origin = def.tempOriginCache
+            };
+            var c = GenRadial.NumCellsInRadius(spreadRadius);
+
+            int delay = actualFlyByTick - lastShotDelayRange.RandomInRange;
+
+            for (int i = 0; i < burstCount; i++)
+            {
+                for (int j = 0; j < singleBurstCount; j++)
                 {
-                    thingDef = flyByThingDef,
-                    map = map,
-                    target = target.Cell,
-                    triggerTick = vehicleSpawnTick,
-                    triggerer = triggerer,
-                    triggerFaction = triggerer.Faction,
-                    origin = def.tempOriginCache
-                };
-                var c = GenRadial.NumCellsInRadius(spreadRadius);
+                    LocalTargetInfo tg = GenRadial.RadialPattern[Rand.RangeInclusive(0, c)] + target.Cell;
 
-
-                int delay = actualFlyByTick - lastShotDelayRange.RandomInRange;
-
-                for (int i = 0; i < burstCount; i++)
-                {
-                    for (int j = 0; j < singleBurstCount; j++)
+                    if (target.HasThing && Rand.Chance(intendedTargetChance))
                     {
-                        LocalTargetInfo tg = GenRadial.RadialPattern[Rand.RangeInclusive(0, c)] + target.Cell;
-
-                        if (target.HasThing && Rand.Chance(intendedTargetChance))
-                        {
-                            tg = target;
-                        }
-
-                        if (!tg.Cell.InBounds(map))
-                        {
-                            j--;
-                            continue;
-                        }
-                        var index = (i * singleBurstCount + j) % projOffsets.Count;
-
-                        if (delay > vehicleSpawnTick)
-                        {
-                            d.attachedDatas.Add(new AirSupportData_LaunchProjectileFromPlane()
-                            {
-                                projectileDef = ProjectileDef,
-                                map = map,
-                                target = tg,
-                                triggerTick = delay,
-                                triggerer = triggerer,
-                                triggerFaction = triggerer.Faction,
-                                origin = def.tempOriginCache,
-                                soundDef = soundDef,
-                                offset = projOffsets[index]
-                            });
-                        }
-                        else
-                        {
-                            var ang = (target.Cell.ToVector3Shifted() - def.tempOriginCache).Yto0().AngleFlat();
-                            GameComponent_CAS.AddData(new AirSupportData_LaunchProjectileOnEdge()
-                            {
-                                projectileDef = ProjectileDef,
-                                map = map,
-                                target = tg,
-                                triggerTick = delay,
-                                triggerer = triggerer,
-                                triggerFaction = triggerer.Faction,
-                                origin = def.tempOriginCache + projOffsets[index].RotatedBy(ang),
-                                soundDef = soundDef,
-                            });
-                        }
+                        tg = target;
                     }
-                    delay -= burstInterval;
+
+                    if (!tg.Cell.InBounds(map))
+                    {
+                        j--;
+                        continue;
+                    }
+                    var index = (i * singleBurstCount + j) % projOffsets.Count;
+
+                    if (delay > vehicleSpawnTick)
+                    {
+                        d.attachedDatas.Add(new AirSupportData_LaunchProjectileFromPlane()
+                        {
+                            projectileDef = ProjectileDef,
+                            map = map,
+                            target = tg,
+                            triggerTick = delay,
+                            triggerer = triggerer,
+                            triggerFaction = triggerer?.Faction,
+                            origin = def.tempOriginCache,
+                            soundDef = soundDef,
+                            offset = projOffsets[index]
+                        });
+                    }
+                    else
+                    {
+                        var ang = (target.Cell.ToVector3Shifted() - def.tempOriginCache).Yto0().AngleFlat();
+                        GameComponent_CAS.AddData(new AirSupportData_LaunchProjectileOnEdge()
+                        {
+                            projectileDef = ProjectileDef,
+                            map = map,
+                            target = tg,
+                            triggerTick = delay,
+                            triggerer = triggerer,
+                            triggerFaction = triggerer?.Faction,
+                            origin = def.tempOriginCache + projOffsets[index].RotatedBy(ang),
+                            soundDef = soundDef,
+                        });
+                    }
                 }
-                GameComponent_CAS.AddData(d);
+                delay -= burstInterval;
             }
+            GameComponent_CAS.AddData(d);
         }
 
         public override void DrawHighlight(Map map, IntVec3 callerPos, LocalTargetInfo target)

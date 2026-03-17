@@ -13,14 +13,14 @@ namespace Fortified.Structures
         {
             if (def.layouts.NullOrEmpty()) return;
 
-            // 1. 确定整体尺寸（取第一个有效层级的尺寸）
+            // 确定整体尺寸规格
             var firstLayer = def.layouts.FirstOrDefault(l => !l.NullOrEmpty());
             if (firstLayer.NullOrEmpty()) return;
             
             int height = firstLayer.Count;
             int width = firstLayer[0].Split(',').Length;
 
-            // 2. 解析所有层级（建筑层 + 电缆层 + 其他层）并叠加
+            // 解析所有层级并叠加建筑电缆层
             int parsedCount = 0;
             foreach (var layer in def.layouts)
             {
@@ -44,10 +44,10 @@ namespace Fortified.Structures
             if (Prefs.DevMode && parsedCount > 0)
                 Log.Message($"[FFF] 解析布局 {def.defName}: 符号={parsedCount}, Things={sketch.Things.ToList().Count}, Terrain={sketch.Terrain.ToList().Count}");
 
-            // 3. 解析各种地形层级
+            // 解析各种地形层级配置
             ParseAllTerrainGrids(def, sketch, outTasks, width, height);
             
-            // 屋顶由 FFF_StructureUtility 统一处理
+            // 统一处理屋顶生成逻辑
         }
 
         private static void ParseAllTerrainGrids(StructureLayoutDef def, Sketch sketch, List<IFFF_GenerationTask> outTasks, int width, int height)
@@ -55,7 +55,7 @@ namespace Fortified.Structures
             // 基础层级
             ParseTerrainLayer(def.terrainGrid, width, height, (pos, tDef) => sketch.AddTerrain(tDef, pos));
             
-            // 兼容层级 (通过任务执行，因为 Sketch 只存一层)
+            // 解析兼容层级逻辑任务
             if (outTasks != null)
             {
                 ParseTerrainLayer(def.foundationGrid, width, height, (pos, tDef) => outTasks.Add(new Task_ApplyTerrainLayer { pos = pos, terrain = tDef, layerType = TerrainLayerType.Foundation }));
@@ -127,7 +127,7 @@ namespace Fortified.Structures
         {
             if (raw.NullOrEmpty()) return;
 
-            // 1. 尝试提取方向后缀
+            // 提取符号方向后缀参数
             Rot4 rot = Rot4.North;
             string cleanName = raw;
             bool hasSuffix = false;
@@ -137,12 +137,12 @@ namespace Fortified.Structures
             else if (raw.EndsWith("_South")) { rot = Rot4.South; cleanName = raw.Substring(0, raw.Length - 6); hasSuffix = true; }
             else if (raw.EndsWith("_West")) { rot = Rot4.West; cleanName = raw.Substring(0, raw.Length - 5); hasSuffix = true; }
 
-            // 2. 依次尝试解析剥离后缀后的名称
+            // 解析去掉后缀后的符号名称
             if (TryParseSymbolDef(cleanName, sketch, pos, outPawns, outTasks, spawnConduits, rot)) return;
             if (TryParseStuffThing(cleanName, sketch, pos, spawnConduits, outTasks, rot)) return;
             if (TryParseDirectThing(cleanName, sketch, pos, spawnConduits, outTasks, rot)) return;
             
-            // 3. 兜底：如果带后缀没解析出来，尝试直接解析原始字符串（防止 defName 本身就带方向后缀）
+            // 解析原始字符串名称兜底逻辑
             if (hasSuffix)
             {
                 if (TryParseSymbolDef(raw, sketch, pos, outPawns, outTasks, spawnConduits, Rot4.North)) return;
@@ -156,7 +156,7 @@ namespace Fortified.Structures
             var symbol = DefDatabase<SymbolDef>.GetNamedSilentFail(raw);
             if (symbol == null) return false;
 
-            // 如果显式传入了旋转（来自后缀），则覆盖 SymbolDef 默认值
+            // 有方向后缀时覆盖默认旋转值
             if (rot != Rot4.North || raw.EndsWith("_North"))
             {
                 var tempSymbol = symbol.ShallowCopy();
@@ -210,7 +210,7 @@ namespace Fortified.Structures
         {
             if (!spawnConduits || tDef == null || outTasks == null) return;
             
-            // 如果是墙、门等不可通行建筑，添加电缆生成任务
+            // 不可通行建筑添加电缆任务
             if (tDef.passability == Traversability.Impassable || tDef.IsDoor)
             {
                 outTasks.Add(new Task_SpawnConduit { pos = pos });
