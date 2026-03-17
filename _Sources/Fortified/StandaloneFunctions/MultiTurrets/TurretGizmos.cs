@@ -101,7 +101,7 @@ namespace Fortified
 
                 if (autofire)
                 {
-                    //subTurret.SwitchAutoFire();
+                    
                     [SyncMethod] void SyncAutoFire(SubTurret subTurret) { subTurret.SwitchAutoFire(); } //autofire sync not working yet
                     SyncAutoFire(subTurret);
                 }
@@ -124,16 +124,14 @@ namespace Fortified
                 DrawSubGizmo(targetRect, ForceAttack.Texture, delegate () {
 
                     subTurret.Targetting();
-                    //[SyncMethod] void SyncTargetting() { subTurret.Targetting(); }
-                    //SyncTargetting();
+                    
                 });
             }
             else
             {
                 DrawSubGizmo(targetRect, TexCommand.ClearPrioritizedWork, delegate () {
                     subTurret.ClearTarget();
-                    //[SyncMethod] void SyncClearTarget(SubTurret subTurret) { subTurret.ClearTarget(); }
-                    //SyncClearTarget(subTurret);
+                    
                 });
             }
 

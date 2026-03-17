@@ -345,7 +345,7 @@ namespace Fortified
                     {
                         int stackCount = Mathf.Min(Props.maxIngredientCount - IngredientCount, Props.fixedIngredient.stackLimit);
                         Thing thing = ThingMaker.MakeThing(Props.fixedIngredient);
-                        thing.stackCount = stackCount;
+                        thing.stackCount = stackCount;warm
                         innerContainer.TryAdd(thing, thing.stackCount);
                     }
 #endif
@@ -356,7 +356,12 @@ namespace Fortified
                 command_Action3.defaultLabel = "DEV: Empty " + Props.fixedIngredient.label;
                 command_Action3.action = delegate
                 {
-                    innerContainer.ClearAndDestroyContents();
+                    [SyncMethod]
+                    void SyncDevEmpty()
+                    {
+                        innerContainer.ClearAndDestroyContents();
+                    }
+                    SyncDevEmpty();
                 };
                 yield return command_Action3;
             }

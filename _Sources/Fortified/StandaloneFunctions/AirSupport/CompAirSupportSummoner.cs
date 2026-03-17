@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
+using Multiplayer.API;
 
 namespace Fortified
 {
@@ -32,6 +33,7 @@ namespace Fortified
             Find.Targeter.BeginTargeting(pram, DoEffect);
         }
 
+        [SyncMethod]
         public void DoEffect(LocalTargetInfo cell)
         {
             Thing triggerer = parent.ParentHolder is Pawn_ApparelTracker pawn ? pawn.pawn : parent;

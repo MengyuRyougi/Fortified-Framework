@@ -46,8 +46,7 @@ namespace Fortified
                             action = delegate (LocalTargetInfo target)  //may need syncing for MP? Im not sure what this does, but it looks like it should be synced
                             {
                                 deployable.Deploy(target.Cell, parentpawn);
-                                //[SyncMethod] void SyncTargetUnknown() { deployable.Deploy(target.Cell, parentpawn); }
-                                //SyncTargetUnknown();
+                                
                             }
                         };
                         yield return command_Target;
@@ -102,8 +101,7 @@ namespace Fortified
 				action = delegate (LocalTargetInfo target)
 				{
                     this.Deploy(target.Cell, pawn);
-					//[SyncMethod] void SyncTurretTarget() { this.Deploy(target.Cell, pawn); }
-					//SyncTurretTarget();
+					
 				}
 			};
 			if (!pawn.Drafted) command_Target.Disable("FFF.DisabledUndrafted".Translate());

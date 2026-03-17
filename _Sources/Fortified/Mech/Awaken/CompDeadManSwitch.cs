@@ -143,14 +143,13 @@ namespace Fortified
             {
                 yield return new Command_Action()
                 {
-                    defaultLabel = "Debug: Check State",
+                    defaultLabel = "Debug: Check State",  //Does not need Multiplayer sync
                     action = () =>
                     {
-                        [SyncMethod] void SyncCheckState() { Log.Message(this.woken);
+                        Log.Message(this.woken);
                         Log.Message(this.woken_Lurk);
                         Log.Message(this.timeToWake);
-                        }
-                        SyncCheckState();
+                        
                     }
                 };
                 yield return new Command_Action()
