@@ -356,7 +356,12 @@ namespace Fortified
                 command_Action3.defaultLabel = "DEV: Empty " + Props.fixedIngredient.label;
                 command_Action3.action = delegate
                 {
-                    innerContainer.ClearAndDestroyContents();
+                    [SyncMethod]
+                    void SyncDevEmpty()
+                    {
+                        innerContainer.ClearAndDestroyContents();
+                    }
+                    SyncDevEmpty();
                 };
                 yield return command_Action3;
             }

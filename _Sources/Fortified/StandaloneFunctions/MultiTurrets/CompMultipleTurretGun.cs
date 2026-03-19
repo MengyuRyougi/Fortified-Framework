@@ -375,11 +375,10 @@ namespace Fortified
             });
             return result;
         }
-        public void SwitchAutoFire()   //TODO: THESE 3 BUTTONS ARE NOT WORKING WITH SYNC ADDED!!
+        public void SwitchAutoFire()   
         {
             this.fireAtWill = !this.fireAtWill;
-            //[SyncMethod] void SyncSwitchAutoFire() { this.fireAtWill = !this.fireAtWill; }
-            //SyncSwitchAutoFire();
+            
         }
 
         public void Targetting()
@@ -389,7 +388,6 @@ namespace Fortified
 
             tar.BeginTargeting(this.CurrentEffectiveVerb.targetParams, (t) =>
             {
-                //this.forcedTarget = t; this.currentTarget = t;
                 [SyncMethod]
                 void SyncTarget(LocalTargetInfo t, SubTurret self)
                 {
@@ -401,8 +399,7 @@ namespace Fortified
 
         public void ClearTarget()
         {
-            //this.forcedTarget = LocalTargetInfo.Invalid;
-            //this.currentTarget = LocalTargetInfo.Invalid;
+            
             [SyncMethod] void SyncClearTarget( SubTurret self) {
                 self.forcedTarget = LocalTargetInfo.Invalid; self.currentTarget = LocalTargetInfo.Invalid;
                 }

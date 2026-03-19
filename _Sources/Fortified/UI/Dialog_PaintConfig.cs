@@ -734,13 +734,14 @@ namespace Fortified
             y += 28f;
         }
 
-        // 发送涂装请求
+        // 发送涂装请求 Send Livery Request
         private void ApplyPaint()
         {
             confirmed = true;
 
-            // 设置请求状态
-            [SyncMethod] void SyncActivePaint () { comp.activePaintRequest = true;
+            // 设置请求状态 Set request status
+            [SyncMethod] void SyncActivePaint (CompPaintable comp, Color baseColor, Color baseColor2, Color baseColor3, FFF_CamoDef camoDef, float brightness, FFF_OverlayDef overlayDef) { 
+                comp.activePaintRequest = true;
             comp.requestColor = baseColor;
             comp.requestColor2 = baseColor2;
             comp.requestColor3 = baseColor3;
@@ -749,11 +750,11 @@ namespace Fortified
             comp.requestOverlay = overlayDef;
 
 
-            // 通知刷新
+            // 通知刷新 Notification refresh
             comp.Notify_ColorChanged(); }
-            SyncActivePaint();
+            SyncActivePaint(comp, baseColor, baseColor2, baseColor3, camoDef, brightness, overlayDef);
 
-            // 弹出提示
+            // 弹出提示 Pop up prompt
             Messages.Message("FFF_PaintRequestSent".Translate(), comp.parent, MessageTypeDefOf.NeutralEvent, false);
         }
 

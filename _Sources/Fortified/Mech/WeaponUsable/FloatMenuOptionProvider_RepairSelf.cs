@@ -26,8 +26,6 @@ namespace Fortified
 
             return new FloatMenuOption("RepairMech".Translate(clickedPawn.LabelShortCap), () =>
             {
-                //Job job = JobMaker.MakeJob(FFF_DefOf.FFF_RepairSelf, clickedPawn);
-                //clickedPawn.jobs.StartJob(job);
                 [SyncMethod] void SyncRepairMech() {
                     Job job = JobMaker.MakeJob(FFF_DefOf.FFF_RepairSelf, clickedPawn);
                     clickedPawn.jobs.StartJob(job);
