@@ -38,6 +38,7 @@
 		<EquippableByRace/>
 		<EquippableWithGene>
 			<li MayRequire="ludeon.rimworld.biotech">Robust</li>
+			<li MayRequire="sarg.alphagenes">AG_ToughSinews</li>
 		</EquippableWithGene>
 		<EquippableWithHediff>
             <li>ArchotechArm</li>
@@ -63,6 +64,7 @@
 		<EquippableByRace/>
 		<EquippableWithGene>
 			<li MayRequire="ludeon.rimworld.biotech">Robust</li>
+			<li MayRequire="sarg.alphagenes">AG_ToughSinews</li>
 		</EquippableWithGene>
 		<EquippableWithHediff>
             <li MayRequire="aoba.deadmanswitch.core">DMS_SyntheticArm</li>
@@ -85,7 +87,9 @@
 		<defName>BulkyAutomatroid</defName>
 		<EquippableBaseBodySize>1.7</EquippableBaseBodySize>
 		<EquippableByRace/>
-		<EquippableWithGene/>
+		<EquippableWithGene>
+			<li MayRequire="sarg.alphagenes">AG_ToughSinews</li>
+		</EquippableWithGene>
 		<EquippableWithApparel>
 			<li MayRequire="aoba.deadmanswitch.core">DMS_Apparel_PowerSkeleton</li>
 			<li MayRequire="ludeon.rimworld.royalty">Apparel_ArmorCataphract</li>
