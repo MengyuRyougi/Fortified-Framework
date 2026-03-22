@@ -26,3 +26,8 @@ D:/SteamLibrary/steamapps/common/RimWorld/Mods/Fortified-Framework/_Sources/Fort
 /home/boris/.local/share/Steam/steamapps/common/RimWorld/Mods/Fortified-Framework/_Sources/FortifiedCE/obj/Debug/FortifiedCE.GeneratedMSBuildEditorConfig.editorconfig
 /home/boris/.local/share/Steam/steamapps/common/RimWorld/Mods/Fortified-Framework/_Sources/FortifiedCE/obj/Debug/FortifiedCE.csproj.CoreCompileInputs.cache
 /home/boris/.local/share/Steam/steamapps/common/RimWorld/Mods/Fortified-Framework/_Sources/FortifiedCE/obj/Debug/FortifiedCE.dll
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedCE\obj\Debug\FortifiedCE.dll
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\1.6\CE\Assemblies\FortifiedCE.dll
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedCE\obj\Debug\FortifiedCE.csproj.AssemblyReference.cache
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedCE\obj\Debug\FortifiedCE.GeneratedMSBuildEditorConfig.editorconfig
+D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\_Sources\FortifiedCE\obj\Debug\FortifiedCE.csproj.CoreCompileInputs.cache
