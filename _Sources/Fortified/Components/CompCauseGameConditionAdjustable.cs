@@ -6,8 +6,22 @@ using Verse;
 
 namespace Fortified
 {
+	public class CompProperties_CausesGameConditionAdjustable : CompProperties_CausesGameCondition
+	{
+		public bool shouldBeSpawned = true;
+
+		public List<PlanetLayerDef> planetLayerWhitelist;
+
+		public CompProperties_CausesGameConditionAdjustable()
+		{
+			compClass = typeof(CompCauseGameConditionAdjustable);
+		}
+	}
+	
 	public class CompCauseGameConditionAdjustable : CompCauseGameCondition
 	{
+		public new CompProperties_CausesGameConditionAdjustable Props => (CompProperties_CausesGameConditionAdjustable)props;
+
 		protected CompFlickable flickableComp;
 
 		protected CompPowerTrader powerComp;
@@ -16,7 +30,7 @@ namespace Fortified
 		{
 			get
 			{
-				if (!parent.Spawned)
+				if (Props.shouldBeSpawned && !parent.Spawned)
 				{
 					return false;
 				}
@@ -25,6 +39,10 @@ namespace Fortified
 					return false;
 				}
 				if (powerComp != null && !powerComp.PowerOn)
+				{
+					return false;
+				}
+				if(!Props.planetLayerWhitelist.NullOrEmpty() && !Props.planetLayerWhitelist.Contains(parent.Map.Tile.LayerDef))
 				{
 					return false;
 				}
