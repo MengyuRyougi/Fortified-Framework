@@ -15,6 +15,8 @@ public class CompProperties_ShieldingDevice : CompProperties
     public EffecterDef cooldownEffecter;
     public EffecterDef triggerEffecter;
 
+    public List<PlanetLayerDef> planetLayerWhitelist;
+
     public CompProperties_ShieldingDevice()
     {
         compClass = typeof(CompShieldingDevice);
@@ -43,7 +45,7 @@ public class CompShieldingDevice : ThingComp
     public bool HasPower => CompPower == null || CompPower.PowerOn;
 
     private int remainingTicks = 0;
-    public bool Active => HasPower && remainingTicks < 1;
+    public bool Active => HasPower && remainingTicks < 1 && (Props.planetLayerWhitelist.NullOrEmpty() || Props.planetLayerWhitelist.Contains(parent.Map.Tile.LayerDef));
 
     private MapComponent_Population popCache;
     public override void PostSpawnSetup(bool respawningAfterLoad)
