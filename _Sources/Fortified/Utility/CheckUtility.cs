@@ -64,16 +64,28 @@ public static partial class CheckUtility
     }
     public static bool IsMechUseable(Thing mech, ThingWithComps weapon)
     {
-        if (UseableInStatic(mech, weapon))
+        return weapon != null && IsMechUseable(mech, weapon.def);
+    }
+    /// <summary>
+    /// 只看 def 的版本。武器白名單／科技等級／體型門檻全都只依賴 def，
+    /// 所以尚未實例化的武器（例如部署中砲塔的 minifiedDef）也能先行判定。
+    /// </summary>
+    public static bool IsMechUseable(Thing mech, ThingDef weaponDef)
+    {
+        if (UseableInStatic(mech, weaponDef))
         {
             return true;
         }
 
-        return UseableInRuntime(mech, weapon);
+        return UseableInRuntime(mech, weaponDef);
     }
     internal static bool UseableInStatic(Thing mech, ThingWithComps weapon)
     {
-        if (mech == null || weapon == null)
+        return weapon != null && UseableInStatic(mech, weapon.def);
+    }
+    internal static bool UseableInStatic(Thing mech, ThingDef weaponDef)
+    {
+        if (mech == null || weaponDef == null)
         {
             return false;
         }
@@ -84,22 +96,26 @@ public static partial class CheckUtility
         }
         if (extension.EnableWeaponFilter)
         {
-            return extension.CanUse(weapon);
+            return extension.CanUse(weaponDef);
         }
         else 
         {
-           return extension.CanUseAsHeavyWeapon(weapon, (mech as Pawn).BodySize);
+           return extension.CanUseAsHeavyWeapon(weaponDef, (mech as Pawn).BodySize);
         }
     }
     public static bool UseableInRuntime(Thing mech, ThingWithComps weapon)
     {
-        if (mech == null || weapon == null)
+        return weapon != null && UseableInRuntime(mech, weapon.def);
+    }
+    public static bool UseableInRuntime(Thing mech, ThingDef weaponDef)
+    {
+        if (mech == null || weaponDef == null)
         {
             return false;
         }
 
         // 優先檢查重型武器擴展
-        if (weapon.def.TryGetModExtension<HeavyEquippableExtension>(out var heavyExtension))
+        if (weaponDef.TryGetModExtension<HeavyEquippableExtension>(out var heavyExtension))
         {
             return heavyExtension.CanEquippedBy(mech as Pawn);
         }
@@ -112,7 +128,7 @@ public static partial class CheckUtility
 
 
         // 檢查科技等級過濾
-        if (mechExtension.EnableTechLevelFilter && !mechExtension.UsableTechLevels.Contains(weapon.def.techLevel))
+        if (mechExtension.EnableTechLevelFilter && !mechExtension.UsableTechLevels.Contains(weaponDef.techLevel))
         {
             return false;
         }
@@ -120,7 +136,7 @@ public static partial class CheckUtility
         // 如果啟用了武器過濾，則使用白名單判斷（與 UseableInStatic 行為一致）
         if (mechExtension.EnableWeaponFilter)
         {
-            return mechExtension.CanUse(weapon);
+            return mechExtension.CanUse(weaponDef);
         }
 
         // 當 EnableWeaponFilter 為 false 時，透過 Pawn 體型判斷是否能作為重型武器裝備（與 UseableInStatic 保持一致）
@@ -130,7 +146,7 @@ public static partial class CheckUtility
             return false;
         }
 
-        return mechExtension.CanUseAsHeavyWeapon(weapon, pawn.BodySize);
+        return mechExtension.CanUseAsHeavyWeapon(weaponDef, pawn.BodySize);
     }
     public static bool HasAnyHediffOf(Pawn pawn, List<HediffDef> hediffDefs)
     {

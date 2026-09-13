@@ -8,4 +8,5 @@
   <FFF.AmmoSwitch.DefaultProjectile>Default Projectile</FFF.AmmoSwitch.DefaultProjectile>
   <FFF.AmmoSwitch.StatFactor>Accuracy Factor</FFF.AmmoSwitch.StatFactor>
   <FFF.AmmoSwitch.UsingDefault>Using default</FFF.AmmoSwitch.UsingDefault>
+  <FFF.AmmoSwitch.NotPlayerControlled>Only player-controlled units can switch ammo.</FFF.AmmoSwitch.NotPlayerControlled>
 </LanguageData>

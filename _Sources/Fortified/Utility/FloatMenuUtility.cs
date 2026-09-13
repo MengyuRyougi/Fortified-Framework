@@ -32,6 +32,15 @@ namespace Fortified
                     if (usableOption != null) yield return usableOption;
                 }
             }
+            //直接裝備部署中的可部署武器
+            //CompUsable 的「拾起」在主手已有武器時只會把東西收進背包，這裡補一個
+            //會把原武器卸下、直接換上砲塔的選項。
+            if (tmp.def.category == ThingCategory.Building
+                && tmp.TryGetComp<CompMinifyToInventory>() != null)
+            {
+                FloatMenuOption equipDeployable = TryMakeFloatMenuForDeployable(pawn, tmp);
+                if (equipDeployable != null) yield return equipDeployable;
+            }
 
             //武器相關
             if (tmp.TryGetComp<CompEquippable>() != null)
@@ -213,6 +222,64 @@ namespace Fortified
                 }
             }
             yield break;
+        }
+
+        /// <summary>
+        /// 部署中的可部署武器（陣地建築）的「裝備」選項。
+        /// 只有 minifiedDef 本身是可裝備武器（掛 CompEquippable）的建築才會出現；
+        /// 資格判定只看 def，因為此時手持型態尚未實例化。
+        /// </summary>
+        public static FloatMenuOption TryMakeFloatMenuForDeployable(Pawn pawn, ThingWithComps building)
+        {
+            if (pawn == null || building == null || !building.Spawned)
+            {
+                return null;
+            }
+            ThingDef minifiedDef = building.def.minifiedDef;
+            if (minifiedDef == null || !building.def.Minifiable)
+            {
+                return null;
+            }
+            if (minifiedDef.equipmentType == EquipmentType.None || !minifiedDef.HasComp<CompEquippable>())
+            {
+                return null;
+            }
+            if (pawn is not IWeaponUsable || pawn.equipment == null)
+            {
+                return null;
+            }
+
+            string labelShort = building.LabelShort;
+            if (pawn.WorkTagIsDisabled(WorkTags.Violent))
+            {
+                return new FloatMenuOption("CannotEquip".Translate(labelShort) + ": " + "IsIncapableOfViolenceLower".Translate(pawn.LabelShort, pawn).CapitalizeFirst(), null);
+            }
+            if (!CheckUtility.IsMechUseable(pawn, minifiedDef))
+            {
+                return new FloatMenuOption("CannotEquip".Translate(labelShort) + ": " + "FFF.Reason.WeaponNotSupported".Translate(), null);
+            }
+            if (!pawn.CanReach(building, PathEndMode.Touch, Danger.Deadly, false, false, TraverseMode.ByPawn))
+            {
+                return new FloatMenuOption("CannotEquip".Translate(labelShort) + ": " + "NoPath".Translate().CapitalizeFirst(), null);
+            }
+            if (!pawn.CanReserve(building))
+            {
+                Pawn reserver = pawn.Map?.reservationManager.FirstRespectedReserver(building, pawn);
+                string reason = reserver != null ? "ReservedBy".Translate(reserver.LabelShort, reserver) : "Reserved".Translate();
+                return new FloatMenuOption("CannotEquip".Translate(labelShort) + ": " + reason, null);
+            }
+
+            string label = "Equip".Translate(labelShort, building);
+            if (pawn.equipment.Primary != null && minifiedDef.equipmentType == EquipmentType.Primary)
+            {
+                label += " (" + "Replaces".Translate() + ": " + pawn.equipment.Primary.LabelShort + ")";
+            }
+            return RimWorld.FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(label, delegate
+            {
+                building.SetForbidden(false);
+                Job job = JobMaker.MakeJob(FFF_DefOf.FFF_EquipDeployable, building);
+                pawn.jobs.TryTakeOrderedJob(job, JobTag.DraftedOrder);
+            }, MenuOptionPriority.High), pawn, building);
         }
 
         private static FloatMenuOption TryMakeFloatMenuForGearManagement(Pawn pawn)

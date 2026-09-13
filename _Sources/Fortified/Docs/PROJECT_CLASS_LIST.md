@@ -185,6 +185,9 @@ Patch/整合：相關 Patch 補入 turret / pawn equipment 的 gizmo，使 UI �
     - 會處理 minified building 的情形並播放互動音效。
     - 迷你化結果若是裝備類型（有 CompEquippable 且 equipmentType != None），先跑 EquipmentUtility.CanEquip 完整資格檢查（涵蓋生物編碼、靈魂鏈接綁定、意識形態角色限制，以及 Patch_EquipmentUtility_CanEquip 疊加的 FFF_NeverEquip、HeavyEquippableExtension 體型門檻與 IWeaponUsable 的 MechWeaponExtension 白名單）；不合格則改收進物品欄。
     - IWeaponUsable（機械體）額外套用 MassUtility 載重上限；收納失敗時以 GenPlace.TryPlaceThing 落地兜底，確保物件不會遺失。
+    - TryMinifyAndEquip（靜態）：「直接裝備」入口，與 DoEffect 唯一差別是主手已有武器時由 MakeRoomFor 卸下原武器再裝上，而非塞進背包。
+  - JobDriver_EquipDeployable (Thing/DeployableItem/JobDriver_EquipDeployable.cs)
+    - JobDef FFF_EquipDeployable：走到部署中的陣地建築旁（Touch）後呼叫 CompMinifyToInventory.TryMinifyAndEquip。
   - DeployUtility / MinifiedThingDeployable (Thing/DeployableItem/MinifiedThingDeployable.cs)
     - 提供 Pawn 在持有 MinifiedThing（MinifiedThingDeployable）時的 Gizmo/Command_Target 用於選定放置格。
     - DeployUtility.CanOperateDeployable 定義操作資格（IWeaponUsable 免除 ToolUser 智力門檻）；IsAcceptedDeployCell 與 TargetParam 定義可放置的格子範圍/驗證（與 pawn 四方相鄰、在地圖內、該格沒有 edifice）；CanAutoManTurret 決定部署後是否自動接手操作（機械體受 TurretMannableExtension 白名單限制）。
@@ -201,6 +204,7 @@ Patch/整合：相關 Patch 補入 turret / pawn equipment 的 gizmo，使 UI �
   - 玩家互動：持有可部署的 MinifiedThing 時，Pawn 會在選取時顯示 Command_Target gizmo，點選後會執行 Deploy()，並在成功後由 pawn 自動 man turret（若適用）與銷毀 minified 物件。
   - 可裝備/加入背包：CompMinifyToInventory 支援將物件直接裝備至 pawn 的 equipment（若條件允許）或放入 inventory。
   - 機械體支援：vanilla 的 FloatMenuOptionProvider_FromThing 是 MechanoidCanDo => false，機械體看不到 CompUsable 選項，因此改由 FloatMenuOptionProvider_WeaponUsable → FloatMenuUtility 的「可回收的部署建築」分支補上。
+  - 直接裝備：IWeaponUsable 右鍵部署中的陣地建築時，FloatMenuUtility.TryMakeFloatMenuForDeployable 補上「裝備 X」選項（minifiedDef 需掛 CompEquippable；資格以 CheckUtility.IsMechUseable(pawn, ThingDef) 只看 def 判定），下達 FFF_EquipDeployable job；主手已有武器時標籤註明會替換。
   - 兼容鉤子：MinifiedThingDeployable.Deploy 會呼叫 DeployCECompatHook，供其他模組（例如 CE）注入兼容處理。
   - CE 設定同步（FortifiedCE/Harmony_DeployableTurretCompat.cs，DeployableCESync）：砲塔建築與迷你化武器是兩個獨立 Thing、各帶一份 CompAmmoUser / CompFireModes，因此在收起（MinifyUtility.MakeMinified postfix）與展開（DeployCECompatHook postfix）兩個方向都搬移彈匣內容、選定彈種、機會裝填閾值（CompAmmoUser.TryReloadOn，夾在 0~目標 MagSize）、連發模式、瞄準模式與瞄準部位（CompFireModes）。射擊模式只複製目標端可用清單內的值，並清除 CompFireModes.newComp 私有旗標以免 CE 稍後 ResetModes 覆蓋。兩型態彈匣容量不同（或目標彈匣已裝別種彈藥）時，裝不下的部分依 CE 的 AmmoDef.ammoCount / partialUnloadAmmoDef 規則換算回實體彈藥，交給 DeployContext.CurrentWorker 的 CompInventory，收不下才落地。
   - DeployContext（Thing/DeployableItem/DeployContext.cs）：轉換過程中來源與目標 Thing 都已脫離持有者也尚未生成，兼容層無從回推溢出物該給誰，因此由 CompMinifyToInventory 與 MinifiedThingDeployable.Deploy 以 using 區塊掛上執行者供查詢。

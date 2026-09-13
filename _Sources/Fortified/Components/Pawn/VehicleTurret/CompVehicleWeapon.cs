@@ -58,8 +58,8 @@ namespace Fortified
                 Thing weapon = ThingMaker.MakeThing(Props.defaultWeapon);
                 pawn.equipment.AddEquipment((ThingWithComps)weapon);
             }
-            if (respawningAfterLoad) cachedVehicldesPawns.Remove((Pawn)parent);
-            cachedVehicldesPawns.Add((Pawn)parent, this);
+            // 直接覆寫:pawn 若因非常規路徑(重試生成、跳過 PostDeSpawn 的搬移)已在快取中,Add 會丟 ArgumentException
+            cachedVehicldesPawns[pawn] = this;
         }
 
         public override void PostDeSpawn(Map map, DestroyMode destroyMode = DestroyMode.Vanish)

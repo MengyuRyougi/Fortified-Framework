@@ -3,4 +3,6 @@
   <FFF_InternalBattery>內部電池</FFF_InternalBattery>
   <FFF_SelfPowered>自供電中</FFF_SelfPowered>
   <FFF_BatteryFull>已充滿</FFF_BatteryFull>
+  <FFF_StandbyCharging>待機中，以 {0} W 充電</FFF_StandbyCharging>
+  <FFF_StandbyIdle>待機中</FFF_StandbyIdle>
 </LanguageData>

@@ -3,4 +3,6 @@
   <FFF_InternalBattery>Internal battery</FFF_InternalBattery>
   <FFF_SelfPowered>self-powered</FFF_SelfPowered>
   <FFF_BatteryFull>full</FFF_BatteryFull>
+  <FFF_StandbyCharging>standby, charging at {0} W</FFF_StandbyCharging>
+  <FFF_StandbyIdle>standby</FFF_StandbyIdle>
 </LanguageData>

@@ -388,6 +388,17 @@ namespace Fortified
             switchingToIndex = selectedIndex;
         }
 
+        /// <summary>
+        /// Whether the player is allowed to switch ammo on the given holder. Pawns must be
+        /// player-controlled; other things (turrets) must belong to the player faction.
+        /// </summary>
+        public static bool PlayerCanSwitch(Thing user)
+        {
+            if (user == null) return false;
+            if (user is Pawn pawn) return pawn.IsPlayerControlled;
+            return user.Faction == Faction.OfPlayer;
+        }
+
 		public virtual Gizmo GetSwitchGizmo(Thing user)
 		{
 			Command_Action command = new Command_Action
@@ -396,8 +407,14 @@ namespace Fortified
 				defaultDesc = GetGizmoDesc(),
 				icon = CurrentIcon
 			};
+			// Non-player units still show the gizmo so the current ammo is visible, but it cannot be used.
+			if (!PlayerCanSwitch(user))
+			{
+				command.Disable("FFF.AmmoSwitch.NotPlayerControlled".Translate());
+			}
 			command.action = delegate
 			{
+				if (!PlayerCanSwitch(user)) return;
 				List<FloatMenuOption> list = new List<FloatMenuOption>();
                 // Add an option for using the weapon's base/verb default projectile,
                 // unless the def opted out of the implicit default entry.

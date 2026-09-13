@@ -12,8 +12,8 @@ namespace Fortified
         {
             foreach (var g in __result) yield return g;
 
+            // Non-player turrets keep the gizmo (disabled) so the player can inspect the loaded ammo.
             if (__instance?.gun == null) yield break;
-            if (__instance.Faction != Faction.OfPlayer) yield break;
 
             CompAmmoSwitch comp = __instance.gun.TryGetComp<CompAmmoSwitch>();
             if (comp == null || !comp.HasAnyAmmoOption) yield break;

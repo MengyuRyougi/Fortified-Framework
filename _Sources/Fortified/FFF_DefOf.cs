@@ -26,6 +26,7 @@ public static class FFF_DefOf
     public static JobDef FFF_Replenish;
     public static JobDef FFF_SwitchAmmo;
     public static JobDef FFF_EquipTurret;
+    public static JobDef FFF_EquipDeployable;
     public static JobDef FFF_UseAccessKey;
     public static JobDef FFF_RepairMech_Overseer;
 	public static JobDef FFF_ControlMech_Overseer;

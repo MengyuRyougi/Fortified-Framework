@@ -28,10 +28,20 @@ namespace Fortified
         /// </summary>
         public bool CanUse(ThingWithComps weapon)
         {
-            if (BypassUsableWeapons.Contains(weapon.def.defName)) return true;
+            return weapon != null && CanUse(weapon.def);
+        }
+
+        /// <summary>
+        /// 只看 def 的版本。判定本來就只用到 def，因此尚未實例化的武器
+        /// （例如部署中砲塔的 minifiedDef）也能先行檢查。
+        /// </summary>
+        public bool CanUse(ThingDef weaponDef)
+        {
+            if (weaponDef == null) return false;
+            if (BypassUsableWeapons.Contains(weaponDef.defName)) return true;
             if (EnableWeaponFilter)
             {
-                if (weapon.def.weaponTags.NullOrEmpty())
+                if (weaponDef.weaponTags.NullOrEmpty())
                 {
                     return false;
                 }
@@ -39,7 +49,7 @@ namespace Fortified
                 bool tagMatch = false;
                 foreach (string tag in UsableWeaponTags)
                 {
-                    if (weapon.def.weaponTags.Contains(tag))
+                    if (weaponDef.weaponTags.Contains(tag))
                     {
                         tagMatch = true;
                         break;
@@ -47,13 +57,13 @@ namespace Fortified
                 }
                 if (!tagMatch) return false;
             }
-            if (EnableTechLevelFilter && !UsableTechLevels.Contains(weapon.def.techLevel))
+            if (EnableTechLevelFilter && !UsableTechLevels.Contains(weaponDef.techLevel))
             {
                 return false;
             }
             if (EnableClassFilter)
             {
-                if (weapon.def.weaponClasses.NullOrEmpty() || !weapon.def.weaponClasses.ContainsAny(p => UsableWeaponClasses.Contains(p)))
+                if (weaponDef.weaponClasses.NullOrEmpty() || !weaponDef.weaponClasses.ContainsAny(p => UsableWeaponClasses.Contains(p)))
                 {
                     return false;
                 }
@@ -63,7 +73,13 @@ namespace Fortified
 
         public bool CanUseAsHeavyWeapon(ThingWithComps weapon, float PawnBodysize = 1)//這裡是因為沒法再ModExt獲取到對象BosySize，所以只能透過這個方式在UseableInRuntime檢查。
         {
-            if (weapon.def.TryGetModExtension<HeavyEquippableExtension>(out var ext))
+            return weapon != null && CanUseAsHeavyWeapon(weapon.def, PawnBodysize);
+        }
+
+        public bool CanUseAsHeavyWeapon(ThingDef weaponDef, float PawnBodysize = 1)
+        {
+            if (weaponDef == null) return false;
+            if (weaponDef.TryGetModExtension<HeavyEquippableExtension>(out var ext))
             {
                 if (ext.EquippableDef.EquippableBaseBodySize == -1) return false;//無體型限制的武器不適用於此處理。
                 return ext.EquippableDef.EquippableBaseBodySize < PawnBodysize;

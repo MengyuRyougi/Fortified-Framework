@@ -20,15 +20,32 @@ namespace Fortified
 
         public override void DoEffect(Pawn usedBy)
         {
+            MinifyInto(usedBy, parent, replacePrimary: false);
+        }
+
+        /// <summary>
+        /// 「直接裝備」入口（浮動選單／<see cref="JobDriver_EquipDeployable"/>）。
+        /// 與 <see cref="DoEffect"/> 的差別只在主手已有武器時會先騰出位置（原武器落地），
+        /// 而不是把收起來的東西塞進背包。
+        /// </summary>
+        public static bool TryMinifyAndEquip(Pawn usedBy, Thing thing)
+        {
+            return MinifyInto(usedBy, thing, replacePrimary: true);
+        }
+
+        /// <summary>
+        /// 把 <paramref name="thing"/>（建築或已迷你化物件）收到 <paramref name="usedBy"/> 身上。
+        /// 回傳是否真的進了裝備欄。
+        /// </summary>
+        private static bool MinifyInto(Pawn usedBy, Thing thing, bool replacePrimary)
+        {
             if (usedBy == null || usedBy.Destroyed)
             {
-                return;
+                return false;
             }
-
-            Thing thing = parent;
             if (thing == null || thing.Destroyed)
             {
-                return;
+                return false;
             }
 
             if (thing is Building building && building.def.Minifiable)
@@ -41,22 +58,24 @@ namespace Fortified
                 if (thing == null)
                 {
                     Log.Warning($"[FFF] CompMinifyToInventory：{building.ToStringSafe()} 迷你化失敗，取消收納。");
-                    return;
+                    return false;
                 }
             }
 
-            if (TryEquip(usedBy, thing))
+            if (TryEquip(usedBy, thing, replacePrimary))
             {
-                return;
+                return true;
             }
 
             StoreOrDrop(usedBy, thing);
+            return false;
         }
 
         /// <summary>
         /// 嘗試直接裝備到裝備欄。任一條件不符就回 false，由呼叫端改走背包／落地流程。
+        /// <paramref name="replacePrimary"/> 為 true 時，主手已有武器也照樣裝備（原武器由 MakeRoomFor 卸下落地）。
         /// </summary>
-        private static bool TryEquip(Pawn usedBy, Thing thing)
+        private static bool TryEquip(Pawn usedBy, Thing thing, bool replacePrimary)
         {
             if (usedBy.equipment == null)
             {
@@ -76,7 +95,7 @@ namespace Fortified
                 return false;
             }
             // 主手已有武器就不搶位，避免把原本的武器擠掉。
-            if (thing.def.equipmentType == EquipmentType.Primary && usedBy.equipment.Primary != null)
+            if (!replacePrimary && thing.def.equipmentType == EquipmentType.Primary && usedBy.equipment.Primary != null)
             {
                 return false;
             }

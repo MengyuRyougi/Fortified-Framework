@@ -8,4 +8,5 @@
   <FFF.AmmoSwitch.DefaultProjectile>默认弹丸</FFF.AmmoSwitch.DefaultProjectile>
   <FFF.AmmoSwitch.StatFactor>精度系数</FFF.AmmoSwitch.StatFactor>
   <FFF.AmmoSwitch.UsingDefault>使用默认</FFF.AmmoSwitch.UsingDefault>
+  <FFF.AmmoSwitch.NotPlayerControlled>只有玩家控制的单位才能切换弹药。</FFF.AmmoSwitch.NotPlayerControlled>
 </LanguageData>

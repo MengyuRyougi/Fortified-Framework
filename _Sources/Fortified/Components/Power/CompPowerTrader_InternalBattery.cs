@@ -9,6 +9,11 @@ namespace Fortified
     {
         public float internalBatteryMax = 50f;
         public float chargeRateWatts = 15f;
+        /// <summary>
+        /// 開關撥到關閉（待機）時的充電速率倍率，以 <see cref="chargeRateWatts"/> 為基準。
+        /// 待機時本體不耗電，省下的功率全數拿去充電，因此預設 2 倍。
+        /// </summary>
+        public float standbyChargeFactor = 2f;
         public CompProperties_PowerWithInternalBattery()
         {
             compClass = typeof(CompPowerTrader_InternalBattery);
@@ -22,8 +27,19 @@ namespace Fortified
                 yield return $"{nameof(CompProperties_PowerWithInternalBattery)}: internalBatteryMax must be > 0.";
             if (chargeRateWatts < 0f)
                 yield return $"{nameof(CompProperties_PowerWithInternalBattery)}: chargeRateWatts must be >= 0.";
+            if (standbyChargeFactor < 0f)
+                yield return $"{nameof(CompProperties_PowerWithInternalBattery)}: standbyChargeFactor must be >= 0.";
         }
     }
+    /// <summary>
+    /// 帶內部電池的耗電端。三種狀態：
+    ///   1. 電網供電：正常運作，同時以 chargeRateWatts 充電。
+    ///   2. 自供電：電網斷電但電池有電 → 靠電池維持運作（PowerOn 由本 comp 撐住）。
+    ///   3. 待機：開關撥到關閉。PowerOn 交給原版維持 false（砲塔不射擊、燈不亮），
+    ///      不進入自供電，改以 chargeRateWatts × standbyChargeFactor 向電網純充電。
+    ///      關閉狀態下原版 PowerNet 不會替我們申報功率，所以待機充電是直接從電網的電池抽取，
+    ///      沒有電池的電網則取用當下的發電盈餘（盈餘本來就會被丟棄）。
+    /// </summary>
     public class CompPowerTrader_InternalBattery : CompPowerTrader
     {
         public const string Signal_SelfPoweredOn  = "FFF_SelfPoweredOn";
@@ -31,12 +47,16 @@ namespace Fortified
 
         private float storedEnergy;   // Watt-days
         private bool  selfPowered;    // true = running off internal battery
+        private float standbyChargeWattsLast; // 上一 tick 待機實際充入的功率，僅供顯示
 
         private CompProperties_PowerWithInternalBattery BatteryProps =>
             (CompProperties_PowerWithInternalBattery)props;
         public float StoredEnergy    => storedEnergy;
         public float StoredEnergyPct => storedEnergy / BatteryProps.internalBatteryMax;
         public bool  SelfPowered     => selfPowered;
+        /// <summary>開關撥到關閉：待機純充電，不運作。</summary>
+        public bool  Standby         => parent.Spawned && !FlickUtility.WantsToBeOn(parent);
+        public float StandbyChargeWatts => BatteryProps.chargeRateWatts * BatteryProps.standbyChargeFactor;
         public override void PostExposeData()
         {
             base.PostExposeData();
@@ -74,15 +94,20 @@ namespace Fortified
 
             if (!parent.Spawned) return;
 
+            if (Standby)
+            {
+                StandbyTick();
+                return;
+            }
+            standbyChargeWattsLast = 0f;
+
             if (PowerOn)
             {
                 if (selfPowered)
                 {
                     if (GridCanSustainUs())
                     {
-                        selfPowered = false;
-                        SyncPowerOutput(); // restore −basePower immediately
-                        parent.BroadcastCompSignal(Signal_SelfPoweredOff);
+                        ExitSelfPowered();
                         return;
                     }
                     float consumePerTick = Props.PowerConsumption * WattsToWattDaysPerTick;
@@ -90,9 +115,7 @@ namespace Fortified
                     if (storedEnergy <= 0f)
                     {
                         storedEnergy = 0f;
-                        selfPowered  = false;
-                        SyncPowerOutput(); // restore −basePower
-                        parent.BroadcastCompSignal(Signal_SelfPoweredOff);
+                        ExitSelfPowered();
                         PowerOn = false;
                     }
                 }
@@ -116,6 +139,65 @@ namespace Fortified
                     PowerOn = true;    // re-activates glow via BroadcastCompSignal
                 }
             }
+        }
+        private void ExitSelfPowered()
+        {
+            selfPowered = false;
+            SyncPowerOutput(); // restore −basePower immediately
+            parent.BroadcastCompSignal(Signal_SelfPoweredOff);
+        }
+        /// <summary>
+        /// 待機（開關關閉）：不運作、不自供電，只向電網充電。
+        /// 原版收到 FlickedOff 時已把 PowerOn 設為 false；這裡確保不會被自供電邏輯重新拉起。
+        /// </summary>
+        private void StandbyTick()
+        {
+            if (selfPowered)
+            {
+                ExitSelfPowered();
+            }
+            if (PowerOn)
+            {
+                PowerOn = false; // 舊存檔可能殘留待機前自供電時撐住的 PowerOn
+            }
+            standbyChargeWattsLast = 0f;
+
+            float max = BatteryProps.internalBatteryMax;
+            if (storedEnergy >= max) return;
+
+            PowerNet net = PowerNet;
+            if (net == null) return;
+            if (parent.Map.gameConditionManager.ElectricityDisabled(parent.Map)) return;
+
+            float wantPerTick = Mathf.Min(StandbyChargeWatts * WattsToWattDaysPerTick, max - storedEnergy);
+            if (wantPerTick <= 0f) return;
+
+            float got = DrawFromNet(net, wantPerTick);
+            if (got <= 0f) return;
+
+            storedEnergy = Mathf.Min(storedEnergy + got, max);
+            standbyChargeWattsLast = got / WattsToWattDaysPerTick;
+        }
+        /// <summary>
+        /// 直接向電網索取電量（Wd），回傳實際取得量。
+        /// 有電池的電網從電池抽；沒電池的電網取用當下的發電盈餘。
+        /// </summary>
+        private static float DrawFromNet(PowerNet net, float amount)
+        {
+            List<CompPowerBattery> bats = net.batteryComps;
+            if (bats.Count == 0)
+            {
+                return Mathf.Clamp(net.CurrentEnergyGainRate(), 0f, amount);
+            }
+            float remaining = amount;
+            for (int i = 0; i < bats.Count && remaining > 1E-07f; i++)
+            {
+                float take = Mathf.Min(bats[i].StoredEnergy, remaining);
+                if (take <= 0f) continue;
+                bats[i].DrawPower(take);
+                remaining -= take;
+            }
+            return amount - remaining;
         }
         private bool GridCanSustainUs()
         {
@@ -141,10 +223,14 @@ namespace Fortified
                 + ": " + storedEnergy.ToString("F0")
                 + " / " + maxWd.ToString("F0") + " Wd";
 
-            if (selfPowered)
-                batteryLine += " (" + "FFF_SelfPowered".Translate() + ")";
-            else if (storedEnergy >= maxWd)
+            if (storedEnergy >= maxWd)
                 batteryLine += " (" + "FFF_BatteryFull".Translate() + ")";
+            else if (Standby)
+                batteryLine += " (" + (standbyChargeWattsLast > 0f
+                    ? "FFF_StandbyCharging".Translate(standbyChargeWattsLast.ToString("F0"))
+                    : "FFF_StandbyIdle".Translate()) + ")";
+            else if (selfPowered)
+                batteryLine += " (" + "FFF_SelfPowered".Translate() + ")";
 
             return baseStr.NullOrEmpty()
                 ? batteryLine
