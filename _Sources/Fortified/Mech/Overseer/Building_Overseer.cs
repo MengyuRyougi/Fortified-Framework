@@ -28,7 +28,11 @@ namespace Fortified
 		public TargetingParameters targetParams => new TargetingParameters()
 		{
 			canTargetPawns = true,
-			canTargetLocations = false
+			canTargetBuildings = true,
+			canTargetLocations = false,
+			mapObjectTargetsMustBeAutoAttackable = false,
+			// 除了機兵本體，也接受封存艙，讓司令核心之類的統御者建築能直接啟動封存機兵
+			validator = t => t.Thing is Pawn || t.Thing is Building_MechCapsule
 		};
 		private Texture2D cachedUIIcon;
 		public Texture2D UIIcon
@@ -49,20 +53,32 @@ namespace Fortified
 		}
 		public bool ValidateTarget(LocalTargetInfo target, bool showMessages = true)
 		{
-			if (target.IsValid && target.HasThing && target.Thing is Pawn pawn)
+			if (!target.IsValid || !target.HasThing)
 			{
-				AcceptanceReport acceptanceReport = MechanitorUtility.CanControlMech(Comp.dummyPawn, pawn);
-				if (!acceptanceReport.Accepted)
-				{
-					if (showMessages && !acceptanceReport.Reason.NullOrEmpty())
-					{
-						Messages.Message(acceptanceReport.Reason.CapitalizeFirst(), pawn, MessageTypeDefOf.RejectInput, historical: false);
-					}
-					return false;
-				}
-				return true;
+				return false;
 			}
-			return false;
+			AcceptanceReport acceptanceReport;
+			if (target.Thing is Pawn pawn)
+			{
+				acceptanceReport = MechanitorUtility.CanControlMech(Comp.dummyPawn, pawn);
+			}
+			else if (target.Thing is Building_MechCapsule capsule)
+			{
+				acceptanceReport = capsule.CanActivate(this);
+			}
+			else
+			{
+				return false;
+			}
+			if (!acceptanceReport.Accepted)
+			{
+				if (showMessages && !acceptanceReport.Reason.NullOrEmpty())
+				{
+					Messages.Message(acceptanceReport.Reason.CapitalizeFirst(), target.Thing, MessageTypeDefOf.RejectInput, historical: false);
+				}
+				return false;
+			}
+			return true;
 		}
 
 		public void DrawHighlight(LocalTargetInfo target)
@@ -75,12 +91,22 @@ namespace Fortified
 
 		public virtual void OrderForceTarget(LocalTargetInfo target)
 		{
-			if (target.IsValid && target.HasThing && target.Thing is Pawn pawn)
+			if (!target.IsValid || !target.HasThing)
+			{
+				return;
+			}
+			if (target.Thing is Pawn pawn)
 			{
 				if (MechanitorUtility.CanControlMech(Comp.dummyPawn, pawn))
 				{
 					Comp.Connect(pawn);
 				}
+			}
+			else if (target.Thing is Building_MechCapsule capsule && capsule.CanActivate(this).Accepted)
+			{
+				// 建築沒辦法走過去駭入，比照 Connect 直接即時啟動；ActivateMech 會銷毀艙體，聲音得先放
+				SoundDefOf.ControlMech_Complete.PlayOneShot(new TargetInfo(capsule.Position, capsule.Map));
+				capsule.ActivateMech(this);
 			}
 		}
 

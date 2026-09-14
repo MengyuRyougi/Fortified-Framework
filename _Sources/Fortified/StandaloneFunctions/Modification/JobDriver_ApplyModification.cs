@@ -43,6 +43,14 @@ namespace Fortified
                 failIfStackCountLessThanJobCount: true,
                 reserve: true,
                 canTakeFromInventory: false);
+            // From here on the job only cares about the piece in hand. Keep TargetB pointed at it
+            // so the driver-wide FailOnDestroyedOrNull(B) does not trip when a hauler merges the
+            // remainder stack left on the ground into another one.
+            yield return Toils_General.Do(delegate
+            {
+                Thing carried = pawn.carryTracker?.CarriedThing;
+                if (carried != null) job.SetTarget(TargetIndex.B, carried);
+            });
             if (Target != pawn)
             {
                 yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch)
@@ -70,9 +78,7 @@ namespace Fortified
                 return pawn.Reserve(current, job, 1, -1, null, errorOnFailed);
             }
 
-            MapComponent_ModificationIndex index = pawn.Map.GetComponent<MapComponent_ModificationIndex>();
-            List<Thing> candidates = index?.GetCandidates(def, pawn, pawn.Position, true);
-            if (candidates == null) return false;
+            List<Thing> candidates = ModificationUtility.GetCandidates(pawn.Map, def, pawn, pawn.Position, true);
             for (int i = 0; i < candidates.Count; i++)
             {
                 Thing candidate = candidates[i];
@@ -92,8 +98,10 @@ namespace Fortified
         private void ApplyModification()
         {
             Thing item = pawn.carryTracker?.CarriedThing;
-            if (item == null || item.def != ExpectedItemDef || !ModificationForPawn(Target, item))
+            string reason = null;
+            if (item == null || item.def != ExpectedItemDef || !ModificationForPawn(Target, item, out reason))
             {
+                Messages.Message(reason ?? "FFF.MechModification.InvalidModification".Translate(), Target, MessageTypeDefOf.RejectInput, false);
                 ReturnCarriedItem();
                 EndJobWith(JobCondition.Incompletable);
                 return;
@@ -103,8 +111,9 @@ namespace Fortified
             EndJobWith(JobCondition.Succeeded);
         }
 
-        private bool ModificationForPawn(Pawn target, Thing item)
+        private bool ModificationForPawn(Pawn target, Thing item, out string reason)
         {
+            reason = null;
             CompTargetable_AddHediffOnTarget comp = item?.TryGetComp<CompTargetable_AddHediffOnTarget>();
             ModificationProfile profile = ModificationProfileDatabase.Get(item?.def);
             if (target?.health?.hediffSet == null || comp?.Props?.hediffDef == null || profile == null) return false;
@@ -115,19 +124,26 @@ namespace Fortified
             {
                 part = preciseJob.ResolvePart(target);
             }
-            else if (!ModificationInstallValidator.TryFindInstallPart(target, item.def, null, out part, out _, false))
+            else if (!ModificationInstallValidator.TryFindInstallPart(target, item.def, null, out part, out reason, false))
             {
                 return false;
             }
             bool allowEquivalentPart = preciseJob?.allowEquivalentPart == true;
-            if (!ModificationInstallValidator.CanInstall(target, item.def, part, null, out _, false, allowEquivalentPart)) return false;
+            if (!ModificationInstallValidator.CanInstall(target, item.def, part, null, out reason, false, allowEquivalentPart)) return false;
 
-            Hediff incoming = HediffMaker.MakeHediff(profile.hediffDef, target, part);
-            incoming.TryGetComp<HediffComp_Modification>()?.SetSource(item.def);
             Hediff existing = FindExisting(target, profile, part);
+            // Hediff.TryMergeWith requires an identical Part. Whole-body modifications applied by
+            // older versions were stored with Part == null, so build the incoming hediff on the
+            // existing part to keep those saves mergeable.
+            Hediff incoming = HediffMaker.MakeHediff(profile.hediffDef, target, existing != null ? existing.Part : part);
+            incoming.TryGetComp<HediffComp_Modification>()?.SetSource(item.def);
             if (existing != null)
             {
-                if (!profile.mergeable || !ModificationProfileDatabase.CanMerge(existing, incoming) || !existing.TryMergeWith(incoming)) return false;
+                if (!profile.mergeable || !ModificationProfileDatabase.CanMerge(existing, incoming) || !existing.TryMergeWith(incoming))
+                {
+                    reason = "FFF.MechModification.MergeFailed".Translate(item.def.LabelCap, target.LabelShort);
+                    return false;
+                }
             }
             else
             {

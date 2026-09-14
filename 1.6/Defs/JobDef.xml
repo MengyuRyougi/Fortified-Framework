@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <WorkGiverDef>
     <defName>FFF_DoAutonomousBill</defName>
@@ -66,14 +66,14 @@
   <JobDef>
     <defName>FFF_Modification</defName>
     <driverClass>Fortified.JobDriver_ApplyModification</driverClass>
-    <reportString>modifing TargetA.</reportString>
+    <reportString>modifying TargetA.</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 
   <JobDef>
     <defName>FFF_ModificationRemove</defName>
     <driverClass>Fortified.JobDriver_RemoveModification</driverClass>
-    <reportString>modifing TargetA.</reportString>
+    <reportString>removing modification from TargetA.</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 

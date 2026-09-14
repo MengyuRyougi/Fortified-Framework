@@ -1,10 +1,9 @@
-﻿using Verse;
+using Verse;
 
 namespace Fortified
 {
     public class HediffComp_Modification : HediffComp
     {
-        public bool isApplyTarget = false;
         private string sourceThingDefName;
         private int installedCount = 1;
 

@@ -45,15 +45,16 @@ namespace Fortified
             }
 
             Hediff hediff = mod.parent;
+            int installedCount = mod.InstalledCount;
             Messages.Message("FFF.Message.Modification.Removed".Translate(TargetPawn), TargetPawn, MessageTypeDefOf.PositiveEvent);
-            mod.isApplyTarget = false;
             TargetPawn.health.RemoveHediff(hediff);
 
             if (hediff.def.spawnThingOnRemoved != null && TargetPawn.MapHeld != null)
             {
+                // Merged installations were paid for with several items; refund all of them.
                 Thing thing = ThingMaker.MakeThing(hediff.def.spawnThingOnRemoved);
-                thing.stackCount = 1;
-                GenPlace.TryPlaceThing(thing, TargetPawn.Position, TargetPawn.MapHeld, ThingPlaceMode.Near);
+                thing.stackCount = installedCount;
+                GenPlace.TryPlaceThing(thing, TargetPawn.PositionHeld, TargetPawn.MapHeld, ThingPlaceMode.Near);
             }
             EndJobWith(JobCondition.Succeeded);
         }
@@ -64,17 +65,14 @@ namespace Fortified
             Job_Modification preciseJob = job as Job_Modification;
             BodyPartRecord targetPart = preciseJob?.ResolvePart(TargetPawn);
             if (preciseJob != null && targetPart == null && (preciseJob.targetPartIndex >= 0 || !preciseJob.targetPartDefName.NullOrEmpty())) return null;
+            if (preciseJob == null) return null;
             List<HediffComp_Modification> modifications = TargetPawn.health.hediffSet.GetHediffComps<HediffComp_Modification>().ToList();
             for (int i = 0; i < modifications.Count; i++)
             {
                 HediffComp_Modification mod = modifications[i];
-                if (preciseJob != null)
-                {
-                    if (!preciseJob.targetHediffDefName.NullOrEmpty() && mod.parent.def?.defName != preciseJob.targetHediffDefName) continue;
-                    if (targetPart != null && mod.parent.Part != targetPart) continue;
-                    return mod;
-                }
-                if (mod.isApplyTarget) return mod;
+                if (!preciseJob.targetHediffDefName.NullOrEmpty() && mod.parent.def?.defName != preciseJob.targetHediffDefName) continue;
+                if (targetPart != null && mod.parent.Part != targetPart) continue;
+                return mod;
             }
             return null;
         }

@@ -1,8 +1,7 @@
-﻿using RimWorld;
+using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
 using Verse;
-using static System.Net.Mime.MediaTypeNames;
 using Verse.AI;
 
 namespace Fortified
@@ -16,7 +15,7 @@ namespace Fortified
 
         public override bool TargetPawnValid(Pawn pawn, FloatMenuContext context)
         {
-            return base.TargetPawnValid(pawn, context) && pawn.health != null;
+            return base.TargetPawnValid(pawn, context) && pawn.health != null && pawn.Faction == Faction.OfPlayer;
         }
 
         public override IEnumerable<FloatMenuOption> GetOptionsFor(Pawn clickedPawn, FloatMenuContext context)

@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using System.Collections.Generic;
 using Verse;
 using Verse.AI;
@@ -26,9 +26,23 @@ namespace Fortified
         {
             yield return targetChosenByPlayer;
         }
+        public override bool ValidateTarget(LocalTargetInfo target, bool showMessages = true)
+        {
+            if (!base.ValidateTarget(target, showMessages)) return false;
+            if (!(target.Thing is Pawn pawn) || pawn.Faction != Faction.OfPlayer)
+            {
+                if (showMessages) Messages.Message("FFF.Modification_NotColonyMech".Translate(), MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+            if (!ModificationUtility.SupportedByRace(pawn, Props))
+            {
+                if (showMessages) Messages.Message("FFF.Modification_RaceNotSupported".Translate(), MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+            return true;
+        }
         public override void DoEffect(Pawn usedBy)
         {
-
             if (this.PlayerChoosesTarget && this.selectedTarget == null)
             {
                 return;
@@ -37,11 +51,7 @@ namespace Fortified
             {
                 return;
             }
-            if (!ModificationUtility.SupportedByRace((Pawn)selectedTarget, Props))
-            {
-                Messages.Message("FFF.Modification_RaceNotSupported".Translate(), MessageTypeDefOf.NeutralEvent);
-                return;
-            }
+            if (!ValidateTarget(selectedTarget, false)) return;
             Pawn targetPawn = (Pawn)selectedTarget;
             // This path is invoked from the item's active use job. The selected stack
             // is already reserved by usedBy, so a map-wide CanReserve check would

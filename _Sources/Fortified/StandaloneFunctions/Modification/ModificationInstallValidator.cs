@@ -64,8 +64,7 @@ namespace Fortified
             int pendingSameDef = CountQueuedItems(queue, itemDef);
             if (checkInventory)
             {
-                MapComponent_ModificationIndex index = pawn.Map?.GetComponent<MapComponent_ModificationIndex>();
-                int available = index?.CountAvailable(itemDef, pawn) ?? 0;
+                int available = ModificationUtility.CountAvailable(pawn.Map, itemDef, pawn);
                 if (pendingSameDef >= available)
                 {
                     reason = "FFF.MechModification.NotEnoughItems".Translate(itemDef.LabelCap);

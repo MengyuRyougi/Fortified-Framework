@@ -18,7 +18,7 @@ namespace Fortified
             {
                 defaultLabel = "FFF.MechModification.GizmoLabel".Translate(),
                 defaultDesc = "FFF.MechModification.GizmoDesc".Translate(),
-                icon = TexCommand.DesirePower,
+                icon = TexCommand.Install,
                 action = delegate { MechModificationWindowUtility.OpenFor(__instance); }
             };
         }

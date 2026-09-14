@@ -121,6 +121,12 @@ namespace Fortified
                 }
                 else
                 {
+                    // 停電事件開始時原版要隨機幾輪才會把我們關掉；直接斷開，下一 tick 就切自供電。
+                    if (parent.Map.gameConditionManager.ElectricityDisabled(parent.Map))
+                    {
+                        PowerOn = false;
+                        return;
+                    }
                     float chargePerTick = BatteryProps.chargeRateWatts * WattsToWattDaysPerTick;
                     storedEnergy = Mathf.Min(storedEnergy + chargePerTick, BatteryProps.internalBatteryMax);
                     SyncPowerOutput();
@@ -203,6 +209,10 @@ namespace Fortified
         {
             PowerNet net = PowerNet;
             if (net == null) return false;
+            // 太陽閃焰等停電事件：PowerNet 只會把耗電端關掉，發電端仍回報正輸出，
+            // CurrentEnergyGainRate 因此看起來充裕。若不在這裡擋下，自供電→切回電網→被關掉→再自供電
+            // 會每 20 tick 反覆一次，砲塔在兩個狀態之間閃爍。
+            if (parent.Map.gameConditionManager.ElectricityDisabled(parent.Map)) return false;
             float postSwitchWatts = storedEnergy < BatteryProps.internalBatteryMax
                 ? Props.PowerConsumption + BatteryProps.chargeRateWatts
                 : Props.PowerConsumption;

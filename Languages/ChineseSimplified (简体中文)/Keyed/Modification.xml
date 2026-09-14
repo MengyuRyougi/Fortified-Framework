@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
   <!-- EN: Weapon system not supported -->
@@ -68,5 +68,11 @@
   <FFF.MechModification.PartOccupied>{0} 已安装或已排队安装其他改件。</FFF.MechModification.PartOccupied>
   <FFF.MechModification.Unique>{0} 具有唯一性，无法在同一槽位重复安装。</FFF.MechModification.Unique>
   <FFF.MechModification.StackFull>{0} 已达到安装数量上限（{1}）。</FFF.MechModification.StackFull>
+  <FFF.MechModification.MergeFailed>{0} 无法与 {1} 身上已安装的改造合并。</FFF.MechModification.MergeFailed>
+  <FFF.Modification_NotColonyMech>只能改造殖民地的机械体。</FFF.Modification_NotColonyMech>
+  <FFF.MechModification.WindowTitle>改造 {0}</FFF.MechModification.WindowTitle>
+  <FFF.MechModification.QueueTitle>排程作业</FFF.MechModification.QueueTitle>
+  <FFF.MechModification.SlotsTitle>部位与已安装改造</FFF.MechModification.SlotsTitle>
+  <FFF.MechModification.PendingUninstall>待拆除</FFF.MechModification.PendingUninstall>
 
 </LanguageData>

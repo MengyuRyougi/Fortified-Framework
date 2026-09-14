@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,9 +66,12 @@ namespace Fortified
         {
             base.PreApplyDamage(ref dinfo, out absorbed);
 
+            // Non-health damage (EMP, MechBandShockwave, Extinguish, gas...) is not plating damage:
+            // let it through untouched instead of absorbing it, otherwise plated mechs become
+            // immune to EMP/stun and never get the firefoam hediff.
             if (!dinfo.Def.harmsHealth)
             {
-                absorbed = true;
+                absorbed = false;
                 return;
             }
 
@@ -83,9 +86,16 @@ namespace Fortified
                 }
                 dinfo.SetAmount(dmgReduced);
                 Hitpoints -= dmg;
-                Props.effectOnDamaged?.SpawnMaintained(parent.pawn.Position, parent.pawn.MapHeld, 0.2f);
-                FilthMaker.TryMakeFilth(GenAdjFast.AdjacentCells8Way(parent.pawn.Position).RandomElement().ClampInsideMap(parent.pawn.MapHeld), parent.pawn.MapHeld, Props.filthOnDamaged);
-
+                Map map = parent.pawn.MapHeld;
+                if (map != null)
+                {
+                    IntVec3 position = parent.pawn.PositionHeld;
+                    Props.effectOnDamaged?.SpawnMaintained(position, map, 0.2f);
+                    if (Props.filthOnDamaged != null)
+                    {
+                        FilthMaker.TryMakeFilth(GenAdjFast.AdjacentCells8Way(position).RandomElement().ClampInsideMap(map), map, Props.filthOnDamaged);
+                    }
+                }
             }
             if (Hitpoints <=0)
             {
@@ -208,11 +218,22 @@ namespace Fortified
     // pawn层钩子注册
     public static class PreApplyDamageRegistry
     {
+        private static readonly System.Reflection.FieldInfo CompsField = HarmonyLib.AccessTools.Field(typeof(ThingWithComps), "comps");
+
         public static void EnsurePawnComp(Pawn pawn)
         {
             if (pawn == null) return;
-            if (!pawn.TryGetComp<Comp_PreApplyDamage>(out var _))
-                pawn.AllComps.Add(new Comp_PreApplyDamage() { parent = pawn });
+            if (pawn.TryGetComp<Comp_PreApplyDamage>(out var _)) return;
+            // ThingWithComps.AllComps returns a shared static empty list when the def has no
+            // comps; adding to it would leak the comp into every comp-less thing. Create the
+            // instance list explicitly in that case.
+            List<ThingComp> comps = pawn.AllComps;
+            if (pawn.def.comps.NullOrEmpty() && comps.Count == 0)
+            {
+                comps = new List<ThingComp>();
+                CompsField.SetValue(pawn, comps);
+            }
+            comps.Add(new Comp_PreApplyDamage() { parent = pawn });
         }
     }
 }

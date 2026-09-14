@@ -3,8 +3,8 @@
 
   <!-- EN: Control mech -->
   <FFF_SelectMechToControlLabel>控制机兵</FFF_SelectMechToControlLabel>
-  <!-- EN: Select a mechanoid to place under this overseer's control. -->
-  <FFF_SelectMechToControlDesc>选择一具机兵，将其纳入此统御者的控制之下。</FFF_SelectMechToControlDesc>
+  <!-- EN: Select a mechanoid, or a mothballed mech in a storage cradle, to place under this overseer's control. -->
+  <FFF_SelectMechToControlDesc>选择一具机兵或封存中的机兵，将其纳入此统御者的控制之下。</FFF_SelectMechToControlDesc>
 
   <!-- EN: Rations: {COUNT} / {MAX} -->
   <FFF.ArtificialOrganismRations>口粮：{COUNT} / {MAX}</FFF.ArtificialOrganismRations>

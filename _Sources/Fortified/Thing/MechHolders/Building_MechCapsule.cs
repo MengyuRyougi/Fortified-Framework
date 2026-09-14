@@ -101,8 +101,44 @@ namespace Fortified
             return innerContainer.TryAdd(mech);
         }
 
-        // 激活机兵（由机械师控制）
-        public void ActivateMech(Pawn mechanitor)
+        // 解析真正负责带宽的机械师：
+        // 一般殖民者就是自己；统御者（军士等 OverseerMech、司令核心等 Building_Overseer）则是它的 dummy pawn。
+        // Resolve whose bandwidth pays for the mech: the colonist itself, or an overseer's dummy mechanitor.
+        public static Pawn ResolveController(Thing actor)
+        {
+            if (actor is IOverseer overseer)
+            {
+                return overseer.Comp != null && overseer.Comp.MechanitorActive ? overseer.Comp.dummyPawn : null;
+            }
+            if (actor is Pawn pawn && MechanitorUtility.IsMechanitor(pawn))
+            {
+                return pawn;
+            }
+            return null;
+        }
+
+        // 检查 actor 现在能否启动舱内机兵，失败时附带原因供 UI 显示
+        public AcceptanceReport CanActivate(Thing actor)
+        {
+            if (!HasMech) return false;
+
+            Pawn controller = ResolveController(actor);
+            if (controller == null)
+            {
+                return "FFF.Reason.NotMechanitor".Translate();
+            }
+
+            float bandwidthCost = Mech.GetStatValue(StatDefOf.BandwidthCost);
+            float availableBandwidth = controller.mechanitor.TotalBandwidth - controller.mechanitor.UsedBandwidth;
+            if (availableBandwidth < bandwidthCost)
+            {
+                return "FFF.Reason.NeedBandwidth".Translate(bandwidthCost);
+            }
+            return true;
+        }
+
+        // 激活机兵（由机械师或统御者控制）
+        public void ActivateMech(Thing actor)
         {
             if (!HasMech)
             {
@@ -110,7 +146,8 @@ namespace Fortified
                 return;
             }
 
-            if (mechanitor == null || !MechanitorUtility.IsMechanitor(mechanitor))
+            Pawn controller = ResolveController(actor);
+            if (controller == null)
             {
                 Log.Error("[FFF] ActivateMech: invalid mechanitor");
                 return;
@@ -120,18 +157,26 @@ namespace Fortified
 
             // 检查带宽
             float bandwidthCost = mech.GetStatValue(StatDefOf.BandwidthCost);
-            float availableBandwidth = mechanitor.mechanitor.TotalBandwidth - mechanitor.mechanitor.UsedBandwidth;
+            float availableBandwidth = controller.mechanitor.TotalBandwidth - controller.mechanitor.UsedBandwidth;
             if (availableBandwidth < bandwidthCost)
             {
-                Messages.Message("FFF.NeedMoreBandwidth".Translate(bandwidthCost), mechanitor, MessageTypeDefOf.RejectInput);
+                Messages.Message("FFF.NeedMoreBandwidth".Translate(bandwidthCost), actor, MessageTypeDefOf.RejectInput);
                 return;
             }
 
-            // 设置派系
-            mech.SetFaction(Faction.OfPlayer);
+            if (actor is IOverseer overseer)
+            {
+                // 统御者：交给 CompOverseer.Connect，它会一并处理派系、旧 overseer 关系与带宽通知
+                overseer.Comp.Connect(mech);
+            }
+            else
+            {
+                // 设置派系
+                mech.SetFaction(Faction.OfPlayer);
 
-            // 建立 overseer 关系
-            mechanitor.relations.AddDirectRelation(PawnRelationDefOf.Overseer, mech);
+                // 建立 overseer 关系
+                controller.relations.AddDirectRelation(PawnRelationDefOf.Overseer, mech);
+            }
 
             // 释放机兵
             innerContainer.TryDropAll(Position, Map, ThingPlaceMode.Near);
@@ -139,7 +184,7 @@ namespace Fortified
             // 销毁容器
             Destroy(DestroyMode.Vanish);
 
-            Messages.Message("FFF.MechActivated".Translate(mech.LabelCap, mechanitor.LabelShort), mech, MessageTypeDefOf.PositiveEvent);
+            Messages.Message("FFF.MechActivated".Translate(mech.LabelCap, actor.LabelShort), mech, MessageTypeDefOf.PositiveEvent);
         }
 
         // 弹出并销毁机兵
@@ -167,6 +212,9 @@ namespace Fortified
         {
             if (!HasMech) yield break;
 
+            // 统御者机兵（军士等）的选项由 FloatMenuOptionProvider_OverseerMech 提供，这里只处理人类机械师
+            if (selPawn is IOverseer) yield break;
+
             if (!selPawn.CanReach(this, PathEndMode.InteractionCell, Danger.Deadly))
             {
                 yield return new FloatMenuOption("FFF.CannotReach".Translate(), null);
@@ -177,31 +225,25 @@ namespace Fortified
             if (selPawn.WorkTypeIsDisabled(WorkTypeDefOf.Research))
             {
                 yield return CreateDisabledOption("FFF.Reason.WorkTypeDisabled".Translate());
+                yield break;
             }
-            else if (!MechanitorUtility.IsMechanitor(selPawn))
-            {
-                yield return CreateDisabledOption("FFF.Reason.NotMechanitor".Translate());
-            }
-            else
-            {
-                Pawn mech = Mech;
-                if (mech == null) yield break;
 
-                float bandwidthCost = mech.GetStatValue(StatDefOf.BandwidthCost);
-                float availableBandwidth = selPawn.mechanitor.TotalBandwidth - selPawn.mechanitor.UsedBandwidth;
+            yield return GetActivateOption(selPawn);
+        }
 
-                if (availableBandwidth < bandwidthCost)
-                {
-                    yield return CreateDisabledOption("FFF.Reason.NeedBandwidth".Translate(bandwidthCost));
-                }
-                else
-                {
-                    yield return new FloatMenuOption("FFF.DeactivatedMech_Control".Translate(Mech.LabelCap), delegate
-                    {
-                        selPawn.jobs.TryTakeOrderedJob(new Job(FFF_DefOf.FFF_HackMechCapsule, this));
-                    });
-                }
+        // 「控制 {机兵}」选项：人类机械师与统御者机兵共用，可达性由调用方先行检查
+        public FloatMenuOption GetActivateOption(Pawn selPawn)
+        {
+            AcceptanceReport report = CanActivate(selPawn);
+            if (!report.Accepted)
+            {
+                return CreateDisabledOption(report.Reason);
             }
+
+            return new FloatMenuOption("FFF.DeactivatedMech_Control".Translate(Mech.LabelCap), delegate
+            {
+                selPawn.jobs.TryTakeOrderedJob(new Job(FFF_DefOf.FFF_HackMechCapsule, this));
+            });
         }
 
         private FloatMenuOption CreateDisabledOption(string reason)

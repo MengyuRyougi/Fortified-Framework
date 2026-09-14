@@ -33,6 +33,23 @@ namespace Fortified
 			return base.GetOptions(context);
 		}
 
+		// 封存艙：讓軍士等具備帶寬的統御者機兵也能像機械師一樣駭入啟動。
+		// 一般 Thing.GetFloatMenuOptions 走的 FloatMenuOptionProvider_FromThing 不允許機械體使用，所以在這裡補上。
+		public override IEnumerable<FloatMenuOption> GetOptionsFor(Thing clickedThing, FloatMenuContext context)
+		{
+			if (clickedThing is Building_MechCapsule capsule && capsule.HasMech && context.FirstSelectedPawn is IOverseer && context.FirstSelectedPawn is Pawn mech)
+			{
+				if (!mech.CanReach(capsule, PathEndMode.InteractionCell, Danger.Deadly))
+				{
+					yield return new FloatMenuOption("FFF.CannotReach".Translate(), null);
+				}
+				else
+				{
+					yield return RimWorld.FloatMenuUtility.DecoratePrioritizedTask(capsule.GetActivateOption(mech), mech, new LocalTargetInfo(capsule));
+				}
+			}
+		}
+
 		public override IEnumerable<FloatMenuOption> GetOptionsFor(Pawn clickedPawn, FloatMenuContext context)
 		{
 			if (context.FirstSelectedPawn is IOverseer overseer && overseer is Pawn mech)
