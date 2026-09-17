@@ -110,8 +110,8 @@ namespace Fortified
         }
 
         /// <summary>
-        /// 對指定知識類別注入知識。Anomaly 啟用時走原生 ApplyKnowledge；否則套用到未完成且
-        /// 前置達成的專案，滿溢後往上一層類別溢流。
+        /// 對指定知識類別注入知識。Anomaly 啟用時注入各類別「當前研究中」的專案；否則套用到未完成且
+        /// 前置達成的專案。兩者皆依分頁類別順序往後溢流（例如 Restricted → Sealed → Occulted）。
         /// </summary>
         public static void AddKnowledge(KnowledgeCategoryDef category, float amount)
         {
@@ -126,9 +126,36 @@ namespace Fortified
                 return;
             }
 
+            List<KnowledgeCategoryDef> order = OrderedCategoriesFor(category);
+            int startIdx = order.IndexOf(category);
+
             if (ModsConfig.AnomalyActive)
             {
-                manager.ApplyKnowledge(category, amount);
+                // 不屬於任何自訂分頁的類別：交給原生（依 overflowCategory 溢流）。
+                if (startIdx < 0)
+                {
+                    manager.ApplyKnowledge(category, amount);
+                    return;
+                }
+
+                // 原生 ApplyKnowledge(category) 只會沿 KnowledgeCategoryDef.overflowCategory 往「下」溢流，
+                // 起始類別沒有被選為當前研究的專案時整筆點數會直接消失，永遠灌不到分頁中更高階的類別。
+                // 因此自行沿分頁類別順序往後找各類別的當前研究專案，逐一注入。
+                float left = amount;
+                for (int i = startIdx; i < order.Count && left > 0f; i++)
+                {
+                    ResearchProjectDef proj = ResearchTabUtility.GetActiveProjectForCategory(order[i]);
+                    if (proj == null || proj.IsFinished)
+                    {
+                        continue;
+                    }
+                    // 未完成時回傳 false 且 remainder = 0（點數全數吸收）；完成時回傳溢出的餘量。
+                    if (!manager.ApplyKnowledge(proj, left, out float remainder))
+                    {
+                        return;
+                    }
+                    left = remainder;
+                }
                 return;
             }
 
@@ -138,8 +165,6 @@ namespace Fortified
                 return;
             }
 
-            List<KnowledgeCategoryDef> order = OrderedCategoriesFor(category);
-            int startIdx = order.IndexOf(category);
             if (startIdx < 0)
             {
                 ApplyWithinCategory(store, category, amount, out _);

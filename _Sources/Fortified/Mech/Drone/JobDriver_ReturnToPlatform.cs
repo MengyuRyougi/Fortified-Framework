@@ -38,14 +38,24 @@ namespace Fortified
             return pawn.Reserve(Platform, job, 1, -1, null, errorOnFailed, true);
         }
 
+        /// <summary>
+        /// 平台掛在 Pawn 身上（穿戴式 Apparel 平台、或機體內建的無人機艙）時 TargetA 就是那個 Pawn。
+        /// 這種平台會移動，讀條期間對方一走開 FailOnCannotTouch 就把工作打斷，無人機永遠收不回去，
+        /// 所以只對固定建築讀條，Pawn 平台走到就直接收。
+        /// </summary>
+        private bool PlatformIsPawn => Platform is Pawn;
+
         protected override IEnumerable<Toil> MakeNewToils()
         {
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch).FailOnDespawnedOrNull(TargetIndex.A);
-            Toil toil = Toils_General.Wait(DurationTicks);
-            toil.WithProgressBarToilDelay(TargetIndex.None);
-            toil.FailOnDespawnedOrNull(TargetIndex.A);
-            toil.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
-            yield return toil;
+            if (!PlatformIsPawn)
+            {
+                Toil toil = Toils_General.Wait(DurationTicks);
+                toil.WithProgressBarToilDelay(TargetIndex.None);
+                toil.FailOnDespawnedOrNull(TargetIndex.A);
+                toil.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
+                yield return toil;
+            }
             yield return Toils_General.Do(RefillPlatformCost);
         }
 
