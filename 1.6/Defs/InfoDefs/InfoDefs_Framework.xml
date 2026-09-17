@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    訊息卡「特殊機制」純文字條目。
+    - IInfoProvider：由對應 CompProperties / DefModExtension 依欄位內容決定是否顯示（見 C#）。
+    - autoAttachTo：只要 Def 帶有該型別（含子類）就自動顯示，不需改 C#。
+    - 個別 Def 可用 InfoDisplayExtension 的 infos 手動追加、suppress 排除。
+  -->
+
+  <!-- 由 CompProperties_AmmoSwitch (IInfoProvider) 提供，有彈種才顯示 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_AmmoSwitch</defName>
+    <label>ammo switching</label>
+    <description>This weapon can switch between multiple ammunition presets. Use the gizmo to queue a switch; the wielder walks over to change ammo and a short cooldown applies afterwards. Each preset may alter the projectile, range and accuracy.</description>
+    <displayPriority>1000</displayPriority>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 由 CompProperties_DamageBlocker / HediffCompProperties_DamageBlocker (IInfoProvider) 提供 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_DamageBlocker</defName>
+    <label>threshold protection</label>
+    <description>Incoming hits are compared against a damage threshold. Depending on configuration, hits above or below the threshold can be fully blocked, clamped, or let through, and each block may consume a protection charge. Charges can be replenished with materials or recharge over time. See the "Threshold protection" category for the exact numbers.</description>
+    <displayPriority>990</displayPriority>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 由 ModExt_EnvironmentalBill (IInfoProvider) 提供，有任一限制才顯示 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_EnvironmentalBill</defName>
+    <label>environmental requirement</label>
+    <description>This recipe can only be worked when the workbench's room meets specific environmental conditions such as cleanliness, light level, temperature, pressure or gravity. Bills are suspended while the conditions are not met. Some linked facilities may waive these requirements.</description>
+    <displayPriority>980</displayPriority>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 宣告式：帶 HeavyEquippableExtension 的武器自動顯示 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_HeavyEquippable</defName>
+    <label>heavy equipment</label>
+    <description>Only pawns that meet a body size requirement, or belong to the listed races, wear the listed apparel, or carry the listed implants or genes can equip this. Others cannot pick it up as a weapon.</description>
+    <displayPriority>970</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.HeavyEquippableExtension</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 宣告式：帶 CompPropertiesMultipleTurretGun 的 Def 自動顯示 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_MultiTurret</defName>
+    <label>multiple turrets</label>
+    <description>This unit mounts one or more sub-turrets that acquire and fire at targets independently of its main weapon. Each turret can be given a forced target, toggled between automatic and manual fire, and may accept its own weapon or ammunition.</description>
+    <displayPriority>960</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompPropertiesMultipleTurretGun</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 宣告式：帶 CompProperties_PowerWithInternalBattery 的建築自動顯示 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_InternalBattery</defName>
+    <label>internal battery</label>
+    <description>This building carries its own battery. While connected to a powered grid it charges the battery; if the grid loses power it keeps running on the battery until it is drained. Switching the building off puts it in standby, where it stops working but charges faster.</description>
+    <displayPriority>950</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_PowerWithInternalBattery</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 宣告式：thingClass 為 MinifiedThingDeployable 的物品自動顯示 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_Deployable</defName>
+    <label>deployable</label>
+    <description>This item can be carried by a pawn and deployed in the field as a building. A drafted pawn carrying it can place it directly on an open spot; deploying takes time and the area must be clear.</description>
+    <displayPriority>940</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.MinifiedThingDeployable</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 宣告式：帶 BiochemicalProtectionExtension 的服裝自動顯示 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_BiochemicalProtection</defName>
+    <label>biochemical protection</label>
+    <description>While worn, this apparel prevents the wearer from contracting diseases and infections from the environment or from wounds.</description>
+    <displayPriority>930</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.BiochemicalProtectionExtension</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+</Defs>

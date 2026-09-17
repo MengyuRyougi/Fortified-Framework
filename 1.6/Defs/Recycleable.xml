@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    原地拆解（CompRecycleable）：倒地或死亡的無人機可被殖民者就地拆成資源。
+    Def 用法見 _Sources/Fortified/Docs/Recycleable_Usage.md
+  -->
+
+  <DesignationDef>
+    <defName>FFF_RecycleDesignation</defName>
+    <texturePath>Designations/Deconstruct</texturePath>
+    <targetType>Thing</targetType>
+  </DesignationDef>
+
+  <JobDef>
+    <defName>FFF_Recycle</defName>
+    <driverClass>Fortified.JobDriver_Recycle</driverClass>
+    <reportString>recycling TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>FFF_RecycleWorkGiver</defName>
+    <label>recycle downed or destroyed units</label>
+    <giverClass>Fortified.WorkGiver_Recycle</giverClass>
+    <workType>Construction</workType>
+    <priorityInType>60</priorityInType>
+    <verb>recycle</verb>
+    <gerund>recycling</gerund>
+    <!-- 右鍵下令由 FloatMenuOptionProvider_Recycle 處理 -->
+    <directOrderable>false</directOrderable>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+</Defs>

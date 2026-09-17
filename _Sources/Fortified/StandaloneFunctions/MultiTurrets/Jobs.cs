@@ -80,7 +80,9 @@ namespace Fortified
 				return null;
 			}
 			Job job = JobMaker.MakeJob(JobDefOf.TakeCountToInventory, thing.Thing);
-			job.count = result.Count;
+			// JobDriver_TakeCountToInventory reserves (maxPawns 10, stackCount job.count);
+			// reserving more than the stack holds fails, so clamp to the actual stack.
+			job.count = thing.Count;
 			return job;
 		}
 
@@ -119,7 +121,7 @@ namespace Fortified
 			return new ThingCount(t, Mathf.Min(t.stackCount, defCount.Count));
 			bool Validator(Thing x)
 			{
-				if (x.IsForbidden(pawn) || !pawn.CanReserve(x))
+				if (x.IsForbidden(pawn) || !pawn.CanReserve(x, 10, Mathf.Min(x.stackCount, defCount.Count)))
 				{
 					return false;
 				}

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    機甲 / 無人機子系統的「特殊機制」條目。全部走 autoAttachTo（型別存在即顯示）。
+    翻譯：Languages/<語言>/DefInjected/Fortified.FFF_InfoDef/InfoDefs_Mech.xml
+  -->
+
+  <!-- ========== 無人機 ========== -->
+
+  <!-- 無人機平台（建築或背包型） -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_DronePlatform</defName>
+    <label>drone platform</label>
+    <description>Stores material and spends it to deploy drones.\n\nRetracting a drone returns it to the platform and refunds the material it cost. Deployed drones obey the allowed area set on the platform, and every drone controlled by the platform shuts down if the platform is destroyed. Platforms that support several unit types let you choose which one to deploy, and can be set to deploy and recall automatically on a fixed interval.</description>
+    <displayPriority>900</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_MechPlatform</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 無人機本體 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_Drone</defName>
+    <label>drone</label>
+    <description>A remotely operated unit bound to its deployment platform. \n\nDrone can only be controlled while the platform is powered and under your control, or for a wearable platform, while the wearer is drafted on the same map. It runs on an internal battery and automatically returns to the platform when the charge runs low; use the return command to recall it early and recover the material it cost. Drones deployed by you drop their equipment when destroyed.</description>
+    <displayPriority>895</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_Drone</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 無人機背包（AI 自動使用） -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_DronePack</defName>
+    <label>drone pack</label>
+    <description>A wearable drone platform. The wearer can release its drones. for NPC-controlled wearers, they will use it on their own when hostiles are present on the map.</description>
+    <displayPriority>890</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompDronePack</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 近戰引爆 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_ExplosiveOnMelee</defName>
+    <label>contact detonation</label>
+    <description>When this unit lands a melee attack it detonates every explosive it is carrying or holding, destroying itself in the process. Hostile units of this type may spawn carrying explosives.</description>
+    <displayPriority>885</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompExplosiveOnMelee</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 原地拆解回收 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_Recycleable</defName>
+    <label>field recycling</label>
+    <description>Once this unit is downed or destroyed it can be dismantled where it lies. Mark it for recycling, or order a colonist directly, and they will take it apart on the spot, dropping any gear it carried and leaving behind part of the materials it was built from. Wrecks yield less than downed units.</description>
+    <displayPriority>880</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_Recycleable</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- ========== 機甲能力 ========== -->
+
+  <!-- 人形機甲 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_HumanlikeMech</defName>
+    <label>humanlike mechanoid</label>
+    <description>A mechanoid built on an ergonomic humanlike frame. It can wear apparel and benefits from its effects, while still counting as a mechanoid for control, repair and bandwidth.</description>
+    <displayPriority>880</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.HumanlikeMech</li>
+      <li>Fortified.ArtificialOrganismHumanlike</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 機甲可持武器 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_MechWeaponUsable</defName>
+    <label>weapon systems</label>
+    <description>This mechanoid can pick up and use weapons. Which weapons it accepts is limited by its model's filters — weapon tags, tech level, weapon class, or an explicit whitelist — or by the weapon's own body size requirement. The full list is shown under the mechanoid's weapon systems entry.</description>
+    <displayPriority>875</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.MechWeaponExtension</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 機甲可操作砲塔 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_TurretMannable</defName>
+    <label>turret operation</label>
+    <description>This mechanoid can man turrets and other crewed emplacements just like a colonist; whether a given emplacement can be operated is defined by its weapon systems.</description>
+    <displayPriority>870</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.TurretMannableExtension</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 機甲封存 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_MechMothball</defName>
+    <label>hibernation</label>
+    <description>This Mechanoid can put into hibernation. It becomes a dormant structure that no longer uses bandwidth and can later be reactivated by any mechanitor with enough free bandwidth. It cannot be hibernated while downed.</description>
+    <displayPriority>865</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_MechDeactivate</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 休眠機甲結構 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_DeactivatedMech</defName>
+    <label>deactivated mechanoid</label>
+    <description>A deactivated mechanoid in storage. A mechanitor with enough free bandwidth can take control of it directly; hostile or unowned units can instead be hacked by a colonist with research work enabled. A failed hack wakes the mech up hostile. It can also be scrapped.</description>
+    <displayPriority>860</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.Building_DeactivatedMech</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 機甲儲存艙 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_MechCapsule</defName>
+    <label>hibernatable mechanoid</label>
+    <description>A mechanoid that can temporary shutdown for storage. Hibernating mechs use no control bandwidth and can be restarted by a mechanitor with enough bandwidth; if it belongs to someone else it can be hacked by a colonist. Mothballed mechs found in the wild may sometimes still be holding their weapon.</description>
+    <displayPriority>855</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.Building_MechCapsule</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 統御者：由 CompProperties_Overseer (IInfoProvider) 依 owner 形態選用，機械體 / 建築分開描述 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_OverseerMech</defName>
+    <label>overseer unit</label>
+    <description>A mechanoid that commands other mechanoids on its own, with its own bandwidth and control groups, and needs no mechanitor. Mechanoids placed under its control obey it as they would a mechanitor and follow it in the field. It can restart mothballed mechanoids it comes across, and repair the mechs it oversees while they are nearby.</description>
+    <displayPriority>850</displayPriority>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_OverseerBuilding</defName>
+    <label>overseer core</label>
+    <description>A stationary command structure with its own bandwidth and control groups. Mechanoids assigned to it obey it as they would a mechanitor within its command range — some cores cover the whole map. It can restart mothballed mechanoids directly, and repair the mechs it oversees while they are nearby. Linked facilities extend its capabilities.</description>
+    <displayPriority>849</displayPriority>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 死人開關 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_DeadManSwitch</defName>
+    <label>dead man's switch</label>
+    <description>This mechanoid carries a fail-safe that terminates it if it is ever cut off from its overseer. Units that are lost or wander off may still find their way home — but occasionally the switch fails to reset.</description>
+    <displayPriority>845</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_DeadManSwitch</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 人造生物 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_ArtificialOrganism</defName>
+    <label>artificial life</label>
+    <description>A bio-engineered artificial living construct. Its wounds regenerate over time on their own, and when its energy runs low it can eat to recharge instead of needing a charger.</description>
+    <displayPriority>840</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_ArtificialOrganism</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 自我修復 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_MechHeal</defName>
+    <label>self-repair</label>
+    <description>While this condition is present the mechanoid slowly repairs its own damage over time without a mechanitor.</description>
+    <displayPriority>835</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.HediffCompProperties_MechHeal</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 燒蝕護板 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_ProtectiveShield</defName>
+    <label>ceramic plating</label>
+    <description>Disposable armor with its own hit points. Incoming damage is absorbed by the plating until its durability is exhausted, after which it breaks and must be replaced. Larger mechs can carry more plates.</description>
+    <displayPriority>830</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.HediffCompProperties_ProtectiveShield</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 機甲改造件 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_MechModification</defName>
+    <label>mech modification</label>
+    <description>This item is a modification module for mechanoids. Open a mech's modification window, pick a body slot and queue the install; a colonist then fits it. Each slot holds one module, and some modules can be stacked or merged up to a limit. Modules can be removed later.</description>
+    <displayPriority>825</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.HediffCompProperties_Modification</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 指令中繼 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_CommandRelay</defName>
+    <label>command relay</label>
+    <description>A command unit. It ignores its mechanitor's control range entirely, and other mechanoids near it are treated as within range as well. On expeditions away from the mechanitor the relay radius shrinks with distance on the world map, down to a minimum once too far away. While drafted it shows its current coverage on the map.</description>
+    <displayPriority>820</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_CommandRelay</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 子中繼（建築 / 服裝） -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_SubRelay</defName>
+    <label>control relay</label>
+    <description>Extends mechanoid control range around it — for every mechanitor, not just one. As a building it works while powered, in working order and owned by your colony; as apparel it works while worn by one of your pawns. Some relays cover the whole map. The coverage ring is shown while a drafted mech is selected.</description>
+    <displayPriority>818</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_SubRelay</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 距離機械師的訊號衰減 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_MechanitorRange</defName>
+    <label>signal attenuation</label>
+    <description>While drafted, this mechanoid's performance depends on how far it is from its mechanitor. Close by it suffers little; the further away, the heavier the penalty, reaching its worst when the mechanitor is on another map. The penalty clears as soon as the mech is undrafted.</description>
+    <displayPriority>816</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.HediffCompProperties_MechanitorRange</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 武器銘印 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_WeaponImprint</defName>
+    <label>weapon imprint</label>
+    <description>The first weapon this mechanoid equips is imprinted into its adaptive systems. The longer it keeps using that weapon type the higher its imprint level grows, granting increasing bonuses; switching to a different weapon type discards the imprint.</description>
+    <displayPriority>815</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_WeaponImprint</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 機甲穿戴服裝 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_MechApparel</defName>
+    <label>apparel support</label>
+    <description>This mechanoid can wear apparel. Some apparel layers are blocked by its frame and cannot be equipped.</description>
+    <displayPriority>810</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_MechApparel</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+</Defs>

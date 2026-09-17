@@ -30,8 +30,21 @@ public static class FFF_DefOf
     public static JobDef FFF_UseAccessKey;
     public static JobDef FFF_RepairMech_Overseer;
 	public static JobDef FFF_ControlMech_Overseer;
+    public static JobDef FFF_Recycle;
+
+    // 原地拆解（CompRecycleable）
+    public static DesignationDef FFF_RecycleDesignation;
+    public static WorkGiverDef FFF_RecycleWorkGiver;
 
 	public static StatCategoryDef FFF_Turrets;
+	public static StatCategoryDef FFF_Mechanics;
+
+	// 訊息卡特殊機制條目
+	public static FFF_InfoDef FFF_Info_AmmoSwitch;
+	public static FFF_InfoDef FFF_Info_DamageBlocker;
+	public static FFF_InfoDef FFF_Info_EnvironmentalBill;
+	public static FFF_InfoDef FFF_Info_OverseerMech;
+	public static FFF_InfoDef FFF_Info_OverseerBuilding;
 
 	public static DutyDef FFF_DefendRoom;
 

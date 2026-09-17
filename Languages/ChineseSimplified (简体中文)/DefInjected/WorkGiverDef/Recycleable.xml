@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- EN: recycle downed or destroyed units -->
+  <FFF_RecycleWorkGiver.label>拆解倒地或损毁的单位</FFF_RecycleWorkGiver.label>
+  <!-- EN: recycling -->
+  <FFF_RecycleWorkGiver.gerund>拆解中</FFF_RecycleWorkGiver.gerund>
+  <!-- EN: recycle -->
+  <FFF_RecycleWorkGiver.verb>拆解</FFF_RecycleWorkGiver.verb>
+
+</LanguageData>

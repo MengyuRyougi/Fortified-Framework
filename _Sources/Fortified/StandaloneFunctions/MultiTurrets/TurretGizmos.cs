@@ -16,15 +16,18 @@ namespace Fortified
 	[StaticConstructorOnStartup]
 	public class SubturretGizmo : Gizmo
 	{
-		public SubturretGizmo(CompMultipleTurretGun comp)
+		public SubturretGizmo(CompMultipleTurretGun comp, bool readOnly = false)
 		{
 			this.comp = comp;
+			this.readOnly = readOnly;
 			this.subTurrets = comp.turrets;
-			this.subTurret = comp.turrets.Find(t => t.ID == comp.currentTurret);
+			this.subTurret = comp.turrets.Find(t => t.ID == comp.currentTurret) ?? comp.turrets.FirstOrDefault();
 			this.Order = -80f;
 		}
 
 		CompMultipleTurretGun comp;
+		// True when the owner is not player-controlled: everything is displayed but nothing can be interacted with.
+		private readonly bool readOnly;
 		private List<SubTurret> subTurrets;
 		private SubTurret subTurret;
 		private static readonly CachedTexture ToggleTurretIcon = new CachedTexture("UI/Gizmos/ToggleTurret");
@@ -78,6 +81,16 @@ namespace Fortified
 			if (!subTurret.HasTurret(owner))
 			{
 				Rect selectWeaponRect = new Rect(inner.x, inner.y + vector.y + 5f, inner.width, inner.height - (vector.y + 5f));
+				if (readOnly)
+				{
+					GUI.color = Color.gray;
+					Text.Anchor = TextAnchor.MiddleCenter;
+					Widgets.Label(selectWeaponRect, "FFF.MultiTurret.NoWeapon".Translate());
+					Text.Anchor = TextAnchor.UpperLeft;
+					GUI.color = Color.white;
+					drawRadius = false;
+					return new GizmoResult(onGizmo ? GizmoState.Mouseover : GizmoState.Clear);
+				}
 				if (Mouse.IsOver(selectWeaponRect))
 				{
 					Widgets.DrawHighlight(selectWeaponRect);
@@ -123,12 +136,15 @@ namespace Fortified
 			if (Mouse.IsOver(weaponRect))
 			{
 				drawRadius = !multiselect;
-				Widgets.DrawHighlight(weaponRect);
-				TooltipHandler.TipRegion(weaponRect, "FFF.MultiTurret.AttackRectTip".Translate(multiselectKeyLabel));
+				if (!readOnly)
+				{
+					Widgets.DrawHighlight(weaponRect);
+					TooltipHandler.TipRegion(weaponRect, "FFF.MultiTurret.AttackRectTip".Translate(multiselectKeyLabel));
+				}
 			}
 			else drawRadius = false;
 
-			if (Widgets.ButtonInvisible(weaponRect, false))
+			if (!readOnly && Widgets.ButtonInvisible(weaponRect, false))
 			{
 				if (rightClick)
 				{
@@ -153,7 +169,7 @@ namespace Fortified
 
 			#region Buttons
 
-			bool drawWeaponInteractRect = multiselect ? subTurrets.Any(x => !x.TurretProp.supportedWeaponTag.NullOrEmpty()) : !subTurret.TurretProp.supportedWeaponTag.NullOrEmpty();
+			bool drawWeaponInteractRect = !readOnly && (multiselect ? subTurrets.Any(x => !x.TurretProp.supportedWeaponTag.NullOrEmpty()) : !subTurret.TurretProp.supportedWeaponTag.NullOrEmpty());
 			bool drawAmmoRect = !multiselect && subTurret.Ammo != null;
 			int buttonCount = 1;
 			if (drawWeaponInteractRect)
@@ -171,13 +187,13 @@ namespace Fortified
 
 			#region AutoAttack
 
-			if (Mouse.IsOver(buttonRect1))
+			if (!readOnly && Mouse.IsOver(buttonRect1))
 			{
 				Widgets.DrawHighlight(buttonRect1);
 				TooltipHandler.TipRegion(buttonRect1, "FFF.MultiTurret.AutoAttackTip".Translate(multiselectKeyLabel));
 			}
 			Widgets.DrawTextureFitted(buttonRect1, ToggleTurretIcon.Texture, 1f);
-			bool autofire = Widgets.ButtonInvisible(buttonRect1);
+			bool autofire = !readOnly && Widgets.ButtonInvisible(buttonRect1);
 
 			Rect rect = new Rect(buttonRect1.x + (buttonRect1.width * 0.5f), buttonRect1.y, (buttonRect1.width * 0.5f), (buttonRect1.width * 0.5f));
 			Texture2D image;
@@ -241,10 +257,10 @@ namespace Fortified
 				Widgets.DrawTextureFitted(buttonRect3, ammoIcon, 1f);
 				if (Mouse.IsOver(buttonRect3))
 				{
-					Widgets.DrawHighlight(buttonRect3);
+					if (!readOnly) Widgets.DrawHighlight(buttonRect3);
 					TooltipHandler.TipRegion(buttonRect3, "FFF.MultiTurret.SelectAmmoTypeTip".Translate(subTurret.Ammo.selectedAmmoDef == null ? "AnyLower".Translate() : subTurret.Ammo.selectedAmmoDef.label));
 				}
-				if (Widgets.ButtonInvisible(buttonRect3, false))
+				if (!readOnly && Widgets.ButtonInvisible(buttonRect3, false))
 				{
 					List<FloatMenuOption> options = new List<FloatMenuOption>();
 					options.Add(new FloatMenuOption("AnyLower".Translate().CapitalizeFirst(), delegate

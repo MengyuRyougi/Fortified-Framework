@@ -4,8 +4,11 @@ using Verse;
 
 namespace Fortified;
 
-public class ModExt_EnvironmentalBill : DefModExtension
+public class ModExt_EnvironmentalBill : DefModExtension, IInfoProvider
 {
+    // 訊息卡特殊機制條目，可在 XML 覆寫；null 用框架預設
+    public FFF_InfoDef infoDef;
+
     //之後應該會改成XXXRestricted的命名。
 
     public bool OnlyInCleanliness = false;
@@ -38,6 +41,16 @@ public class ModExt_EnvironmentalBill : DefModExtension
     public bool AnyRestriction =>
         OnlyInCleanliness || OnlyInDarkness || LightnessRestricted ||
         PressureRestricted || OnlyInVacuum || TemperatureRestricted || OnlyInMicroGravity;
+
+    // 有任一環境限制才顯示
+    public IEnumerable<InfoEntry> GetInfoEntries(InfoContext ctx)
+    {
+        if (!AnyRestriction)
+            yield break;
+        FFF_InfoDef def = infoDef ?? FFF_DefOf.FFF_Info_EnvironmentalBill;
+        if (def != null)
+            yield return new InfoEntry(def);
+    }
 
     public IEnumerable<StatDrawEntry> SpecialDisplayStats()
     {

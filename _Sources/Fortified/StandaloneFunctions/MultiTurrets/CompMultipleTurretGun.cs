@@ -120,6 +120,11 @@ namespace Fortified
 		{
 			if(PawnOwner?.Faction?.IsPlayer != true)
 			{
+				// Non-player pawns: show the turret info gizmo in read-only mode, no commands.
+				if (Find.Selector.SelectedPawns.Count == 1 && !turrets.NullOrEmpty())
+				{
+					yield return new SubturretGizmo(this, readOnly: true);
+				}
 				yield break;
 			}
 			List<SubTurret> selectedTurrets = new List<SubTurret>();

@@ -14,6 +14,8 @@
   - BiochemicalProtection
   - ScoutedRaid
   - WorkTableAutonomous / EnvironmentalBill
+  - InfoDisplay（訊息卡特殊機制條目）
+  - Recycleable（倒地／死亡單位原地拆解）
   - 其他（Bossgroup、SignalAreaTrigger、ForceTargetable、PawnReplace...）
 - Mech（機甲子系統）
 - Thing / Projectile / Explosions
@@ -124,6 +126,31 @@ Patch/整合：相關 Patch 補入 turret / pawn equipment 的 gizmo，使 UI �
   - ReplaceBuildingValidator — [StaticConstructorOnStartup]，啟動時建快取並輸出設定錯誤警告。
 - 與 PawnReplace 的差異：PawnReplace 依 Site 威脅點數的 FloatRange 對應 PawnKindDef；本子系統是對建築的權重機率替換。替換不連鎖。
 
+### InfoDisplay（訊息卡「特殊機制」純文字條目）
+- 關鍵類別 (StandaloneFunctions/InfoDisplay/):
+  - FFF_InfoDef — 純文字條目模板：label 為標題、description 為內文（右欄留空）；可選 category / displayPriority / hyperlinks / workerClass / overridesHideStats；`autoAttachTo` 宣告「owner Def 帶有哪些 C# 型別（含子類）時自動顯示」。
+  - InfoWorker / InfoContext — 動態文字擴充點；ctx 帶 owner Def、StatRequest、觸發條目的來源物件 (source)，需帶數值時覆寫 Visible / GetLabel / GetDescription。
+  - InfoEntry — 單一掛載描述（def、priorityOverride、showOnPawnCard），XML 支援 `<li>DefName</li>` 簡寫與展開寫法。
+  - IInfoProvider — 來源物件（CompProperties / HediffCompProperties / DefModExtension / ThingComp…）實作後可依欄位內容決定是否提供條目。框架內建實作：CompProperties_AmmoSwitch、CompProperties_DamageBlocker、HediffCompProperties_DamageBlocker、ModExt_EnvironmentalBill（皆有 `infoDef` 欄位可在 XML 覆寫）。
+  - InfoDisplayExtension — 手動掛載（infos）與排除（suppress），本身也是 IInfoProvider。
+  - InfoDisplayUtility — 唯一入口。EnumerateSources 依 Def 型別列舉來源物件（Def 本身、modExtensions、comps、verbs、tools、thingClass/hediffClass/abilityClass 等 Type、有實例時含 ThingWithComps.AllComps）；每個來源做介面式 (IInfoProvider) 與宣告式 (autoAttachTo 查表，Type 快取) 比對；去重、套用 suppress，輸出 StatDrawEntry 到 `FFF_Mechanics` 分類。提供 RegisterAutoAttach / RegisterSourceEnumerator 供下游擴充；Worker 例外時退回靜態文本。
+  - Patch_InfoDisplay — Postfix `Def.SpecialDisplayStats`（涵蓋 ThingDef/BuildableDef/TerrainDef/GeneDef/AbilityDef 的 base 鏈）、`HediffDef.SpecialDisplayStats`（不呼叫 base）、`Hediff.SpecialDisplayStats`（Hediff / HediffComp 實例來源，先 MarkSeen 避免與 Def 層重複）、`Pawn.SpecialDisplayStats`（彙總身上 Hediff / 服裝 / 武器 / 基因的條目，標題加來源後綴，全卡去重）；RecipeDef 在既有 Patch_RecipeDef_SpecialDisplayStats 追加。
+- 資料：`1.6/Defs/StatDef.xml` 的 StatCategoryDef `FFF_Mechanics`（displayOrder 14）、`1.6/Defs/InfoDefs/InfoDefs_Framework.xml` 首批 InfoDef、翻譯於 `DefInjected/Fortified.FFF_InfoDef/`。範例見 Docs/InfoDisplay_Example.xml，設計見 Docs/InfoDisplay_Plan.md。
+
+### Recycleable（倒地／死亡單位原地拆解）
+- 關鍵類別 (StandaloneFunctions/Recycleable/*):
+  - CompProperties_Recycleable / CompRecycleable — 掛在 Pawn（主要是 CompDrone 無人機）上的 ThingComp。倒地或死亡後可被標記為「拆解回收」，殖民者會前來原地拆成資源。
+    - 產物：`products` 未填時沿用 race 的 `butcherProducts`；再乘上 `yieldFactor`、死亡時的 `deadYieldFactor`、可選的 `scaleByHealth` 與工作者 `efficiencyStat`。
+    - 標記以 DesignationDef `FFF_RecycleDesignation` 存在地圖上，原版「取消」指定器可直接取消；pawn DeSpawn／死亡時透過 `pendingDesignation` 把標記轉移到重生後的 pawn 或屍體上。
+    - 屍體沒有 comp，一律用 `CompRecycleable.Get(thing)` 取得（會穿透 Corpse.InnerPawn）。
+    - 拆解時先丟裝備／物品欄，再生成產物，倒地個體比照 Retract 直接 Vanish（不走 Kill，避免死亡通知與 DeathActionWorker）。
+  - JobDriver_Recycle — 走到目標旁、依 `workTicks / workSpeedStat` 作業並顯示進度條，完成時呼叫 `CompRecycleable.Recycle`。
+  - WorkGiver_Recycle — 掃描地圖上帶有 FFF_RecycleDesignation 的 pawn／屍體（WorkGiverDef `FFF_RecycleWorkGiver`，Construction）。
+  - FloatMenuOptionProvider_Recycle — 右鍵倒地單位或屍體時的「拆解 X（預估產出）」選項，會先打標記再直接派工。
+  - Patch_Corpse_GetGizmos_Recycle — 把拆解 gizmo 補進 Corpse 的 gizmo 清單。
+- Def：1.6/Defs/Recycleable.xml（DesignationDef / JobDef / WorkGiverDef）；訊息卡條目 `FFF_Info_Recycleable` 自動附加到 CompProperties_Recycleable。
+- 用法：見 Docs/Recycleable_Usage.md。
+
 ### 其他小型子系統
 - Bossgroup（CompUseEffect_SummonRaid）、SignalAreaTrigger、ForceTargetable、PawnReplace 等，皆以 Comp / ModExtension / Patch 組合驅動特定互動或事件。
 
@@ -141,7 +168,7 @@ Patch/整合：相關 Patch 補入 turret / pawn equipment 的 gizmo，使 UI �
     - TrySpawnPawns() 會消耗固定材料（fixedIngredient）並以 PawnGenerationRequest 產生機甲 pawn；spawned pawns 可被記錄與收回（Retract）。
     - 提供多個 Gizmo（Deploy, Retract, AutoDeploy toggle, Area selection）、FloatMenu 選項與多人同步的同步點（MULTIPLAYER 標註）。
   - Building_MechCapsule / MechCapsuleUtility / ModExtension_MechCapsule
-    - 管理機甲膠囊與停用機甲的儲存與取出流程（包含 JobDriver_HackMechCapsule、JobDriver_OpenMech 等）。
+    - 管理封存機甲與停用機甲的儲存與取出流程（包含 JobDriver_HackMechCapsule、JobDriver_OpenMech 等）。
   - CompMechApparel / MechApparelGenerator / HumanlikeMechApparelUtility
     - 支援機甲服裝/外觀系統，負責在生成或繪製時處理機甲的外觀與服裝配件。
   - HumanlikeMech (Mech/HumanlikeMech/HumanlikeMech.cs)

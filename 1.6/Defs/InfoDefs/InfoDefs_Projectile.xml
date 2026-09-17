@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    投射物機制的「特殊機制」條目。
+    投射物 ThingDef 本身很少被開卡，InfoDisplayUtility 會把武器 verbs[*].defaultProjectile 的
+    thingClass / modExtensions 一併列為來源，所以這些條目會顯示在發射它的武器卡上，也會顯示在投射物自身的卡上。
+    翻譯：Languages/<語言>/DefInjected/Fortified.FFF_InfoDef/InfoDefs_Projectile.xml
+  -->
+
+  <!-- 集束彈：飛行途中分裂成子彈藥 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_ClusterBomb</defName>
+    <label>cluster munition</label>
+    <description>Partway through its flight this projectile breaks apart and releases a spread of submunitions that rain down around the target point rather than striking a single cell. Depending on the munition it may also detonate at the moment it splits. It will not split until it is a safe distance from the shooter.</description>
+    <displayPriority>600</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.Projectile_ClusterBomb</li>
+      <li>Fortified.ModExtension_ClusterBomb</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- 錐形爆炸：沿飛行方向的扇形爆炸 -->
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_ConeExplosive</defName>
+    <label>directional blast</label>
+    <description>On impact this projectile explodes in a cone pointing along its direction of travel instead of a full circle. Anything in the arc ahead of the impact point is hit; things behind or beside it are spared. Aim it so the cone sweeps across the enemy line.</description>
+    <displayPriority>595</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.Projectile_ConeExplosive</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+</Defs>

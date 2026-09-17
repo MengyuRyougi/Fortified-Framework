@@ -10,13 +10,16 @@ using Verse.Sound;
 namespace Fortified
 {
     // CompProperties
-    public class CompProperties_AmmoSwitch : CompProperties
+    public class CompProperties_AmmoSwitch : CompProperties, IInfoProvider
     {
         public List<AmmoOption> ammos = new List<AmmoOption>();
         public int defaultIndex = -1;
         public int switchCooldown = 90;
         public SoundDef soundSwitch;
         public bool includeDefaultAmmo = true;
+
+        // 訊息卡特殊機制條目，可在 XML 覆寫；null 用框架預設
+        public FFF_InfoDef infoDef;
 
         public CompProperties_AmmoSwitch()
         {
@@ -25,6 +28,16 @@ namespace Fortified
 
         /// <summary>Lowest index a <see cref="CompAmmoSwitch"/> built from these props may select.</summary>
         public int MinSelectableIndex => includeDefaultAmmo ? -1 : 0;
+
+        // 有彈種才顯示
+        public IEnumerable<InfoEntry> GetInfoEntries(InfoContext ctx)
+        {
+            if (ammos.NullOrEmpty())
+                yield break;
+            FFF_InfoDef def = infoDef ?? FFF_DefOf.FFF_Info_AmmoSwitch;
+            if (def != null)
+                yield return new InfoEntry(def);
+        }
 
         public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
         {

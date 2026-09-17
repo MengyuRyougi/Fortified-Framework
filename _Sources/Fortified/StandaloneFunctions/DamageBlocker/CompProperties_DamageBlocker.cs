@@ -1,12 +1,15 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
 namespace Fortified
 {
     // 伤害阻挡配置
-    public class CompProperties_DamageBlocker : CompProperties
+    public class CompProperties_DamageBlocker : CompProperties, IInfoProvider
     {
+        // 訊息卡特殊機制條目，可在 XML 覆寫；null 用框架預設
+        public FFF_InfoDef infoDef;
+
         public float damageThreshold = 10f;
         public bool thresholdInclusive = true;
         public int blockCharges = 3;
@@ -81,6 +84,14 @@ namespace Fortified
             compClass = typeof(Comp_DamageBlocker);
         }
 
+        // 訊息卡特殊機制條目（總覽）；細節數值由 DamageBlockerDisplayUtility 動態輸出
+        public IEnumerable<InfoEntry> GetInfoEntries(InfoContext ctx)
+        {
+            FFF_InfoDef def = infoDef ?? FFF_DefOf.FFF_Info_DamageBlocker;
+            if (def != null)
+                yield return new InfoEntry(def);
+        }
+
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats(StatRequest req)
         {
             foreach (StatDrawEntry entry in base.SpecialDisplayStats(req))
@@ -127,8 +138,11 @@ namespace Fortified
     }
 
     // Hediff配置
-    public class HediffCompProperties_DamageBlocker : HediffCompProperties
+    public class HediffCompProperties_DamageBlocker : HediffCompProperties, IInfoProvider
     {
+        // 訊息卡特殊機制條目，可在 XML 覆寫；null 用框架預設
+        public FFF_InfoDef infoDef;
+
         public float damageThreshold = 10f;
         public bool thresholdInclusive = true;
         public int blockCharges = 3;
@@ -198,6 +212,14 @@ namespace Fortified
         public HediffCompProperties_DamageBlocker()
         {
             compClass = typeof(HediffComp_DamageBlocker);
+        }
+
+        // 訊息卡特殊機制條目（總覽）；細節數值由 DamageBlockerDisplayUtility 動態輸出
+        public IEnumerable<InfoEntry> GetInfoEntries(InfoContext ctx)
+        {
+            FFF_InfoDef def = infoDef ?? FFF_DefOf.FFF_Info_DamageBlocker;
+            if (def != null)
+                yield return new InfoEntry(def);
         }
 
         // 组装信息卡参数

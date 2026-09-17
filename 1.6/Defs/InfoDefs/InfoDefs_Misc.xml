@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    其他子系統的「特殊機制」條目。全部走 autoAttachTo（型別存在即顯示）。
+    翻譯：Languages/<語言>/DefInjected/Fortified.FFF_InfoDef/InfoDefs_Misc.xml
+  -->
+
+  <!-- ========== 隱匿 / 偵測 ========== -->
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_Camouflage</defName>
+    <label>camouflage</label>
+    <description>Can toggle a camouflage mode that renders it invisible to enemies. Enemies that get close enough, or firing while camouflaged, each carry a chance of revealing it; once detected the camouflage drops and needs time to reset before it can be used again.</description>
+    <displayPriority>800</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_Camouflage</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_PerimeterScanner</defName>
+    <label>perimeter scanner</label>
+    <description>Watches the area around it for invisible or camouflaged creatures and raises a warning when one is detected.</description>
+    <displayPriority>795</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_PerimeterScanner</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_ShieldingDevice</defName>
+    <label>shielding device</label>
+    <description>While powered, this device intercepts certain events — such as raids — before they reach the colony. Its power draw grows with the number of colonists on the map. Each interception puts the device into a long cooldown during which it offers no protection, though it still needs power to cool down.</description>
+    <displayPriority>790</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_ShieldingDevice</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_SignalTower</defName>
+    <label>signal broadcast</label>
+    <description>While powered, this device can call a trade ship to visit through its command button. It needs to cool down between uses.</description>
+    <displayPriority>785</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_SignalTower</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- ========== 警報系統 ========== -->
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_AlertScanner</defName>
+    <label>scanning alarm</label>
+    <description>Raises an alarm when a hostile target is within its field of view, causing other devices listening for that signal to react. Each detection raises the map's security alert level; disable or destroy the scanner to avoid triggering it.</description>
+    <displayPriority>780</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_AlertScanner</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_AlertEffector</defName>
+    <label>alarm response</label>
+    <description>Reacts when an alarm on the map is triggered — including, but not limited to, releasing defenders, activating devices or otherwise responding to intruders. Some responses fire only once.</description>
+    <displayPriority>775</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_AlertEffector</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_SignalAreaTrigger</defName>
+    <label>trigger alarm</label>
+    <description>Sends a signal when its condition is met, causing other devices listening for that signal to react. Each detection raises the map's security alert level.</description>
+    <displayPriority>770</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_SignalAreaTrigger</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_SignalRemote</defName>
+    <label>remote console</label>
+    <description>Carries one or more buttons, each able to broadcast a signal that linked devices respond to.</description>
+    <displayPriority>765</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_SignalRemote</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- ========== 門禁 ========== -->
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_AccessKeyActivatable</defName>
+    <label>access key lock</label>
+    <description>Sealed until a colonist uses the required access key on it. Activating it may unlock the matching security doors or release the contents stored inside.</description>
+    <displayPriority>760</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_AccessKeyActivatable</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_AccessKeyDoor</defName>
+    <label>security door</label>
+    <description>This door stays locked while linked to an access key lock. Once the lock is activated the door opens and becomes usable by the colonist who unlocked it and their faction.</description>
+    <displayPriority>755</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_AccessKeyDoorLink</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- ========== 建築行為 ========== -->
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_BuildingMover</defName>
+    <label>mobile structure</label>
+    <description>This structure can move along its facing axis, rotate in place, or shuttle back and forth on a track, triggered by command, signal or proximity. Depending on its build it may crush obstacles in its path and mine through ore.</description>
+    <displayPriority>750</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_BuildingMover</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_ContinuousDamager</defName>
+    <label>single-use thermite cutter</label>
+    <description>Once activated, this device deals continuous heat damage to whatever is in front of it for a set duration. Effective for cutting through walls and fortifications.</description>
+    <displayPriority>745</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_ContinuousDamager</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_SelfDestruct</defName>
+    <label>self-destruct sequence</label>
+    <description>On receiving its trigger signal this object detonates in a large explosion after a short delay. Keep clear once the sequence starts.</description>
+    <displayPriority>740</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_SelfDestructSequence</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_Substation</defName>
+    <label>power hub</label>
+    <description>Supplies power to the local grid and can be shut down by hacking. A hub held by a hostile faction disconnects automatically once the units on this map are defeated. Pawns without enough intellectual skill risk an electric shock when operating it.</description>
+    <displayPriority>735</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_SubstationPower</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_TurretCapacity</defName>
+    <label>crewed emplacement</label>
+    <description>A fortified turret that a pawn climbs into. The occupant operates the weapon from inside and is protected by the structure; the turret does nothing without a crew.</description>
+    <displayPriority>730</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.Building_TurretCapacity</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_AutoWorkTable</defName>
+    <label>automated workbench</label>
+    <description>A production machine that runs its work process semi-automatically. A colonist with the required skills only needs to perform one action at each stage; the bench then works through it unattended while consuming power. Some benches eject the finished product automatically, others need a colonist to collect it.</description>
+    <displayPriority>725</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.ModExtension_AutoWorkTable</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_QualityChance</defName>
+    <label>quality optimization</label>
+    <description>Automated workbenches linked to this building have a fixed chance of producing higher-quality products, regardless of the worker's skill.</description>
+    <displayPriority>720</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.ModExtension_QualityChance</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_EnvironmentExemption</defName>
+    <label>environmental exemption</label>
+    <description>When linked to a workbench, this facility waives or relaxes the environmental requirements of that bench's recipes — cleanliness, light, temperature, pressure or gravity. The slack from several linked facilities adds up.</description>
+    <displayPriority>715</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_EnvironmentExemption</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_FueledSpawner</defName>
+    <label>fueled production</label>
+    <description>Consumes fuel to produce items periodically. Production stops when the fuel runs out or when too many products pile up nearby.</description>
+    <displayPriority>710</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_FueledSpawner</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- ========== 容器 / 補給 ========== -->
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_LogisticTerminal</defName>
+    <label>logistics terminal</label>
+    <description>Interact with the terminal to request a delivery. After a delay a cargo cart arrives carrying a portion of the terminal's stock; the stock is limited and the terminal shuts down once it is exhausted.</description>
+    <displayPriority>705</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_LogisticTerminal</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_ListedContainer</defName>
+    <label>stocked container</label>
+    <description>A container holding supplies. Inspect it to see the contents, then interact with it to unload them.</description>
+    <displayPriority>700</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_ListedContainer</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_Lootbox</defName>
+    <label>sealed cache</label>
+    <description>A sealed container. Opening it yields a random selection of goods — or occasionally nothing at all.</description>
+    <displayPriority>695</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.ModExtension_Lootbox</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- ========== 戰鬥 ========== -->
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_TrampleBuildings</defName>
+    <label>trampling</label>
+    <description>This unit is heavy enough to crush structures in its way. Buildings within its footprint that do not belong to its faction take damage as it moves through them.</description>
+    <displayPriority>690</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_TrampleBuildings</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_MeleeSweep</defName>
+    <label>sweeping strike</label>
+    <description>Melee attacks hit everything in a cone in front of the attacker rather than a single target.</description>
+    <displayPriority>685</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_MeleeSweep</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_BulletproofPlate</defName>
+    <label>armor plates</label>
+    <description>Fitted with replaceable armor plates that add protection to the body parts they cover. Plates lose durability when hit and stop protecting once worn out; replenish them with the matching plate material. Higher quality apparel gets more out of its plates.</description>
+    <displayPriority>680</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_BulletproofPlate</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_ActiveProtectionSystem</defName>
+    <label>active protection</label>
+    <description>Deploys an interception field around the user for a limited time. Incoming projectiles that enter the field have a chance to be shot down before they land; only a few can be intercepted at once.</description>
+    <displayPriority>675</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_ActiveProtectionSystem</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_AntiBlasterSmoke</defName>
+    <label>obscurant smoke</label>
+    <description>Fills its area with smoke that has a chance to stop certain projectiles passing through it for as long as it lasts.</description>
+    <displayPriority>670</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_AntiBlasterSmoke</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_CausePanic</defName>
+    <label>intimidating presence</label>
+    <description>Its presence unsettles nearby pawns. Every so often, those within range may break into a mental state — smaller pawns and pawns already close to breaking are the most vulnerable. The effect lapses while it is stunned.</description>
+    <displayPriority>665</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_CausePanicInRange</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_Floating</defName>
+    <label>hovering</label>
+    <description>This unit hovers above the ground. It ignores terrain that would slow a walker and can cross deep water.</description>
+    <displayPriority>660</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_Floating</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_AirSupportSummoner</defName>
+    <label>air support</label>
+    <description>Calls in an air strike or fly-over from an allied base. Pick a target on the map and the support arrives after a short delay; the exact effect depends on the support type this item is tuned to.</description>
+    <displayPriority>655</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_AirSupportSummoner</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_WeaponReloadable</defName>
+    <label>reloadable weapon</label>
+    <description>This weapon carries a limited number of charges and must be reloaded with the matching ammunition item once they are spent.</description>
+    <displayPriority>650</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_WeaponReloadable</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+
+  <!-- ========== 外觀 ========== -->
+
+  <Fortified.FFF_InfoDef>
+    <defName>FFF_Info_Paintable</defName>
+    <label>paintable</label>
+    <description>Can be repainted. Choose a color or camouflage pattern from the paint command; some models default to their faction's colors.</description>
+    <displayPriority>645</displayPriority>
+    <autoAttachTo>
+      <li>Fortified.CompProperties_Paintable</li>
+    </autoAttachTo>
+  </Fortified.FFF_InfoDef>
+</Defs>

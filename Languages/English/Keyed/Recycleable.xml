@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <FFF.Recycle.Gizmo>Recycle</FFF.Recycle.Gizmo>
+  <FFF.Recycle.GizmoDesc>Mark this unit to be dismantled on the spot for materials. A colonist with construction work enabled will come and take it apart.
+
+Expected yield: {0}</FFF.Recycle.GizmoDesc>
+  <FFF.Recycle.Marked>Marked for recycling</FFF.Recycle.Marked>
+  <FFF.Recycle.Order>Recycle {0}</FFF.Recycle.Order>
+  <FFF.Recycle.OrderWithProducts>Recycle {0} ({1})</FFF.Recycle.OrderWithProducts>
+  <FFF.Recycle.NotOurs>not ours to dismantle</FFF.Recycle.NotOurs>
+  <FFF.Recycle.NoProducts>nothing</FFF.Recycle.NoProducts>
+
+</LanguageData>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <FFF_Info_AmmoSwitch.label>弹药切换</FFF_Info_AmmoSwitch.label>
+  <FFF_Info_AmmoSwitch.description>此武器可在多种弹药默认之间切换。使用指令排程切换后，持有者会前往更换弹药，之后有短暂冷却。各默认可能改变投射物、射程与精准度。</FFF_Info_AmmoSwitch.description>
+
+  <FFF_Info_DamageBlocker.label>阈值防护</FFF_Info_DamageBlocker.label>
+  <FFF_Info_DamageBlocker.description>受到的攻击会与伤害阈值比较。依设置，高于或低于阈值的攻击可被完全阻挡、压制到阈值或直接穿透，每次阻挡可能消耗一层防护。防护层数可用材料整备或随时间回充。详细数值见“阈值防护”分类。</FFF_Info_DamageBlocker.description>
+
+  <FFF_Info_EnvironmentalBill.label>环境需求</FFF_Info_EnvironmentalBill.label>
+  <FFF_Info_EnvironmentalBill.description>此配方只能在工作台所在房间符合特定环境条件（清洁度、光照、温度、气压或重力）时执行。条件不符时工单会被暂停。部分连结设施可豁免这些需求。</FFF_Info_EnvironmentalBill.description>
+
+  <FFF_Info_HeavyEquippable.label>重型装备</FFF_Info_HeavyEquippable.label>
+  <FFF_Info_HeavyEquippable.description>只有体型达到需求、或属于指定种族、穿戴指定服装、拥有指定植入物或基因的单位才能装备。其他单位无法将其作为武器拾取。</FFF_Info_HeavyEquippable.description>
+
+  <FFF_Info_MultiTurret.label>多重炮塔</FFF_Info_MultiTurret.label>
+  <FFF_Info_MultiTurret.description>此单位搭载一个或多个子炮塔，会独立于主武器锁定并攻击目标。每座炮塔可指定强制目标、切换自动或手动开火，并可能接受各自的武器或弹药。</FFF_Info_MultiTurret.description>
+
+  <FFF_Info_InternalBattery.label>内置电池</FFF_Info_InternalBattery.label>
+  <FFF_Info_InternalBattery.description>此建筑自带电池。连接供电电网时会为电池充电；电网断电后改由电池维持运作直到耗尽。将建筑关闭会进入待机，停止运作但充电更快。</FFF_Info_InternalBattery.description>
+
+  <FFF_Info_Deployable.label>可部署</FFF_Info_Deployable.label>
+  <FFF_Info_Deployable.description>此物品可由单位携带并在野外部署为建筑。征召中的携带者可直接将其放置在空地上；部署需要时间，且区域必须净空。</FFF_Info_Deployable.description>
+
+  <FFF_Info_BiochemicalProtection.label>生化防护</FFF_Info_BiochemicalProtection.label>
+  <FFF_Info_BiochemicalProtection.description>穿戴时，可防止穿戴者从环境或伤口感染疾病。</FFF_Info_BiochemicalProtection.description>
+</LanguageData>

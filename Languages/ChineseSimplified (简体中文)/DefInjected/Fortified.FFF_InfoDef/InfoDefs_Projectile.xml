@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <FFF_Info_ClusterBomb.label>集束弹药</FFF_Info_ClusterBomb.label>
+  <FFF_Info_ClusterBomb.description>此投射物在飞行途中会解体，释放一批子弹药散布在目标点周围，而非命中单一格。依弹种不同，解体时也可能同时引爆。它会在距离射手足够安全的距离后才分裂。</FFF_Info_ClusterBomb.description>
+
+  <FFF_Info_ConeExplosive.label>定向爆炸</FFF_Info_ConeExplosive.label>
+  <FFF_Info_ConeExplosive.description>此投射物命中时会沿飞行方向产生锥形爆炸，而非全向圆形。落点前方扇形范围内的一切都会被波及；后方与侧面则不受影响。瞄准时让锥形扫过敌方战线。</FFF_Info_ConeExplosive.description>
+</LanguageData>

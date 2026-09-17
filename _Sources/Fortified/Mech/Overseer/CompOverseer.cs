@@ -57,8 +57,11 @@ using static UnityEngine.GraphicsBuffer;
 
 namespace Fortified
 {
-    public class CompProperties_Overseer : CompProperties
+    public class CompProperties_Overseer : CompProperties, IInfoProvider
     {
+        // 訊息卡特殊機制條目，可在 XML 覆寫；null 依 owner 形態選用框架預設（機械體 / 建築）
+        public FFF_InfoDef infoDef;
+
         /*public float commandRange = 34.9f;
 
         public int controlGroups = 2;
@@ -92,6 +95,19 @@ namespace Fortified
 				yield return "Fortified.CompOverseer require Biotech to work";
 			}
 		}
+
+        // 掛在 Pawn（race != null）與建築上的行為不同，分開描述
+        public IEnumerable<InfoEntry> GetInfoEntries(InfoContext ctx)
+        {
+            FFF_InfoDef def = infoDef;
+            if (def == null)
+            {
+                bool isPawn = ctx.owner is ThingDef td && td.race != null;
+                def = isPawn ? FFF_DefOf.FFF_Info_OverseerMech : FFF_DefOf.FFF_Info_OverseerBuilding;
+            }
+            if (def != null)
+                yield return new InfoEntry(def);
+        }
 
 		public override IEnumerable<StatDrawEntry> SpecialDisplayStats(StatRequest req)
 		{

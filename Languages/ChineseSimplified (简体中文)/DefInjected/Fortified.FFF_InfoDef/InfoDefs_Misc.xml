@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <FFF_Info_Camouflage.label>伪装</FFF_Info_Camouflage.label>
+  <FFF_Info_Camouflage.description>可切换伪装模式，对敌人隐形。敌人靠得够近、或在伪装中开火时都有一定几率暴露它；一旦被发现伪装即解除，需要一段时间重置后才能再次使用。</FFF_Info_Camouflage.description>
+
+  <FFF_Info_PerimeterScanner.label>周界扫描器</FFF_Info_PerimeterScanner.label>
+  <FFF_Info_PerimeterScanner.description>监视周围是否有隐形或伪装的生物，侦测到时发出警告。</FFF_Info_PerimeterScanner.description>
+
+  <FFF_Info_ShieldingDevice.label>屏蔽装置</FFF_Info_ShieldingDevice.label>
+  <FFF_Info_ShieldingDevice.description>供电时，此装置会在特定事件（例如袭击）抵达殖民地前将其拦截。耗电量随地图上的殖民者人数增加。每次拦截后装置会进入长时间冷却，期间不提供任何保护但仍需供电冷却。</FFF_Info_ShieldingDevice.description>
+
+  <FFF_Info_SignalTower.label>信号广播</FFF_Info_SignalTower.label>
+  <FFF_Info_SignalTower.description>供电时，此装置将能够通过Gizmo选项呼叫商船来访，需要冷却。</FFF_Info_SignalTower.description>
+
+  <FFF_Info_AlertScanner.label>扫描式警报器</FFF_Info_AlertScanner.label>
+  <FFF_Info_AlertScanner.description>在视野内范围内具有敌对目标时发出警报使监听该信号的其他装置做出反应。每次侦测都会提升地图的安全警戒等级；停用或摧毁扫描器能够避免触发。</FFF_Info_AlertScanner.description>
+
+  <FFF_Info_AlertEffector.label>警报响应</FFF_Info_AlertEffector.label>
+  <FFF_Info_AlertEffector.description>在地图上的警报器触发时做出反应，包含且可能不限于释放防卫者、启动装置或以其他方式回应入侵者。部分响应措施只会触发一次。</FFF_Info_AlertEffector.description>
+
+  <FFF_Info_SignalAreaTrigger.label>触发式警报器</FFF_Info_SignalAreaTrigger.label>
+  <FFF_Info_SignalAreaTrigger.description>在满足条件时发出信号使监听该信号的其他装置做出反应。每次侦测都会提升地图的安全警戒等级。</FFF_Info_SignalAreaTrigger.description>
+
+  <FFF_Info_SignalRemote.label>远端操作台</FFF_Info_SignalRemote.label>
+  <FFF_Info_SignalRemote.description>具有一个或多个按钮，每个按钮都能够广播信号供连结的装置回应。</FFF_Info_SignalRemote.description>
+
+  <FFF_Info_AccessKeyActivatable.label>门禁锁</FFF_Info_AccessKeyActivatable.label>
+  <FFF_Info_AccessKeyActivatable.description>在殖民者对其使用所需的门禁钥匙前保持封锁。启动后可能解锁对应的安全门，或释放内部储存的物品。</FFF_Info_AccessKeyActivatable.description>
+
+  <FFF_Info_AccessKeyDoor.label>安全门</FFF_Info_AccessKeyDoor.label>
+  <FFF_Info_AccessKeyDoor.description>此门在连结门禁锁期间保持上锁。锁被启动后门会打开，并可供解锁的殖民者及其派系使用。</FFF_Info_AccessKeyDoor.description>
+
+  <FFF_Info_BuildingMover.label>可移动结构</FFF_Info_BuildingMover.label>
+  <FFF_Info_BuildingMover.description>此结构可沿其朝向轴移动、原地旋转，或在轨道上来回穿梭，由指令、信号或接近触发。视构造而定，它可能碾碎路径上的障碍并挖穿矿脉。</FFF_Info_BuildingMover.description>
+
+  <FFF_Info_ContinuousDamager.label>一次性铝热切割</FFF_Info_ContinuousDamager.label>
+  <FFF_Info_ContinuousDamager.description>启动后，此装置会在设置时间内持续对前方物体造成持续热伤害。可用来有效切穿墙壁或工事。</FFF_Info_ContinuousDamager.description>
+
+  <FFF_Info_SelfDestruct.label>自毁程序</FFF_Info_SelfDestruct.label>
+  <FFF_Info_SelfDestruct.description>收到触发信号后，此物体会在短暂延迟后引发大范围爆炸。程序开始后请远离。</FFF_Info_SelfDestruct.description>
+
+  <FFF_Info_Substation.label>电力枢纽</FFF_Info_Substation.label>
+  <FFF_Info_Substation.description>为本地电网供电，可通过黑入将其关闭。对于敌对派系持有的枢纽会在本地图单位被击败后自动断连。智识技能不足的单位操作有触电风险。</FFF_Info_Substation.description>
+
+  <FFF_Info_TurretCapacity.label>有人工事</FFF_Info_TurretCapacity.label>
+  <FFF_Info_TurretCapacity.description>需要单位进入操作的强化炮塔。操作者在内部操纵武器并受结构保护；没有操作者时炮塔不会运作。</FFF_Info_TurretCapacity.description>
+
+  <FFF_Info_AutoWorkTable.label>自动工作台</FFF_Info_AutoWorkTable.label>
+  <FFF_Info_AutoWorkTable.description>能够半自动执行工作程序的生产机器。具备所需技能的殖民者只需在每个阶段进行一次操作，工作台便会在耗电的同时无人看管地完成工作。部分工作台会自动弹出成品，其他则需要殖民者前来取件。</FFF_Info_AutoWorkTable.description>
+
+  <FFF_Info_QualityChance.label>品质优化</FFF_Info_QualityChance.label>
+  <FFF_Info_QualityChance.description>连接此建筑的自动工作台生产产品时有固定几率获得更高品质，与工作者技能无关。</FFF_Info_QualityChance.description>
+
+  <FFF_Info_EnvironmentExemption.label>环境豁免</FFF_Info_EnvironmentExemption.label>
+  <FFF_Info_EnvironmentExemption.description>连结至工作台时，此设施可豁免或放宽该工作台配方的环境需求——清洁度、光照、温度、气压或重力。多个连结设施的放宽幅度会累加。</FFF_Info_EnvironmentExemption.description>
+
+  <FFF_Info_FueledSpawner.label>燃料生产</FFF_Info_FueledSpawner.label>
+  <FFF_Info_FueledSpawner.description>通过消耗燃料来定期生产物品。在燃料耗尽或附近堆积过多产品时停止生产。</FFF_Info_FueledSpawner.description>
+
+  <FFF_Info_LogisticTerminal.label>后勤终端</FFF_Info_LogisticTerminal.label>
+  <FFF_Info_LogisticTerminal.description>与终端互动以申请补给。延迟一段时间后，货运车会载着终端库存的一部分抵达；库存有限，耗尽后终端便会停止运作。</FFF_Info_LogisticTerminal.description>
+
+  <FFF_Info_ListedContainer.label>备货容器</FFF_Info_ListedContainer.label>
+  <FFF_Info_ListedContainer.description>装有物资的容器。检视可查看内容，与其互动可将物资卸出。</FFF_Info_ListedContainer.description>
+
+  <FFF_Info_Lootbox.label>密封储藏箱</FFF_Info_Lootbox.label>
+  <FFF_Info_Lootbox.description>密封的容器。开启后会取得随机物资——偶尔也可能什么都没有。</FFF_Info_Lootbox.description>
+
+  <FFF_Info_TrampleBuildings.label>碾压</FFF_Info_TrampleBuildings.label>
+  <FFF_Info_TrampleBuildings.description>此单位的重量足以压碎挡路的结构。它移动时，占地范围内的非己方建筑会受到伤害。</FFF_Info_TrampleBuildings.description>
+
+  <FFF_Info_MeleeSweep.label>横扫攻击</FFF_Info_MeleeSweep.label>
+  <FFF_Info_MeleeSweep.description>近战攻击会命中攻击者前方扇形范围内的所有目标，而非单一目标。</FFF_Info_MeleeSweep.description>
+
+  <FFF_Info_BulletproofPlate.label>装甲板</FFF_Info_BulletproofPlate.label>
+  <FFF_Info_BulletproofPlate.description>装有可更换的装甲板，为覆盖部位提供额外防护。装甲板受击时会损耗耐久，耗尽后停止防护；使用对应的板材补充。品质越高的服装从装甲板获得的效益越大。</FFF_Info_BulletproofPlate.description>
+
+  <FFF_Info_ActiveProtectionSystem.label>主动防护</FFF_Info_ActiveProtectionSystem.label>
+  <FFF_Info_ActiveProtectionSystem.description>在使用者周围展开一段时间的拦截力场。进入范围的来袭投射物有几率在落地前被击落；同时只能拦截少数几个。</FFF_Info_ActiveProtectionSystem.description>
+
+  <FFF_Info_AntiBlasterSmoke.label>遮蔽烟幕</FFF_Info_AntiBlasterSmoke.label>
+  <FFF_Info_AntiBlasterSmoke.description>在其范围内释放烟幕，持续期间有几率阻挡穿越的特定投射物。</FFF_Info_AntiBlasterSmoke.description>
+
+  <FFF_Info_CausePanic.label>威慑存在</FFF_Info_CausePanic.label>
+  <FFF_Info_CausePanic.description>它的存在会使附近的单位不安。每隔一段时间，范围内的单位可能陷入精神状态——体型较小或已濒临崩溃的单位最容易受影响。它被晕眩时效果会中止。</FFF_Info_CausePanic.description>
+
+  <FFF_Info_Floating.label>悬浮</FFF_Info_Floating.label>
+  <FFF_Info_Floating.description>此单位悬浮于地面之上。它不受会减缓步行者的地形影响，并能跨越深水。</FFF_Info_Floating.description>
+
+  <FFF_Info_AirSupportSummoner.label>空中支援</FFF_Info_AirSupportSummoner.label>
+  <FFF_Info_AirSupportSummoner.description>从友军基地呼叫空袭或飞越。在地图上选择目标，支援会在短暂延迟后抵达；实际效果取决于此物品对应的支援类型。</FFF_Info_AirSupportSummoner.description>
+
+  <FFF_Info_WeaponReloadable.label>可装填武器</FFF_Info_WeaponReloadable.label>
+  <FFF_Info_WeaponReloadable.description>此武器携带有限的弹量，用尽后必须以对应的弹药物品重新装填。</FFF_Info_WeaponReloadable.description>
+
+  <FFF_Info_Paintable.label>可涂装</FFF_Info_Paintable.label>
+  <FFF_Info_Paintable.description>可以重新涂装。从涂装指令选择颜色或迷彩图样；部分型号默认使用其派系配色。</FFF_Info_Paintable.description>
+</LanguageData>

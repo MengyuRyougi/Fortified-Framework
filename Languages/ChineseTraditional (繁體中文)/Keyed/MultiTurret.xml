@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <FFF.MultiTurret.WeaponSlot>槽位</FFF.MultiTurret.WeaponSlot>
+  
+  <FFF.SelectWeapon>選擇砲塔</FFF.SelectWeapon>
+  <FFF.MultiTurret.NoWeapon>無砲塔</FFF.MultiTurret.NoWeapon>
+  
+  <FFF.MultiTurret.AttackRectTip>選擇砲塔目標，按住 {0} 可套用至所有砲塔，右鍵清除強制目標（按住 {0} 清除所有砲塔）。</FFF.MultiTurret.AttackRectTip>
+  <FFF.MultiTurret.AutoAttackTip>切換自動攻擊模式，按住 {0} 可套用至所有砲塔。</FFF.MultiTurret.AutoAttackTip>
+  <FFF.MultiTurret.DropWeaponTip>卸下砲塔武器，按住 {0} 可卸下所有武器。</FFF.MultiTurret.DropWeaponTip>
+  <FFF.MultiTurret.SelectAmmoTypeTip>選擇彈藥類型。目前：{0}</FFF.MultiTurret.SelectAmmoTypeTip>
+
+  <FFF.MultiTurret.CommandSetAmmoSettings>彈藥設定</FFF.MultiTurret.CommandSetAmmoSettings>
+  <FFF.MultiTurret.CommandSetAmmoSettingsDesc>設定自動拾取彈藥的規則。</FFF.MultiTurret.CommandSetAmmoSettingsDesc>
+
+</LanguageData>
