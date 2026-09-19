@@ -33,11 +33,11 @@
   <FFF_Info_MechCapsule.label>休眠機械體</FFF_Info_MechCapsule.label>
   <FFF_Info_MechCapsule.description>一架臨時休眠的機械體。休眠的機械體不佔用控制帶寬，並能夠由具備足夠頻寬的機械師重啟；若屬於他人，則可由殖民者駭入。野外發現的封存機械體可能有時仍持有武器。</FFF_Info_MechCapsule.description>
 
-  <FFF_Info_OverseerMech.label>統御者單位</FFF_Info_OverseerMech.label>
-  <FFF_Info_OverseerMech.description>能夠自行指揮其他機械體的機械體，擁有自己的頻寬與控制組，不需要機械師。置於其控制下的機械體會如同服從機械師一般服從它，並在戰場上跟隨它行動。它可以重啟途中遇到的封存機械體，並在受監督的機甲靠近時進行維修。</FFF_Info_OverseerMech.description>
+  <FFF_Info_OverseerMech.label>機控單位</FFF_Info_OverseerMech.label>
+  <FFF_Info_OverseerMech.description>能夠自行指揮其他機械體的機械體，擁有自己的頻寬與控制組，不需要機械師。置於其控制下的機械體會如同服從機械師一般服從它，並在戰場上跟隨它行動。它可以重啟封存機械體，並維修受監督的機械體。</FFF_Info_OverseerMech.description>
 
-  <FFF_Info_OverseerBuilding.label>統御核心</FFF_Info_OverseerBuilding.label>
-  <FFF_Info_OverseerBuilding.description>固定式的指揮結構，擁有自己的頻寬與控制組。指派給它的機械體在其指揮範圍內會如同服從機械師一般服從它——部分核心可覆蓋整張地圖。它可以直接重啟封存機械體，並在受監督的機甲靠近時進行維修。連結設施可擴充其能力。</FFF_Info_OverseerBuilding.description>
+  <FFF_Info_OverseerBuilding.label>機控核心</FFF_Info_OverseerBuilding.label>
+  <FFF_Info_OverseerBuilding.description>固定式的指揮結構，擁有自己的頻寬與控制組。指派給它的機械體在其指揮範圍內會如同服從機械師一般服從它。連結設施可擴充其能力。</FFF_Info_OverseerBuilding.description>
 
   <FFF_Info_DeadManSwitch.label>失能開關</FFF_Info_DeadManSwitch.label>
   <FFF_Info_DeadManSwitch.description>此機械體裝有保險機制，一旦與監督者失去聯繫就會自我終止。走失或遊蕩的單位仍可能自行返回——但偶爾開關會重置失敗。</FFF_Info_DeadManSwitch.description>
@@ -52,10 +52,10 @@
   <FFF_Info_ProtectiveShield.description>具有獨立耐久的拋棄式裝甲。受到的傷害會先由護板吸收，直到耐久耗盡而損毀，屆時必須更換。體型較大的機甲可裝載更多護板。</FFF_Info_ProtectiveShield.description>
 
   <FFF_Info_MechModification.label>機械體改裝件</FFF_Info_MechModification.label>
-  <FFF_Info_MechModification.description>此物品是機械體的改造模組。開啟機甲的改造視窗，選擇身體槽位並排入安裝，之後由殖民者進行裝配。每個槽位容納一個模組，部分模組可在上限內堆疊或合併。模組之後可以拆除。</FFF_Info_MechModification.description>
+  <FFF_Info_MechModification.description>此物品是機械體的改造模組。開啟機械體的改造視窗，選擇身體槽位並排入安裝，之後由殖民者進行裝配。每個槽位容納一個模組，部分模組可在上限內堆疊或合併。模組之後可以拆除。</FFF_Info_MechModification.description>
 
   <FFF_Info_CommandRelay.label>指令中繼</FFF_Info_CommandRelay.label>
-  <FFF_Info_CommandRelay.description>中控機體。它完全不受機械師控制範圍限制，其附近的其他機械體也視為在範圍內。遠征時若與機械師分處不同地圖，中繼半徑會隨世界地圖距離衰減，超出距離後降至最小值。徵召時會在地圖上顯示目前的覆蓋範圍。</FFF_Info_CommandRelay.description>
+  <FFF_Info_CommandRelay.description>不受機械師控制範圍限制的中控機體，其中繼範圍內能夠使其他機械體同樣受控。遠征時若與機械師分處不同地圖，中繼半徑會隨世界地圖距離衰減，超出距離後降至最小值。徵召時會在地圖上顯示目前的覆蓋範圍。</FFF_Info_CommandRelay.description>
 
   <FFF_Info_SubRelay.label>控制中繼</FFF_Info_SubRelay.label>
   <FFF_Info_SubRelay.description>延伸其周圍的機械體控制範圍——對所有機械師都有效，不限於單一機械師。作為建築時需供電、運作正常且屬於殖民地；作為服裝時需由你的單位穿戴。部分中繼可覆蓋整張地圖。選取徵召中的機甲時會顯示覆蓋範圍。</FFF_Info_SubRelay.description>

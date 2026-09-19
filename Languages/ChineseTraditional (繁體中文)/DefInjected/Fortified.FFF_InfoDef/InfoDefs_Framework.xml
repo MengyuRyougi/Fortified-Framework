@@ -19,7 +19,7 @@
   <FFF_Info_InternalBattery.description>此建築自帶電池。連接供電電網時會為電池充電；電網斷電後改由電池維持運作直到耗盡。將建築關閉會進入待機，停止運作但充電更快。</FFF_Info_InternalBattery.description>
 
   <FFF_Info_Deployable.label>可部署</FFF_Info_Deployable.label>
-  <FFF_Info_Deployable.description>此物品可由單位攜帶並在野外部署為建築。徵召中的攜帶者可直接將其放置在空地上；部署需要時間，且區域必須淨空。</FFF_Info_Deployable.description>
+  <FFF_Info_Deployable.description>此物品可由單位攜帶並在即時部署為建築。徵召中的攜帶者可直接命令將其放置在周圍空地上。</FFF_Info_Deployable.description>
 
   <FFF_Info_BiochemicalProtection.label>生化防護</FFF_Info_BiochemicalProtection.label>
   <FFF_Info_BiochemicalProtection.description>穿戴時，可防止穿戴者從環境或傷口感染疾病。</FFF_Info_BiochemicalProtection.description>

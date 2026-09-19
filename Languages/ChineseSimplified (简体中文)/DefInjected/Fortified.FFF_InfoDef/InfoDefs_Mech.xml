@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   <FFF_Info_DronePlatform.label>无人机平台</FFF_Info_DronePlatform.label>
-  <FFF_Info_DronePlatform.description>储存并消耗材料部署无人机。收回无人机会让它回到平台并退还所耗材料。已部署的无人机遵守平台设置的活动区域；平台被摧毁时，受其控制的所有无人机都会停机。支援多种型号的平台可选择要部署的型号，也可设为依固定间隔自动部署与召回。</FFF_Info_DronePlatform.description>
+  <FFF_Info_DronePlatform.description>储存并消耗材料部署无人机。收回无人机会让它回到平台并退还所耗材料。已部署的无人机遵守平台设定的活动区域；平台被摧毁时，受其控制的所有无人机都会停机。支援多种型号的平台可选择要部署的型号，也可设为依固定间隔自动部署与召回。</FFF_Info_DronePlatform.description>
 
   <FFF_Info_Drone.label>无人机</FFF_Info_Drone.label>
-  <FFF_Info_Drone.description>绑定于部署平台的遥控单位。只有在平台供电且受你控制时才能征召——若是穿戴式平台，则需穿戴者在同一地图上处于征召状态。它靠内置电池运作，电量不足时会自动返回平台；使用返回指令可提前召回并退还所耗材料。由你部署的无人机被摧毁时会掉落装备。</FFF_Info_Drone.description>
+  <FFF_Info_Drone.description>绑定于部署平台的遥控单位。只有在平台供电且受你控制时才能征召——若是穿戴式平台，则需穿戴者在同一地图上处于征召状态。它靠内建电池运作，电量不足时会自动返回平台；使用返回指令可提前召回并退还所耗材料。由你部署的无人机被摧毁时会掉落装备。</FFF_Info_Drone.description>
 
   <FFF_Info_DronePack.label>无人机背包</FFF_Info_DronePack.label>
   <FFF_Info_DronePack.description>可穿戴的发射器。穿戴者可主动触发释放无人机；由NPC控制的穿戴者在地图上有敌人时会自行使用。</FFF_Info_DronePack.description>
@@ -16,28 +16,28 @@
   <FFF_Info_Recycleable.description>此单位倒地或损毁后可就地拆解。将其标记为拆解回收、或直接对殖民者下令，殖民者便会在原地将其拆除：携带的装备会掉落，并留下部分建造所用的材料。残骸的产出低于倒地单位。</FFF_Info_Recycleable.description>
 
   <FFF_Info_HumanlikeMech.label>人形机械体</FFF_Info_HumanlikeMech.label>
-  <FFF_Info_HumanlikeMech.description>以人体工学构造设计的机械体。它可穿戴服装并使用服装的效果，同时在控制、维修与带宽方面仍视为机械体。</FFF_Info_HumanlikeMech.description>
+  <FFF_Info_HumanlikeMech.description>以人体工学构造设计的机械体。它可穿戴服装并使用服装的效果，同时在控制、维修与频宽方面仍视为机械体。</FFF_Info_HumanlikeMech.description>
 
   <FFF_Info_MechWeaponUsable.label>武器系统</FFF_Info_MechWeaponUsable.label>
   <FFF_Info_MechWeaponUsable.description>此机械体可拾取并使用武器。可用的武器受该型号的筛选限制——武器标签、科技等级、武器分类或明确白名单——或武器本身的体型需求。在机械体的武器系统一栏中可查看完整清单。</FFF_Info_MechWeaponUsable.description>
 
-  <FFF_Info_TurretMannable.label>炮塔操作</FFF_Info_TurretMannable.label>
-  <FFF_Info_TurretMannable.description>此机械体可像殖民者一样操作炮塔与其他需要操作员的工事，是否能够操作则由武器系统定义。</FFF_Info_TurretMannable.description>
+  <FFF_Info_TurretMannable.label>砲塔操作</FFF_Info_TurretMannable.label>
+  <FFF_Info_TurretMannable.description>此机械体可像殖民者一样操作砲塔与其他需要操作员的工事，是否能够操作则由武器系统定义。</FFF_Info_TurretMannable.description>
 
   <FFF_Info_MechMothball.label>休眠</FFF_Info_MechMothball.label>
-  <FFF_Info_MechMothball.description>此型号的殖民地机械体可进入休眠。它会变成不再占用带宽的休眠结构，之后可由具备足够空闲带宽的机械师重新启动。征召中或倒地时无法休眠。</FFF_Info_MechMothball.description>
+  <FFF_Info_MechMothball.description>此型号的殖民地机械体可进入休眠。它会变成不再占用频宽的休眠结构，之后可由具备足够空闲频宽的机械师重新启动。征召中或倒地时无法休眠。</FFF_Info_MechMothball.description>
 
   <FFF_Info_DeactivatedMech.label>封存机械体</FFF_Info_DeactivatedMech.label>
-  <FFF_Info_DeactivatedMech.description>处于封存状态的机械体。具备足够空闲带宽的机械师可直接接管它；敌对或无主的单位则可由开启研究工作的殖民者尝试黑入。黑入失败会让机甲以敌对状态苏醒。也可以将其拆解。</FFF_Info_DeactivatedMech.description>
+  <FFF_Info_DeactivatedMech.description>处于封存状态的机械体。具备足够空闲频宽的机械师可直接接管它；敌对或无主的单位则可由开启研究工作的殖民者尝试骇入。骇入失败会让机甲以敌对状态苏醒。也可以将其拆解。</FFF_Info_DeactivatedMech.description>
 
   <FFF_Info_MechCapsule.label>休眠机械体</FFF_Info_MechCapsule.label>
-  <FFF_Info_MechCapsule.description>一架临时休眠的机械体。休眠的机械体不占用控制带宽，并能够由具备足够带宽的机械师重启；若属于他人，则可由殖民者黑入。野外发现的封存机械体可能有时仍持有武器。</FFF_Info_MechCapsule.description>
+  <FFF_Info_MechCapsule.description>一架临时休眠的机械体。休眠的机械体不占用控制带宽，并能够由具备足够频宽的机械师重启；若属于他人，则可由殖民者骇入。野外发现的封存机械体可能有时仍持有武器。</FFF_Info_MechCapsule.description>
 
-  <FFF_Info_OverseerMech.label>统御者单位</FFF_Info_OverseerMech.label>
-  <FFF_Info_OverseerMech.description>能够自行指挥其他机械体的机械体，拥有自己的带宽与控制组，不需要机械师。置于其控制下的机械体会如同服从机械师一般服从它，并在战场上跟随它行动。它可以重启途中遇到的封存机械体，并在受监督的机甲靠近时进行维修。</FFF_Info_OverseerMech.description>
+  <FFF_Info_OverseerMech.label>机控单位</FFF_Info_OverseerMech.label>
+  <FFF_Info_OverseerMech.description>能够自行指挥其他机械体的机械体，拥有自己的频宽与控制组，不需要机械师。置于其控制下的机械体会如同服从机械师一般服从它，并在战场上跟随它行动。它可以重启封存机械体，并维修受监督的机械体。</FFF_Info_OverseerMech.description>
 
-  <FFF_Info_OverseerBuilding.label>统御核心</FFF_Info_OverseerBuilding.label>
-  <FFF_Info_OverseerBuilding.description>固定式的指挥结构，拥有自己的带宽与控制组。指派给它的机械体在其指挥范围内会如同服从机械师一般服从它——部分核心可覆盖整张地图。它可以直接重启封存机械体，并在受监督的机甲靠近时进行维修。连接设施可扩充其能力。</FFF_Info_OverseerBuilding.description>
+  <FFF_Info_OverseerBuilding.label>机控核心</FFF_Info_OverseerBuilding.label>
+  <FFF_Info_OverseerBuilding.description>固定式的指挥结构，拥有自己的频宽与控制组。指派给它的机械体在其指挥范围内会如同服从机械师一般服从它。连结设施可扩充其能力。</FFF_Info_OverseerBuilding.description>
 
   <FFF_Info_DeadManSwitch.label>失能开关</FFF_Info_DeadManSwitch.label>
   <FFF_Info_DeadManSwitch.description>此机械体装有保险机制，一旦与监督者失去联系就会自我终止。走失或游荡的单位仍可能自行返回——但偶尔开关会重置失败。</FFF_Info_DeadManSwitch.description>
@@ -52,15 +52,15 @@
   <FFF_Info_ProtectiveShield.description>具有独立耐久的抛弃式装甲。受到的伤害会先由护板吸收，直到耐久耗尽而损毁，届时必须更换。体型较大的机甲可装载更多护板。</FFF_Info_ProtectiveShield.description>
 
   <FFF_Info_MechModification.label>机械体改装件</FFF_Info_MechModification.label>
-  <FFF_Info_MechModification.description>此物品是机械体的改造模组。开启机甲的改造视窗，选择身体槽位并排入安装，之后由殖民者进行装配。每个槽位容纳一个模组，部分模组可在上限内堆叠或合并。模组之后可以拆除。</FFF_Info_MechModification.description>
+  <FFF_Info_MechModification.description>此物品是机械体的改造模组。开启机械体的改造视窗，选择身体槽位并排入安装，之后由殖民者进行装配。每个槽位容纳一个模组，部分模组可在上限内堆叠或合并。模组之后可以拆除。</FFF_Info_MechModification.description>
 
   <FFF_Info_CommandRelay.label>指令中继</FFF_Info_CommandRelay.label>
-  <FFF_Info_CommandRelay.description>中控机体。它完全不受机械师控制范围限制，其附近的其他机械体也视为在范围内。远征时若与机械师分处不同地图，中继半径会随世界地图距离衰减，超出距离后降至最小值。征召时会在地图上显示目前的覆盖范围。</FFF_Info_CommandRelay.description>
+  <FFF_Info_CommandRelay.description>不受机械师控制范围限制的中控机体，其中继范围内能够使其他机械体同样受控。远征时若与机械师分处不同地图，中继半径会随世界地图距离衰减，超出距离后降至最小值。征召时会在地图上显示目前的覆盖范围。</FFF_Info_CommandRelay.description>
 
   <FFF_Info_SubRelay.label>控制中继</FFF_Info_SubRelay.label>
-  <FFF_Info_SubRelay.description>延伸其周围的机械体控制范围——对所有机械师都有效，不限于单一机械师。作为建筑时需供电、运作正常且属于殖民地；作为服装时需由你的单位穿戴。部分中继可覆盖整张地图。选取征召中的机甲时会显示覆盖范围。</FFF_Info_SubRelay.description>
+  <FFF_Info_SubRelay.description>延伸其周围的机械体控制范围——对所有机械师都有效，不限于单一机械师。作为建筑时需供电、运作正常且属于殖民地；作为服装时需由你的单位穿戴。部分中继可覆盖整张地图。选取征召中的机甲时会显示复盖范围。</FFF_Info_SubRelay.description>
 
-  <FFF_Info_MechanitorRange.label>信号衰减</FFF_Info_MechanitorRange.label>
+  <FFF_Info_MechanitorRange.label>讯号衰减</FFF_Info_MechanitorRange.label>
   <FFF_Info_MechanitorRange.description>征召期间，此机械体的表现取决于它与机械师的距离。靠近时影响轻微；距离越远惩罚越重，机械师在其他地图时达到最差。解除征召后惩罚立即消失。</FFF_Info_MechanitorRange.description>
 
   <FFF_Info_WeaponImprint.label>武器铭印</FFF_Info_WeaponImprint.label>
