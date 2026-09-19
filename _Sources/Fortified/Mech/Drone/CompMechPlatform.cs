@@ -580,7 +580,26 @@ namespace Fortified
             }
             int costPerPawn = CostOf(option);
 
-            PawnGenerationRequest request = new PawnGenerationRequest(option.pawnKind, parent.Faction, PawnGenerationContext.NonPlayer, null, forceGenerateNewPawn: true, allowDead: false, allowDowned: false, canGeneratePawnRelations: true, mustBeCapableOfViolence: false, 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: false, allowFood: true, allowAddictions: true, inhabitant: false, certainlyBeenInCryptosleep: false, forceRedressWorldPawnIfFormerColonist: false, worldPawnFactionDoesntMatter: false, 0f, 0f, null, 1f, null, null, null, null, null, null, null, null, null, null, null, null, forceNoIdeo: false, forceNoBackstory: false, forbidAnyTitle: false, forceDead: false, null, null, null, null, null, 0f, DevelopmentalStage.Newborn);
+            // PawnGenerationRequest 的建構子會直接跑 ValidateAndFix，裡面會讀 KindDef.RaceProps.lifeStageAges；
+            // 型號的 race 沒解析到（XML 壞掉、缺 ThingDef）時整個建構子就會 NRE，而且是從 gizmo 的 action 裡炸出來。
+            // 先在這裡把話講清楚，別讓玩家只看到一串 Verse 內部的堆疊。
+            if (option.pawnKind.race?.race == null)
+            {
+                Log.ErrorOnce($"[Fortified] CompMechPlatform on {parent.ToStringSafe()}: PawnKindDef {option.pawnKind.defName} has no valid race (race={option.pawnKind.race.ToStringSafe()}), cannot deploy.", option.pawnKind.GetHashCode() ^ 0x4D503130);
+                return;
+            }
+
+            PawnGenerationRequest request;
+            try
+            {
+                request = new PawnGenerationRequest(option.pawnKind, parent.Faction, PawnGenerationContext.NonPlayer, null, forceGenerateNewPawn: true, allowDead: false, allowDowned: false, canGeneratePawnRelations: true, mustBeCapableOfViolence: false, 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: false, allowFood: true, allowAddictions: true, inhabitant: false, certainlyBeenInCryptosleep: false, forceRedressWorldPawnIfFormerColonist: false, worldPawnFactionDoesntMatter: false, 0f, 0f, null, 1f, null, null, null, null, null, null, null, null, null, null, null, null, forceNoIdeo: false, forceNoBackstory: false, forbidAnyTitle: false, forceDead: false, null, null, null, null, null, 0f, DevelopmentalStage.Newborn);
+            }
+            catch (Exception e)
+            {
+                // 其他 mod 對 PawnGenerationRequest.ValidateAndFix 下的 Harmony patch 也會在這裡炸；一樣不能讓例外冒到 gizmo 外面。
+                Log.Error($"[Fortified] CompMechPlatform on {parent.ToStringSafe()} failed to build generation request for {option.pawnKind.defName}: {e}");
+                return;
+            }
             Lord lord = ((parent is Pawn p) ? p.GetLord() : null);
             int spawnedThisBatch = 0;
 
