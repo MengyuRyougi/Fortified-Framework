@@ -139,6 +139,7 @@
     <graphicData>
       <texPath>Things/Building/Linked/Wall/Wall_Atlas_Hull</texPath>
     </graphicData>
+    <uiIconPath>Things/Building/Linked/Wall/Wall_Atlas_Hull_UI</uiIconPath>
   </ThingDef>
 
   <ThingDef ParentName="FFF_FacilityWallBase">
@@ -148,6 +149,7 @@
     <graphicData>
       <texPath>Things/Building/Linked/Wall/Wall_Atlas_HullHatch</texPath>
     </graphicData>
+    <uiIconPath>Things/Building/Linked/Wall/Wall_Atlas_HullHatch_UI</uiIconPath>
   </ThingDef>
 
   <!-- ==================== Doors ==================== -->
