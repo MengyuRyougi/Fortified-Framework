@@ -55,7 +55,9 @@ namespace Fortified
         public override void Notify_SignalReceived(Signal signal)
         {
             base.Notify_SignalReceived(signal);
-            if (signal.tag == Props.listenSignal)
+            // Signal 是全域的：只理會同一張地圖的警報，地下口袋地圖的掃描器不該觸發地表的效果器。
+            // Signals are global: only honour alarms from this map, so a pocket-map scanner can't set off surface effectors.
+            if (signal.tag == Props.listenSignal && signal.IsForParent(parent))
                 OnAlertNotify();
         }
 

@@ -68,6 +68,7 @@ public class CompSignalRemote : ThingComp
         if (comp?.parent == null || tag.NullOrEmpty()) return;
         Find.SignalManager.SendSignal(new Signal(tag,
             comp.parent.Named("SUBJECT"),
-            comp.parent.Position.Named("POSITION")));
+            comp.parent.Position.Named("POSITION"),
+            comp.parent.MapHeld.Named("MAP")));
     }
 }

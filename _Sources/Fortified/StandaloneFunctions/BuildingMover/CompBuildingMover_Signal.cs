@@ -12,6 +12,8 @@ public partial class CompBuildingMover
     {
         base.Notify_SignalReceived(signal);
         if (disabled) return;
+        // 只理會同一張地圖的訊號 / only signals from this map
+        if (!signal.IsForParent(parent)) return;
 
         // 信号动作映射表 优先匹配
         if (Props.signalActions != null)
@@ -111,7 +113,7 @@ public partial class CompBuildingMover
         if (Props.signalActions == null || idx >= Props.signalActions.Count) return;
         string tag = Props.signalActions[idx]?.sendSignalOnComplete;
         if (tag.NullOrEmpty()) return;
-        Find.SignalManager.SendSignal(new Signal(tag, parent.Named("SUBJECT"), parent.Position.Named("POSITION")));
+        Find.SignalManager.SendSignal(new Signal(tag, parent.Named("SUBJECT"), parent.Position.Named("POSITION"), parent.Map.Named("MAP")));
     }
 
     // 完成移动动作

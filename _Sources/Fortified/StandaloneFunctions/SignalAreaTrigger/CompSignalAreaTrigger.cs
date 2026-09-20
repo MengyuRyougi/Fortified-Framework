@@ -155,6 +155,8 @@ public abstract class CompSignalReceiverBase : ThingComp
         if (Props.listenSignalTag.NullOrEmpty()) return;
         if (signal.tag != Props.listenSignalTag) return;
         if (Props.requireSpawned && (parent == null || !parent.Spawned)) return;
+        // 只理會同一張地圖的訊號 / only signals from this map
+        if (!signal.IsForParent(parent)) return;
 
         try
         {

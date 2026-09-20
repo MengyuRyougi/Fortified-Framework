@@ -71,6 +71,8 @@ public class CompSelfDestructSequence : ThingComp
         base.Notify_SignalReceived(signal);
         if (Props.triggerSignalTag.NullOrEmpty()) return;
         if (signal.tag != Props.triggerSignalTag) return;
+        // 只理會同一張地圖的訊號 / only signals from this map
+        if (!signal.IsForParent(parent)) return;
         StartSequence();
     }
 
