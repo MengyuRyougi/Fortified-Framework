@@ -84,6 +84,19 @@ namespace Fortified.Structures
         public ThingSetMakerDef lootMaker;
         public FloatRange lootMarketValueFallback = new FloatRange(600f, 1000f);
 
+        /// <summary>
+        /// 戰利品優先放進主結構內（外擴 lootStoragePadding 格）的貨架／櫃子，放不下的才落地散布。
+        /// 關掉就回到全部落地的舊行為。
+        /// Put loot on the shelves and cabinets inside the compound (footprint padded by
+        /// lootStoragePadding) first; only what doesn't fit is scattered on the ground.
+        /// Off restores the old all-on-the-ground behaviour.
+        /// </summary>
+        public bool lootPrefersStorage = true;
+        public int lootStoragePadding = 2;
+
+        /// <summary>貨架放不下時是否還要落地散布。Whether leftovers still get scattered on the ground.</summary>
+        public bool lootGroundFallback = true;
+
         /// <summary>站點守軍。Site defenders.</summary>
         public bool spawnDefenders = true;
         public float defendRadius = 16f;
@@ -159,8 +172,11 @@ namespace Fortified.Structures
             CellRect usable = FFF_StructureUtility.UsableRect(map);
             if (usable.Width <= 0 || usable.Height <= 0) return;
 
-            List<CellRect> occupied = new List<CellRect>();
-            if (hasLastStructure) occupied.Add(lastStructureRect);
+            // 已登記的 UsedRects 也視為占用（主結構本身已在裡面），衛星才不會落在別人保留的區域上。
+            // Registered UsedRects count as occupied too (the compound is already among them), so
+            // satellites never land on space someone else reserved.
+            List<CellRect> occupied = FFF_StructureUtility.CurrentUsedRects(map);
+            if (hasLastStructure && !occupied.Contains(lastStructureRect)) occupied.Add(lastStructureRect);
 
             IntVec3 origin = hasLastStructure ? lastStructureRect.CenterCell : map.Center;
             if (!origin.InBounds(map)) origin = map.Center;
@@ -208,6 +224,7 @@ namespace Fortified.Structures
 
                             FFF_StructureUtility.Generate(sub, candidate, map, faction, rot, reconnectPower: false);
                             occupied.Add(rect);
+                            FFF_StructureUtility.ReserveUsedRect(map, rect, 1);
                             placed = true;
                         }
                     }
@@ -329,8 +346,28 @@ namespace Fortified.Structures
             makerParms.totalMarketValueRange = new FloatRange(value * 0.85f, value * 1.15f);
             List<Thing> loot = lootMaker.root.Generate(makerParms);
 
+            // 先上貨架：主結構足跡（外擴幾格）內的所有 Building_Storage。
+            // Shelves first: every Building_Storage inside the (padded) compound footprint.
+            List<Building_Storage> storages = null;
+            if (lootPrefersStorage)
+            {
+                CellRect searchRect = hasLastStructure
+                    ? lastStructureRect.ExpandedBy(lootStoragePadding)
+                    : CellRect.CenteredOn(center, Mathf.RoundToInt(scatterRadius));
+                storages = FFF_StructureUtility.StoragesIn(map, searchRect);
+            }
+
             foreach (Thing thing in loot)
             {
+                if (!storages.NullOrEmpty() && FFF_StructureUtility.TryPlaceOnStorages(thing, storages, map, forbidden: true))
+                {
+                    continue;
+                }
+                if (!lootGroundFallback)
+                {
+                    thing.Destroy();
+                    continue;
+                }
                 if (CellFinder.TryFindRandomCellNear(center, map, Mathf.RoundToInt(scatterRadius),
                     c => c.Standable(map) && c.GetFirstItem(map) == null, out IntVec3 cell))
                 {

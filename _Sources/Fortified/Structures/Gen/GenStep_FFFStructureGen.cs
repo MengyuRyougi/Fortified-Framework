@@ -71,6 +71,7 @@ namespace Fortified.Structures
                     lastStructureRot = Rot4.North;
                     lastStructureRect = compoundRect;
                     hasLastStructure = true;
+                    FFF_StructureUtility.ReserveUsedRect(map, compoundRect, UsedRectPadding);
 
                     // 複合結構過去會直接 return，導致 filthTypes 與 symbolResolvers 靜默失效。
                     // The compound path used to return early, silently dropping filth and resolvers.
@@ -90,6 +91,7 @@ namespace Fortified.Structures
             // Push the placement back inside the usable area: out-of-bounds cells are dropped
             // one by one in SpawnThings, which reads as a structure sheared off at the border.
             center = ClampToFit(map, def, center, rot);
+            center = AvoidUsedRects(map, def, center, rot);
 
             lastStructureDef = def;
             lastStructureCenter = center;
@@ -97,9 +99,53 @@ namespace Fortified.Structures
             lastStructureRect = FFF_StructureUtility.FootprintAt(def, center, rot);
             hasLastStructure = true;
 
+            // 登記足跡，之後的地標建築（order 500/700）與其他原版結構才會避開我們。
+            // Register the footprint so later landmark structures (order 500/700) and other
+            // vanilla structures keep clear of us.
+            FFF_StructureUtility.ReserveUsedRect(map, lastStructureRect, UsedRectPadding);
+
             // reconnectPower: false —— 生成期不強制刷新電網，見 Generate 的參數說明。
             FFF_StructureUtility.Generate(def, center, map, faction, rot, reconnectPower: false);
             HandlePostScatter(map, lastStructureRect);
+        }
+
+        /// <summary>
+        /// 登記進 UsedRects 時外擴的格數。地標建築的外圍牆會貼著自己的矩形邊緣生成，
+        /// 留幾格才不會與我們的圍籬／沙包貼在一起。
+        /// Padding applied when registering in UsedRects. A landmark's perimeter wall hugs the
+        /// edge of its own rect; a few cells keep it off our fences and sandbags.
+        /// </summary>
+        protected const int UsedRectPadding = 3;
+
+        /// <summary>
+        /// 落點若壓到已登記的 UsedRect（例如先行保留區域的 mutator），改找離地圖中心最近的乾淨矩形。
+        /// 找不到就維持原落點——寧可重疊也不要把結構丟掉。
+        /// If the footprint overlaps an already-registered UsedRect (e.g. a mutator that reserved
+        /// space earlier), move to the closest clear rect to the map centre. Falls back to the
+        /// original spot rather than dropping the structure.
+        /// </summary>
+        protected static IntVec3 AvoidUsedRects(Map map, IFFF_Structure def, IntVec3 center, Rot4 rot)
+        {
+            if (map == null || def == null) return center;
+
+            CellRect foot = FFF_StructureUtility.FootprintAt(def, center, rot);
+            if (!FFF_StructureUtility.OverlapsUsedRect(map, foot)) return center;
+
+            CellRect safe = FFF_StructureUtility.UsableRect(map);
+            IntVec2 size = new IntVec2(foot.Width, foot.Height);
+            bool Validator(CellRect r) => r.minX >= safe.minX && r.maxX <= safe.maxX
+                                       && r.minZ >= safe.minZ && r.maxZ <= safe.maxZ
+                                       && !FFF_StructureUtility.OverlapsUsedRect(map, r);
+
+            if (MapGenUtility.TryGetClosestClearRectTo(out CellRect rect, size, map.Center, Validator))
+            {
+                if (Prefs.DevMode)
+                    Log.Message($"[FortifiedFramework] {(def as Def)?.defName ?? "structure"}: centre overlaps a reserved rect; moved to {rect.CenterCell}.");
+                return rect.CenterCell;
+            }
+
+            Log.Warning($"[FortifiedFramework] {(def as Def)?.defName ?? "structure"}: centre overlaps a reserved rect and no clear rect fits; generating in place.");
+            return center;
         }
 
         /// <summary>

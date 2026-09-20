@@ -14,6 +14,14 @@ namespace Fortified
         /// 待機時本體不耗電，省下的功率全數拿去充電，因此預設 2 倍。
         /// </summary>
         public float standbyChargeFactor = 2f;
+
+        /// <summary>
+        /// 非玩家陣營的建築生成時，內建電池的初始電量比例（隨機取值）。
+        /// 讓遺跡／站點裡的砲塔與感測器一落地就有電，不必等電網。設成 0~0 停用。
+        /// Initial charge fraction rolled when a non-player-faction building spawns, so ruin and site
+        /// turrets / sensors are live on arrival instead of waiting for a grid. 0~0 disables it.
+        /// </summary>
+        public FloatRange npcInitialChargePct = new FloatRange(0.5f, 1f);
         public CompProperties_PowerWithInternalBattery()
         {
             compClass = typeof(CompPowerTrader_InternalBattery);
@@ -70,6 +78,36 @@ namespace Fortified
         {
             base.SetUpPowerVars(); // sets PowerOutput = -basePowerConsumption
             SyncPowerOutput();
+        }
+
+        /// <summary>
+        /// 直接設定內建電量（0~1 比例）。給生成流程用，例如儲存庫的警戒設施要一落地就滿電。
+        /// Sets the stored charge as a 0~1 fraction. For generation code that wants a fixture live on spawn.
+        /// </summary>
+        public void SetStoredEnergyPct(float pct)
+        {
+            storedEnergy = BatteryProps.internalBatteryMax * Mathf.Clamp01(pct);
+            SyncPowerOutput();
+        }
+
+        /// <summary>
+        /// 非玩家陣營的新生成建築：電池若還是空的，依 npcInitialChargePct 隨機灌入初始電量。
+        /// 讀檔重生與玩家自己的建築不擲骰；生成流程若已先設定電量（storedEnergy &gt; 0）也不覆寫。
+        /// Fresh spawns owned by a non-player faction get a random initial charge from npcInitialChargePct
+        /// if the battery is still empty. Skipped on load, for player-owned things, and when generation
+        /// code already set a charge before spawning.
+        /// </summary>
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            if (respawningAfterLoad || storedEnergy > 0f) return;
+
+            Faction faction = parent.Faction;
+            if (faction == null || faction == Faction.OfPlayer) return;
+
+            FloatRange range = BatteryProps.npcInitialChargePct;
+            if (range.max <= 0f) return;
+            SetStoredEnergyPct(range.RandomInRange);
         }
         private void SyncPowerOutput()
         {

@@ -363,4 +363,86 @@ namespace Fortified.Structures
 			return new Task_LinkAccessKeyWanter { activatablePos = activatablePos.RotatedBy(rot) + offset, wanterPos = wanterPos.RotatedBy(rot) + offset };
 		}
 	}
+
+	/// <summary>
+	/// 用 ThingSetMakerDef 的產物填滿矩形範圍內的儲物建築（貨架等 Building_Storage）。
+	/// Task_FillContainer 只認 Building_Crate；這個是給開放式貨架用的：產物直接放上格位、標記為禁止拾取。
+	/// 每個儲物建築有 fillChance 的機率參與；跑 batches 輪 maker，放不下的東西直接銷毀，不會掉到地上。
+	///
+	/// Fills every storage building (Building_Storage, i.e. shelves) inside a rect from a ThingSetMakerDef.
+	/// Task_FillContainer only handles Building_Crate; this one is for open shelving: items go straight
+	/// onto slot cells and are forbidden. Each storage joins with fillChance; the maker runs batches times
+	/// and whatever does not fit is destroyed rather than dumped on the floor.
+	/// </summary>
+	public class Task_FillStorage : IFFF_GenerationTask
+	{
+		public CellRect rect;
+		public ThingSetMakerDef makerDef;
+		public IntRange batches = new IntRange(1, 1);
+		public FloatRange? totalMarketValueRange;
+		public float fillChance = 1f;
+		public bool forbidden = true;
+
+		public void Execute(Map map, IntVec3 offset, Faction faction)
+		{
+			if (makerDef?.root == null || map == null) return;
+
+			CellRect actual = rect.MovedBy(offset).ClipInsideMap(map);
+			List<Building_Storage> storages = new List<Building_Storage>();
+			foreach (IntVec3 c in actual)
+			{
+				List<Thing> things = c.GetThingList(map);
+				for (int i = 0; i < things.Count; i++)
+				{
+					if (things[i] is Building_Storage s && !storages.Contains(s) && Rand.Chance(fillChance))
+					{
+						storages.Add(s);
+					}
+				}
+			}
+			if (storages.Count == 0) return;
+
+			int rounds = batches.RandomInRange;
+			for (int b = 0; b < rounds; b++)
+			{
+				ThingSetMakerParams parms = default(ThingSetMakerParams);
+				if (totalMarketValueRange.HasValue) parms.totalMarketValueRange = totalMarketValueRange.Value;
+				if (faction != null) parms.makingFaction = faction;
+
+				List<Thing> items = makerDef.root.Generate(parms);
+				bool anyPlaced = false;
+				foreach (Thing item in items)
+				{
+					if (FFF_StructureUtility.TryPlaceOnStorages(item, storages, map, forbidden))
+					{
+						anyPlaced = true;
+					}
+					else if (!item.Destroyed)
+					{
+						item.Destroy();
+					}
+				}
+				// 這一輪什麼都放不下，代表貨架已滿，後面幾輪也不用跑了。
+				// Nothing fit this round: the shelves are full, so skip the remaining rounds.
+				if (!anyPlaced) break;
+			}
+		}
+
+		public IFFF_GenerationTask Transformed(Rot4 rot, IntVec3 offset)
+		{
+			// 旋轉矩形：把兩個對角旋轉後重新取外框。Rotate the rect via its two opposite corners.
+			IntVec3 a = new IntVec3(rect.minX, 0, rect.minZ).RotatedBy(rot) + offset;
+			IntVec3 b = new IntVec3(rect.maxX, 0, rect.maxZ).RotatedBy(rot) + offset;
+			CellRect rotated = CellRect.FromLimits(Math.Min(a.x, b.x), Math.Min(a.z, b.z), Math.Max(a.x, b.x), Math.Max(a.z, b.z));
+			return new Task_FillStorage
+			{
+				rect = rotated,
+				makerDef = makerDef,
+				batches = batches,
+				totalMarketValueRange = totalMarketValueRange,
+				fillChance = fillChance,
+				forbidden = forbidden
+			};
+		}
+	}
 }

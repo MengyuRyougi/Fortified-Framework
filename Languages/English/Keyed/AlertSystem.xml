@@ -7,4 +7,28 @@
   <FFF_Alert_AlertLevel_Desc>Alert-detection buildings on this map have raised the security alert level to {0}.\n\nIf the level reaches maximum, an automated countermeasure will be triggered. Neutralize the scanners to let it decay.\n\nMonitored buildings: {1}</FFF_Alert_AlertLevel_Desc>
   <FFF_Alert_AlertLevel_Desc_Triggered>The security alert level has reached maximum and an automated countermeasure is now active.\n\nMonitored buildings: {0}</FFF_Alert_AlertLevel_Desc_Triggered>
 
+  <!-- CompAlertScanner : inspect string of alert-scanner buildings (cameras, sensors, scanners) -->
+  <FFF_AlertScanner_Offline>Scanner offline</FFF_AlertScanner_Offline>
+  <FFF_AlertScanner_Rearming>Scanner re-arming: {0}</FFF_AlertScanner_Rearming>
+  <FFF_AlertScanner_Detecting>Intruder detected!</FFF_AlertScanner_Detecting>
+  <FFF_AlertScanner_Watching>Scanning for intruders</FFF_AlertScanner_Watching>
+
+  <!-- AlertEffect_FacilityLockdown : countermeasure that seals the facility and abandons the map -->
+  <FFF_Alert_FacilityLockdown_Warning>Facility lockdown initiated. The site will be sealed shortly — get everyone out.</FFF_Alert_FacilityLockdown_Warning>
+  <FFF_Alert_FacilityLockdown_Countdown>Facility lockdown in {0}.</FFF_Alert_FacilityLockdown_Countdown>
+  <FFF_Alert_FacilityLockdown_Executed>The facility has been sealed. Anyone still inside is lost.</FFF_Alert_FacilityLockdown_Executed>
+  <FFF_Alert_PawnMissing_Label>{0} missing</FFF_Alert_PawnMissing_Label>
+  <FFF_Alert_PawnMissing_Desc>{0} was still inside the facility when it was sealed and is now missing, presumed lost.</FFF_Alert_PawnMissing_Desc>
+
+  <!-- AlertEffect_AirspaceBlockade : shuttles and pods are grounded for the duration -->
+  <FFF_Alert_AirspaceBlockade_Start>Airspace blockade in effect. Shuttles and transport pods cannot take off from this map.</FFF_Alert_AirspaceBlockade_Start>
+  <FFF_Alert_AirspaceBlockade_End>The airspace blockade has lifted.</FFF_Alert_AirspaceBlockade_End>
+
+  <!-- AlertEffect_PrecisionBombardment : periodic strikes on the map -->
+  <FFF_Alert_PrecisionBombardment_Start>Precision bombardment incoming. Strikes will keep landing on this map until the countermeasure expires.</FFF_Alert_PrecisionBombardment_Start>
+  <FFF_Alert_PrecisionBombardment_End>The precision bombardment has ended.</FFF_Alert_PrecisionBombardment_End>
+
+  <!-- CompAlertEffector_ReleaseEntity : {0} count, {1} pawn kind label -->
+  <FFF_Alert_ReleaseEntity_Triggered>Security response: {0} {1} released!</FFF_Alert_ReleaseEntity_Triggered>
+
 </LanguageData>

@@ -552,4 +552,45 @@ namespace Fortified.Structures
 			return tasks;
 		}
 	}
+
+	/// <summary>
+	/// 版面元素：把 pos/size 矩形內的貨架（Building_Storage）用 makerDef 的產物填滿。
+	/// 純生成任務、不加東西進 sketch，所以放在貨架元素之後或之前都可以。
+	/// Layout element: fill every Building_Storage inside the pos/size rect from makerDef.
+	/// Task-only (adds nothing to the sketch), so it can sit anywhere relative to the shelf elements.
+	/// </summary>
+	public class FFF_Element_FillStorage : FFF_Element, IFFF_TaskProvider
+	{
+		public FFF_Element_FillStorage() { }
+		public ThingSetMakerDef makerDef;
+		public IntVec3 pos;
+		public IntVec2 size = new IntVec2(1, 1);
+		/// <summary>maker 跑幾輪；輪數越多貨架越滿。How many maker rounds; more rounds, fuller shelves.</summary>
+		public IntRange batches = new IntRange(1, 1);
+		/// <summary>傳給 maker 的總市值範圍，留空用 maker 自己的預設。Market value budget per round; null = maker default.</summary>
+		public FloatRange? totalMarketValueRange;
+		/// <summary>每座貨架參與填充的機率，讓部分貨架空著。Chance each shelf takes part, so some stay empty.</summary>
+		public float fillChance = 1f;
+		/// <summary>放上去的東西是否標記為禁止拾取。Whether placed items are forbidden.</summary>
+		public bool forbidden = true;
+
+		public override void AddToSketch(Sketch sketch) { }
+
+		public List<IFFF_GenerationTask> GetTasks(Rot4 rot, IntVec3 offset)
+		{
+			List<IFFF_GenerationTask> tasks = new List<IFFF_GenerationTask>();
+			if (makerDef == null) return tasks;
+			Task_FillStorage task = new Task_FillStorage
+			{
+				rect = new CellRect(pos.x, pos.z, size.x, size.z),
+				makerDef = makerDef,
+				batches = batches,
+				totalMarketValueRange = totalMarketValueRange,
+				fillChance = fillChance,
+				forbidden = forbidden
+			};
+			tasks.Add(task.Transformed(rot, offset));
+			return tasks;
+		}
+	}
 }

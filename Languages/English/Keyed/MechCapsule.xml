@@ -7,6 +7,7 @@
   <FFF.DeactivateMechDesc>Put this mech into hibernation mode. It will become a dormant structure that can be reactivated later by a mechanitor.</FFF.DeactivateMechDesc>
   <FFF.MechDeactivated>{0} has entered hibernation mode.</FFF.MechDeactivated>
   <FFF.MechActivated>{0} has been activated and is now under {1}'s control.</FFF.MechActivated>
+  <FFF.CapsuleMechAlarmed>The alarm has reactivated {0}!</FFF.CapsuleMechAlarmed>
   <FFF.ContainsMech>Contains: {0}</FFF.ContainsMech>
   <FFF.CannotReach>Cannot reach</FFF.CannotReach>
   <FFF.NeedMoreBandwidth>Need {0} bandwidth to control this mech.</FFF.NeedMoreBandwidth>

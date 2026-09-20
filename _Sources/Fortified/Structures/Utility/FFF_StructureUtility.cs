@@ -34,6 +34,108 @@ namespace Fortified.Structures
             return CellRect.WholeMap(map).ContractedBy(EdgeMargin(map));
         }
 
+        // ── 原版 UsedRects 協定 / Vanilla UsedRects protocol ───────────────────────
+        //
+        // 1.6 的地標建築（TileMutatorWorker_AncientStructure 等）與原版站點結構都透過
+        // MapGenerator 的 "UsedRects" 互相避讓：先落地的把足跡登記進去，後來的
+        // MapGenUtility.TryGetStructureRect 就不會挑到重疊的矩形。地標的外圍牆是用
+        // GenSpawn.CanSpawnAt(canWipeEdifices:false) 逐格試放的，只要我們的東西壓在那裡，
+        // 那一段外牆就直接消失。IFFF 結構過去從不登記，所以在地標地塊上生成站點時，
+        // 地標結構會整個疊到我們的營地上，兩邊的外牆都殘缺。
+        //
+        // Odyssey landmarks (TileMutatorWorker_AncientStructure and friends) and vanilla site
+        // structures avoid each other through MapGenerator's "UsedRects": whatever lands first
+        // registers its footprint, and MapGenUtility.TryGetStructureRect never picks an
+        // overlapping rect. A landmark's perimeter wall is placed cell by cell with
+        // GenSpawn.CanSpawnAt(canWipeEdifices:false), so any of our things sitting there simply
+        // delete that stretch of wall. IFFF structures never registered, so on a landmark tile the
+        // landmark ended up stacked on top of the compound with both perimeters broken.
+
+        private const string UsedRectsVar = "UsedRects";
+
+        /// <summary>
+        /// 把足跡登記進 UsedRects（外擴 padding 格，讓地標的外牆與散落物也離遠一點）。
+        /// 只在地圖生成期有效；執行期除錯生成沒有 MapGenerator 資料，直接略過。
+        /// Registers a footprint (padded) in UsedRects. Only meaningful while the map is being
+        /// generated; runtime debug placement has no MapGenerator data and is skipped.
+        /// </summary>
+        public static void ReserveUsedRect(Map map, CellRect rect, int padding = 0)
+        {
+            if (map == null || MapGenerator.mapBeingGenerated != map) return;
+            if (rect.Width <= 0 || rect.Height <= 0) return;
+
+            List<CellRect> used = MapGenerator.GetOrGenerateVar<List<CellRect>>(UsedRectsVar);
+            if (used == null) return;
+
+            CellRect reserved = padding > 0 ? rect.ExpandedBy(padding) : rect;
+            used.Add(reserved.ClipInsideMap(map));
+        }
+
+        /// <summary>是否與任何已登記的 UsedRect 重疊。Whether the rect overlaps any registered UsedRect.</summary>
+        public static bool OverlapsUsedRect(Map map, CellRect rect)
+        {
+            if (map == null || MapGenerator.mapBeingGenerated != map) return false;
+            if (!MapGenerator.TryGetVar<List<CellRect>>(UsedRectsVar, out List<CellRect> used) || used == null) return false;
+
+            for (int i = 0; i < used.Count; i++)
+            {
+                if (used[i].Overlaps(rect)) return true;
+            }
+            return false;
+        }
+
+        // ── 貨架放置 / Shelf placement ─────────────────────────────────────────
+
+        /// <summary>
+        /// 收集矩形內所有已生成的儲物建築（貨架、櫃子……）。
+        /// Collects every spawned Building_Storage inside the rect.
+        /// </summary>
+        public static List<Building_Storage> StoragesIn(Map map, CellRect rect)
+        {
+            List<Building_Storage> storages = new List<Building_Storage>();
+            if (map == null) return storages;
+            foreach (IntVec3 c in rect.ClipInsideMap(map))
+            {
+                List<Thing> things = c.GetThingList(map);
+                for (int i = 0; i < things.Count; i++)
+                {
+                    if (things[i] is Building_Storage s && s.Spawned && !storages.Contains(s)) storages.Add(s);
+                }
+            }
+            return storages;
+        }
+
+        /// <summary>
+        /// 把物品放到清單裡任一收得下它的貨架格位上。Direct 模式會自己處理疊堆與格位上限。
+        /// Places the item on any listed storage that accepts it. Direct mode handles stacking and the per-cell cap.
+        /// </summary>
+        public static bool TryPlaceOnStorages(Thing item, List<Building_Storage> storages, Map map, bool forbidden = true)
+        {
+            if (item == null || map == null || storages.NullOrEmpty()) return false;
+            foreach (Building_Storage storage in storages.InRandomOrder())
+            {
+                if (!storage.Spawned || !storage.Accepts(item)) continue;
+                foreach (IntVec3 cell in storage.AllSlotCells().InRandomOrder())
+                {
+                    if (!cell.InBounds(map)) continue;
+                    if (GenPlace.TryPlaceThing(item, cell, map, ThingPlaceMode.Direct, out Thing placed))
+                    {
+                        if (forbidden) (placed ?? item).SetForbidden(true, warnOnFail: false);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>目前登記的 UsedRects 快照（生成期以外回傳空清單）。Snapshot of the registered UsedRects; empty outside generation.</summary>
+        public static List<CellRect> CurrentUsedRects(Map map)
+        {
+            if (map == null || MapGenerator.mapBeingGenerated != map) return new List<CellRect>();
+            if (!MapGenerator.TryGetVar<List<CellRect>>(UsedRectsVar, out List<CellRect> used) || used == null) return new List<CellRect>();
+            return new List<CellRect>(used);
+        }
+
         /// <param name="reconnectPower">
         /// 是否在結束時強制刷新電網。地圖生成期務必傳 false ——
         /// 生成期間 GenSpawn 的 WipeMode 會摧毀帶 CompPower 的建物，此時強制跑

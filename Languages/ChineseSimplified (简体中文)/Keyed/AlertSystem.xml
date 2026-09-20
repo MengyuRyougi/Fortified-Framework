@@ -7,4 +7,28 @@
   <FFF_Alert_AlertLevel_Desc>此地图上的警报侦测建筑已将安全警戒等级提升至 {0}。\n\n警戒值达到上限时将触发自动反制措施。肃清扫描器，让警戒值自然衰减。\n\n监控建筑数：{1}</FFF_Alert_AlertLevel_Desc>
   <FFF_Alert_AlertLevel_Desc_Triggered>安全警戒等级已达上限，自动反制措施正在执行中。\n\n监控建筑数：{0}</FFF_Alert_AlertLevel_Desc_Triggered>
 
+  <!-- CompAlertScanner：警报扫描建筑（摄影机、感测器、扫描器）的检视字串 -->
+  <FFF_AlertScanner_Offline>扫描器离线</FFF_AlertScanner_Offline>
+  <FFF_AlertScanner_Rearming>扫描器重新武装中：{0}</FFF_AlertScanner_Rearming>
+  <FFF_AlertScanner_Detecting>侦测到入侵者！</FFF_AlertScanner_Detecting>
+  <FFF_AlertScanner_Watching>正在扫描入侵者</FFF_AlertScanner_Watching>
+
+  <!-- AlertEffect_FacilityLockdown：封锁设施并放弃地图的反制措施 -->
+  <FFF_Alert_FacilityLockdown_Warning>设施封锁程序已启动。站点即将被密封——把所有人撤出去。</FFF_Alert_FacilityLockdown_Warning>
+  <FFF_Alert_FacilityLockdown_Countdown>设施将于 {0} 后封锁。</FFF_Alert_FacilityLockdown_Countdown>
+  <FFF_Alert_FacilityLockdown_Executed>设施已被密封。仍留在里面的人都已失去联系。</FFF_Alert_FacilityLockdown_Executed>
+  <FFF_Alert_PawnMissing_Label>{0}失踪</FFF_Alert_PawnMissing_Label>
+  <FFF_Alert_PawnMissing_Desc>设施密封时{0}仍在里面，现已失踪，推定罹难。</FFF_Alert_PawnMissing_Desc>
+
+  <!-- AlertEffect_AirspaceBlockade：期间内航天飞机与运输舱无法起飞 -->
+  <FFF_Alert_AirspaceBlockade_Start>空域封锁生效中。航天飞机与运输舱无法从此地图起飞。</FFF_Alert_AirspaceBlockade_Start>
+  <FFF_Alert_AirspaceBlockade_End>空域封锁已解除。</FFF_Alert_AirspaceBlockade_End>
+
+  <!-- AlertEffect_PrecisionBombardment：周期性炮击地图 -->
+  <FFF_Alert_PrecisionBombardment_Start>精准轰炸来袭。在反制措施结束前，炮火会持续落在此地图上。</FFF_Alert_PrecisionBombardment_Start>
+  <FFF_Alert_PrecisionBombardment_End>精准轰炸已结束。</FFF_Alert_PrecisionBombardment_End>
+
+  <!-- CompAlertEffector_ReleaseEntity：{0} 数量、{1} 机种标签 -->
+  <FFF_Alert_ReleaseEntity_Triggered>安全反制：{0} 台{1}已被释放！</FFF_Alert_ReleaseEntity_Triggered>
+
 </LanguageData>

@@ -11,6 +11,7 @@
   <FFF.MechDeactivated>{0}已进入休眠模式。</FFF.MechDeactivated>
   <!-- EN: {0} has been activated and is now under {1}'s control. -->
   <FFF.MechActivated>{0}已被启动，现在由{1}控制。</FFF.MechActivated>
+  <FFF.CapsuleMechAlarmed>警报唤醒了{0}！</FFF.CapsuleMechAlarmed>
   <!-- EN: Contains: {0} -->
   <FFF.ContainsMech>内含：{0}</FFF.ContainsMech>
   <!-- EN: Cannot reach -->

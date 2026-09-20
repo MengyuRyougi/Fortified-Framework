@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Verse.AI.Group;
 
 namespace Fortified
 {
@@ -185,6 +186,36 @@ namespace Fortified
             Destroy(DestroyMode.Vanish);
 
             Messages.Message("FFF.MechActivated".Translate(mech.LabelCap, actor.LabelShort), mech, MessageTypeDefOf.PositiveEvent);
+        }
+
+        // 警報／遭遇時的敵對啟動：機兵以指定陣營（預設容器自身陣營）醒來、掛上攻擊或防守 Lord，容器銷毀。回傳醒來的機兵，失敗回 null。
+        // Hostile wake-up (alarms, ambushes): the mech comes out under the given faction (defaulting to the capsule's),
+        // gets an assault or defend lord, and the capsule is destroyed. Returns the mech, or null if nothing happened.
+        public Pawn ReleaseHostile(Faction faction = null)
+        {
+            if (!HasMech || !Spawned) return null;
+
+            Pawn mech = Mech;
+            Faction owner = faction ?? Faction ?? mech.Faction ?? Faction.OfAncientsHostile;
+            if (mech.Faction != owner)
+            {
+                mech.SetFaction(owner);
+            }
+
+            Map map = Map;
+            IntVec3 pos = Position;
+            innerContainer.TryDropAll(pos, map, ThingPlaceMode.Near);
+
+            if (mech.Spawned && owner != null && owner != Faction.OfPlayer)
+            {
+                LordJob lordJob = owner.HostileTo(Faction.OfPlayer)
+                    ? new LordJob_AssaultColony(owner, canKidnap: false, canTimeoutOrFlee: false, sappers: false, useAvoidGridSmart: false, canSteal: false)
+                    : (LordJob)new LordJob_DefendPoint(pos);
+                LordMaker.MakeNewLord(owner, lordJob, map, new List<Pawn> { mech });
+            }
+
+            Destroy(DestroyMode.Vanish);
+            return mech;
         }
 
         // 弹出并销毁机兵
