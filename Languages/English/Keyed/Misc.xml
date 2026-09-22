@@ -7,4 +7,7 @@
   <FFF_MessageLadarTriggered>A perimeter scanner has detected an invisible creature.</FFF_MessageLadarTriggered>
   <FFF_LadarDetectedInvisible>Invisible object nearby</FFF_LadarDetectedInvisible>
 
+  <!-- EN: Repair {0} (self-repair order for an awakened mech) -->
+  <RepairMech>Repair {0}</RepairMech>
+
 </LanguageData>

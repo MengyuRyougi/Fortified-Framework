@@ -25,6 +25,9 @@
     <!-- EN: bodysize not supported (need:{0}) -->
     <!-- EN: bodysize not supported (need:{0}) -->
   <FFF.BodysizeNotSupported>體型尺寸不支持(需要:{0})</FFF.BodysizeNotSupported>
+
+    <!-- EN: mounted weapon, needs a supporting frame, apparel or bionics -->
+  <FFF.MountedWeaponNotSupported>掛載型武器，需要支援的機械框架、衣物或仿生體</FFF.MountedWeaponNotSupported>
     
     <!-- EN: View Usable Weapons -->
   <FFF.ViewUsableWeapons>查看可用武器</FFF.ViewUsableWeapons>

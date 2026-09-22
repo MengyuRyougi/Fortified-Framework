@@ -8,7 +8,7 @@ namespace Fortified
     public class CompAbilityEffect_SelfRepairMode : CompAbilityEffect
     {
         public new CompProperties_AbilitySelfRepairMode Props => (CompProperties_AbilitySelfRepairMode)props;
-        public override bool CanCast => base.CanCast && parent.pawn.IsPlayerControlled && IsInjuredAndAlive() && HasMissingParts();
+        public override bool CanCast => base.CanCast && parent.pawn.IsPlayerControlled && IsInjuredAndAlive() && NeedsRepair();
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
             base.Apply(target, dest);
@@ -35,9 +35,28 @@ namespace Fortified
             return pawn != null && pawn.Spawned && !pawn.Dead;
         }
 
-        private bool HasMissingParts()
+        /// <summary>
+        /// 維修模式的主要效果是靠 DMS_SelfRepair 的 HediffComp_MechHeal 治療 Hediff_Injury，
+        /// 本 comp 的 Apply 只是額外補回缺失部位，所以不能只用 Hediff_MissingPart 當門檻，
+        /// 否則沒斷肢、只是受傷的機兵會完全無法啟動維修模式。
+        /// </summary>
+        private bool NeedsRepair()
         {
-            return parent.pawn?.health?.hediffSet?.hediffs?.Any(h => h is Hediff_MissingPart) ?? false;
+            List<Hediff> hediffs = parent.pawn?.health?.hediffSet?.hediffs;
+            if (hediffs == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < hediffs.Count; i++)
+            {
+                Hediff hediff = hediffs[i];
+                if (hediff is Hediff_Injury || hediff is Hediff_MissingPart)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
     public class CompProperties_AbilitySelfRepairMode : CompProperties_AbilityEffect

@@ -24,15 +24,19 @@ namespace Fortified
             }
 			if (!thing.HasComp<CompEquippable>()) return; //沒有comp
 
-            if (thing.def.HasModExtension<HeavyEquippableExtension>())
+            if (thing.def.TryGetModExtension<HeavyEquippableExtension>(out var heavyExtension))
             {
-                if (thing.def.GetModExtension<HeavyEquippableExtension>().CanEquippedBy(pawn))
+                if (heavyExtension.CanEquippedBy(pawn))
                 {
                     __result = true;
                 }
                 else
                 {
-                    __2 = " " + "FFF.BodysizeNotSupported".Translate(thing.def.GetModExtension<HeavyEquippableExtension>().EquippableDef.EquippableBaseBodySize.ToString("0.##"));
+                    // EquippableDef 為 null 時 CanEquippedBy 會直接放行，走到這裡一定有 def。
+                    // 掛載型武器沒有體型門檻可報，硬報只會印出 -1 這種怪數字。
+                    __2 = " " + (heavyExtension.EquippableDef.IsMountedWeapon
+                        ? "FFF.MountedWeaponNotSupported".Translate()
+                        : "FFF.BodysizeNotSupported".Translate(heavyExtension.EquippableDef.EquippableBaseBodySize.ToString("0.##")));
                     __result = false;
                 }
             }

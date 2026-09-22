@@ -7,4 +7,6 @@
   <FFF_MessageLadarTriggered>周界扫描仪侦测到一个隐形生物。</FFF_MessageLadarTriggered>
   <FFF_LadarDetectedInvisible>附近有隐形物体</FFF_LadarDetectedInvisible>
 
+  <RepairMech>维修{0}</RepairMech>
+
 </LanguageData>

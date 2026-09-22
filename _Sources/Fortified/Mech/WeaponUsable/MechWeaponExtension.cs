@@ -81,7 +81,7 @@ namespace Fortified
             if (weaponDef == null) return false;
             if (weaponDef.TryGetModExtension<HeavyEquippableExtension>(out var ext))
             {
-                if (ext.EquippableDef.EquippableBaseBodySize == -1) return false;//無體型限制的武器不適用於此處理。
+                if (ext.EquippableDef.IsMountedWeapon) return false;//掛載型武器沒有體型門檻，不適用於此處理。
                 return ext.EquippableDef.EquippableBaseBodySize < PawnBodysize;
             }
             return true;

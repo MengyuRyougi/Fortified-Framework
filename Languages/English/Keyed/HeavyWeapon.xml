@@ -17,6 +17,9 @@
 
     <!-- EN: bodysize not supported (need:{0}) -->
     <FFF.BodysizeNotSupported>bodysize not supported (need:{0})</FFF.BodysizeNotSupported>
+
+    <!-- EN: mounted weapon, needs a supporting frame, apparel or bionics -->
+    <FFF.MountedWeaponNotSupported>mounted weapon, needs a supporting frame, apparel or bionics</FFF.MountedWeaponNotSupported>
     
     <FFF.ViewUsableWeapons>View Usable Weapons</FFF.ViewUsableWeapons>
 

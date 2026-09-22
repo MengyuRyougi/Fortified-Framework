@@ -171,11 +171,24 @@ namespace Fortified
         /// </summary>
         public static ThingDef[] UseableByListsOfMechs(ThingWithComps weapon)
         {
+            return UseableByListsOfMechs(weapon?.def);
+        }
+
+        /// <summary>
+        /// 只看 def 的版本，不需要先把武器實例化。
+        /// </summary>
+        public static ThingDef[] UseableByListsOfMechs(ThingDef weaponDef)
+        {
             var compatibleMechs = new List<ThingDef>();
+
+            if (weaponDef == null)
+            {
+                return compatibleMechs.ToArray();
+            }
 
             foreach (ThingDef mechDef in _weaponUseableMechs)
             {
-                if (CanMechUseWeapon(mechDef, weapon))
+                if (CanMechUseWeapon(mechDef, weaponDef))
                 {
                     compatibleMechs.AddDistinct(mechDef);
                 }
@@ -189,36 +202,71 @@ namespace Fortified
         /// </summary>
         public static bool CanMechUseWeapon(ThingDef mechDef, ThingWithComps weapon)
         {
-            var mechExtension = mechDef.GetModExtension<MechWeaponExtension>();
+            return CanMechUseWeapon(mechDef, weapon?.def);
+        }
 
-            if (mechExtension == null || weapon == null)
+        /// <summary>
+        /// 只看 def 的版本，判定順序與實際裝備檢查（CheckUtility.UseableInStatic）一致：
+        /// 1.重型武器的種族白名單可無視武器系統與體型限制。
+        /// 2.啟用武器系統篩選的機械體只認白名單（標籤／科技等級／分類），體型符合也不算支援。
+        /// 3.未啟用篩選的機械體仍要通過科技等級／分類，再比對重型武器的體型門檻。
+        /// </summary>
+        public static bool CanMechUseWeapon(ThingDef mechDef, ThingDef weaponDef)
+        {
+            if (mechDef == null || weaponDef == null)
             {
                 return false;
             }
 
-            if (mechExtension.CanUse(weapon) || mechExtension.CanUseAsHeavyWeapon(weapon, mechDef.race.baseBodySize))
+            var mechExtension = mechDef.GetModExtension<MechWeaponExtension>();
+
+            if (mechExtension == null)
+            {
+                return false;
+            }
+
+            var heavyExtension = weaponDef.GetModExtension<HeavyEquippableExtension>();
+
+            if (heavyExtension?.EquippableDef != null &&
+                heavyExtension.EquippableDef.EquippableByRace.NotNullAndContains(mechDef))
             {
                 return true;
             }
 
-            if (!mechExtension.EnableWeaponFilter)
+            // 武器系統（標籤／科技等級／分類）不支援的話，體型再大也拿不起來。
+            if (!mechExtension.CanUse(weaponDef))
             {
-                return CanEquipAsHeavyWeapon(weapon, mechDef);
+                return false;
             }
 
-            return false;
+            // 啟用篩選時白名單就是授權，不再受體型門檻限制。
+            if (mechExtension.EnableWeaponFilter)
+            {
+                return true;
+            }
+
+            return MeetsHeavyBodySizeRequirement(heavyExtension, mechDef);
         }
 
         /// <summary>
-        /// 檢查武器是否可作為重型裝備安裝
+        /// 比對重型武器的體型門檻；掛載型武器沒有體型門檻，
+        /// 只能靠種族／服裝／Hediff／基因取得，不會因為體型夠大就能裝備。
         /// </summary>
-        private static bool CanEquipAsHeavyWeapon(ThingWithComps weapon, ThingDef mechDef)
+        private static bool MeetsHeavyBodySizeRequirement(HeavyEquippableExtension heavyExtension, ThingDef mechDef)
         {
-            var heavyEquipExtension = weapon.def.GetModExtension<HeavyEquippableExtension>();
+            if (heavyExtension?.EquippableDef == null)
+            {
+                return true;
+            }
 
-            return heavyEquipExtension != null &&
-                   heavyEquipExtension.EquippableDef != null &&
-                   heavyEquipExtension.CanEquippedBy(mechDef);
+            if (heavyExtension.EquippableDef.IsMountedWeapon)
+            {
+                return false;
+            }
+
+            float requiredSize = heavyExtension.EquippableDef.EquippableBaseBodySize;
+
+            return mechDef.race != null && mechDef.race.baseBodySize >= requiredSize;
         }
     }
 }

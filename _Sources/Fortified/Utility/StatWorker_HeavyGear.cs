@@ -13,28 +13,39 @@ namespace Fortified
         public override IEnumerable<Dialog_InfoCard.Hyperlink> GetInfoCardHyperlinks(StatRequest statRequest)
         {
             HeavyEquippableExtension ext = statRequest.Def.GetModExtension<HeavyEquippableExtension>();
-            if (ext != null)
+            if (ext?.EquippableDef == null)
             {
-                foreach (HediffDef hediff in ext.EquippableDef.EquippableWithHediff)
+                yield break;
+            }
+
+            foreach (HediffDef hediff in ext.EquippableDef.EquippableWithHediff)
+            {
+                yield return new Dialog_InfoCard.Hyperlink(hediff);
+            }
+            foreach (ThingDef apparel in ext.EquippableDef.EquippableWithApparel)
+            {
+                yield return new Dialog_InfoCard.Hyperlink(apparel);
+            }
+            if (ModsConfig.BiotechActive)
+            {
+                foreach (GeneDef gene in ext.EquippableDef.EquippableWithGene)
                 {
-                    yield return new Dialog_InfoCard.Hyperlink(hediff);
+                    yield return new Dialog_InfoCard.Hyperlink(gene);
                 }
-                foreach (ThingDef apparel in ext.EquippableDef.EquippableWithApparel)
-                {
-                    yield return new Dialog_InfoCard.Hyperlink(apparel);
-                }
-                if (ModsConfig.BiotechActive)
-                {
-                    foreach (GeneDef gene in ext.EquippableDef.EquippableWithGene)
-                    {
-                        yield return new Dialog_InfoCard.Hyperlink(gene);
-                    }
-                }
-                foreach (ThingDef race in ext.EquippableDef.EquippableByRace)
+            }
+
+            // 種族白名單與機械體清單會重疊，只列一次。
+            var listed = new HashSet<ThingDef>();
+            foreach (ThingDef race in ext.EquippableDef.EquippableByRace)
+            {
+                if (race != null && listed.Add(race))
                 {
                     yield return new Dialog_InfoCard.Hyperlink(race);
                 }
-                foreach (ThingDef race in WeaponTagUtil.UseableByListsOfMechs(ThingMaker.MakeThing(statRequest.Def as ThingDef) as ThingWithComps))
+            }
+            foreach (ThingDef race in WeaponTagUtil.UseableByListsOfMechs(statRequest.Def as ThingDef))
+            {
+                if (listed.Add(race))
                 {
                     yield return new Dialog_InfoCard.Hyperlink(race);
                 }
@@ -46,7 +57,7 @@ namespace Fortified
         }
         public override string GetExplanationFinalizePart(StatRequest req, ToStringNumberSense numberSense, float finalVal)
         {
-            if (req.Def.GetModExtension<HeavyEquippableExtension>().EquippableDef.EquippableBaseBodySize == -1)
+            if (req.Def.GetModExtension<HeavyEquippableExtension>().EquippableDef.IsMountedWeapon)
             {
                 return "FFF.MountedWeaponCanOnlyBeEquippedBySpecificApparelOrRaces".Translate();
             }
@@ -54,7 +65,7 @@ namespace Fortified
         }
         public override string GetStatDrawEntryLabel(StatDef stat, float value, ToStringNumberSense numberSense, StatRequest optionalReq, bool finalized = true)
         {
-            if (optionalReq.Def.GetModExtension<HeavyEquippableExtension>().EquippableDef.EquippableBaseBodySize == -1)
+            if (optionalReq.Def.GetModExtension<HeavyEquippableExtension>().EquippableDef.IsMountedWeapon)
             {
                 return "FFF.MountedWeapon".Translate();
             }

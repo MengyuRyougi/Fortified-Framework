@@ -13,8 +13,8 @@ namespace Fortified
         /// 2.穿戴特定服裝
         /// 3.具有特定Hediff
         /// 4.具有特定基因
-        /// 5.體型判定。(-1 為無體型限制的武器)
-        /// 6.以上皆符合則回傳true，否則false
+        /// 5.體型判定。(掛載型武器沒有體型門檻，只認 1~4 的白名單)
+        /// 6.任一符合則回傳true，否則false
         /// </summary>
         public bool CanEquippedBy(Pawn pawn)
         {
@@ -37,10 +37,13 @@ namespace Fortified
             if (CheckUtility.HasAnyGeneOf(pawn, EquippableDef.EquippableWithGene))
                 return true;
 
-            // 體型判定。(-1 為無體型限制的武器，應該返回 true)
+            // 掛載型武器沒有體型門檻，上面的白名單都沒中就是不能裝備。
+            // （機械體靠武器系統白名單取得的權限由 CheckUtility.UseableInStatic 負責）
+            if (EquippableDef.IsMountedWeapon)
+                return false;
+
+            // 體型判定。
             float requiredSize = EquippableDef.EquippableBaseBodySize;
-            if (requiredSize == -1f)
-                return true;
 
             // 機械體特殊處理：只有在未啟用武器過濾時才允許以體型判定
             if (pawn.RaceProps.IsMechanoid)
@@ -79,9 +82,11 @@ namespace Fortified
             if (ext != null && ext.EnableWeaponFilter)
                 return false;
 
+            // 掛載型武器沒有體型門檻，種族白名單以外一律不過。
+            if (EquippableDef.IsMountedWeapon)
+                return false;
+
             float requiredSize = EquippableDef.EquippableBaseBodySize;
-            if (requiredSize == -1f)
-                return true;
 
             if (pawnRaceDef?.race != null && pawnRaceDef.race.baseBodySize >= requiredSize)
                 return true;

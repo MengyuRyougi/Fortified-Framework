@@ -39,6 +39,11 @@ namespace Fortified
 		/// <summary>初始化人型機械的 story/style/skills/workSettings，對應原 HumanlikeMech.CheckTracker。</summary>
 		public static void CheckTracker(Pawn pawn)
 		{
+			if (pawn == null)
+			{
+				return;
+			}
+
 			if (pawn.story != null)
 			{
 				try { _ = pawn.story.SkinColorBase; }
@@ -48,6 +53,9 @@ namespace Fortified
 			HumanlikeMechExtension ext = Extension(pawn);
 			if (ext == null)
 			{
+				// 沒有 extension 就不建 tracker，但 workSettings 可能由原版／其他來源建立，
+				// 仍要套用白名單，否則一樣會拿到設計外的工作權限。
+				ApplyWorkTypeRestrictions(pawn);
 				return;
 			}
 
@@ -98,20 +106,71 @@ namespace Fortified
 			{
 				pawn.workSettings = new Pawn_WorkSettings(pawn);
 				pawn.workSettings.EnableAndInitializeIfNotAlreadyInitialized();
-				ApplyWorkTypeRestrictions(pawn);
 			}
+
+			// 不論 workSettings 是本次新建、還是讀檔／其他來源帶進來的，都重新套用白名單。
+			// 舊存檔中的非玩家機兵帶著超出設計的 priorities，只有每次都套用才能修正。
+			ApplyWorkTypeRestrictions(pawn);
 		}
 
-		/// <summary>限制機械體工作類型，對應原 HumanlikeMech.ApplyWorkTypeRestrictions。</summary>
+		/// <summary>讀檔期間延後處理的 pawn，避免同一次讀檔對同一隻重複排隊。</summary>
+		private static readonly HashSet<Pawn> deferredRestrictionPawns = new HashSet<Pawn>();
+
+		/// <summary>
+		/// 依 race.mechEnabledWorkTypes 白名單關閉其餘工作類型。
+		/// 原版只在 IsColonyMech（玩家陣營、非精神狀態、Biotech 啟用）時才把白名單外的工作列為 disabled，
+		/// 所以非玩家機械體／精神狀態中的機兵完全不受限制；這裡不看陣營一律套用。
+		/// </summary>
 		public static void ApplyWorkTypeRestrictions(Pawn pawn)
 		{
-			if (pawn.workSettings == null) return;
-			if (pawn.RaceProps.IsMechanoid || pawn.RaceProps.mechEnabledWorkTypes.NullOrEmpty()) return;
-			foreach (WorkTypeDef w in DefDatabase<WorkTypeDef>.AllDefsListForReading)
+			if (pawn?.workSettings == null || !pawn.workSettings.EverWork || pawn.Discarded)
 			{
-				if (!pawn.RaceProps.mechEnabledWorkTypes.Contains(w))
+				return;
+			}
+
+			RaceProperties race = pawn.RaceProps;
+			if (race == null)
+			{
+				return;
+			}
+
+			List<WorkTypeDef> allowed = race.mechEnabledWorkTypes;
+
+			// 白名單為空時機械體一律 fail-closed（與原版對 IsColonyMech 的處理一致：
+			// 白名單外全部 disabled，空白名單就是全關），避免 def 解析失敗時變成不限制。
+			// 非機械體（人型 AMO）沒有這層原版語意，空白名單視為「未設限」才放行。
+			if (allowed.NullOrEmpty() && !race.IsMechanoid)
+			{
+				return;
+			}
+
+			// 讀檔期間 SetPriority(0) 會觸發 jobs.Notify_WorkTypeDisabled → 可能 EndCurrentJob，
+			// 此時地圖／保留系統尚未就緒，延到讀檔結束再做。
+			if (Scribe.mode != LoadSaveMode.Inactive)
+			{
+				Pawn deferred = pawn;
+				if (deferredRestrictionPawns.Add(deferred))
 				{
-					pawn.workSettings.SetPriority(w, 0);
+					LongEventHandler.ExecuteWhenFinished(delegate
+					{
+						deferredRestrictionPawns.Remove(deferred);
+						ApplyWorkTypeRestrictions(deferred);
+					});
+				}
+				return;
+			}
+
+			List<WorkTypeDef> all = DefDatabase<WorkTypeDef>.AllDefsListForReading;
+			for (int i = 0; i < all.Count; i++)
+			{
+				WorkTypeDef workType = all[i];
+				if (workType == null || (allowed != null && allowed.Contains(workType)))
+				{
+					continue;
+				}
+				if (pawn.workSettings.GetPriority(workType) != 0)
+				{
+					pawn.workSettings.SetPriority(workType, 0);
 				}
 			}
 		}
