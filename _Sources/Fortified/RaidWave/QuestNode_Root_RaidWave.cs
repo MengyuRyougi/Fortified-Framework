@@ -54,11 +54,17 @@ public class QuestNode_Root_RaidWave : QuestNode
         {
             if (entry.kindDef == null || entry.count <= 0) continue;
 
+            // Temporary factions are removed by FactionManager once the quest is cleaned up,
+            // but RoyalTitle / FactionPermit entries on surviving pawns (and corpses) keep a
+            // reference to them. That reference resolves to null on the next load and
+            // Pawn_RoyaltyTracker.ExposeData then spams "Cannot get current title for null
+            // faction" / throws in AssignHeirIfNone. Never hand out titles for temp factions.
             PawnGenerationRequest request = new PawnGenerationRequest(
                 entry.kindDef, faction,
                 PawnGenerationContext.NonPlayer,
                 tile: -1,
-                forceGenerateNewPawn: true);
+                forceGenerateNewPawn: true,
+                forbidAnyTitle: faction.temporary);
 
             for (int i = 0; i < entry.count; i++)
             {

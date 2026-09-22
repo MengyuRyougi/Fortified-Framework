@@ -26,6 +26,12 @@ namespace Fortified
         public int radius = 0;
         /// <summary>是否受視線（LOS）影響。</summary>
         public bool requireLOS = true;
+        /// <summary>
+        /// 是否能看穿心理隱身（<see cref="PawnUtility.IsPsychologicallyInvisible"/>）。<br/>
+        /// 預設 false：隱身中的 Pawn 不會被掃到。反隱身掃描器設為 true。<br/>
+        /// 掛 <see cref="ModExtension_AlertScannerImmunity"/> 的 Hediff 不受此開關影響，一律豁免。
+        /// </summary>
+        public bool detectsInvisible = false;
 
         // ── 旋轉補正（Attachment 用）────────────────────────────
         /// <summary>
@@ -86,13 +92,15 @@ namespace Fortified
     ///   • radius > 0 → 圓形<br/>
     /// 視線：<see cref="CompProperties_AlertScanner.requireLOS"/> 控制。<br/>
     /// 電力：有 <see cref="CompPowerTrader"/> 時斷電停止掃描。<br/>
-    /// EMP：有 <see cref="CompCanBeDormant"/> 時被 EMP 癱瘓後停止掃描。
+    /// EMP：有 <see cref="CompStunnable"/> 時被 EMP / Stun 暈眩期間停止掃描。<br/>
+    /// 休眠：有 <see cref="CompCanBeDormant"/> 時休眠中停止掃描。（判定集中在 <see cref="AlertBuildingUtility"/>）
     /// </para>
     /// </summary>
     public class CompAlertScanner : ThingComp
     {
         // ── 快取（Comp 引用）────────────────────────────────────
         private CompPowerTrader cachedPower;
+        private CompStunnable cachedStunnable;
         private CompCanBeDormant cachedDormant;
 
         // ── 掃描格快取 ───────────────────────────────────────────
@@ -127,15 +135,7 @@ namespace Fortified
         // ── 屬性 ────────────────────────────────────────────────
         public CompProperties_AlertScanner Props => (CompProperties_AlertScanner)props;
 
-        private bool IsOperational
-        {
-            get
-            {
-                if (cachedPower != null && !cachedPower.PowerOn) return false;
-                if (cachedDormant != null && !cachedDormant.Awake) return false;
-                return true;
-            }
-        }
+        private bool IsOperational => AlertBuildingUtility.IsOperational(cachedPower, cachedStunnable, cachedDormant);
 
         private bool IsArmed => rearmTicksLeft <= 0;
 
@@ -143,8 +143,9 @@ namespace Fortified
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            cachedPower   = parent.GetComp<CompPowerTrader>();
-            cachedDormant = parent.GetComp<CompCanBeDormant>();
+            cachedPower     = parent.GetComp<CompPowerTrader>();
+            cachedStunnable = parent.GetComp<CompStunnable>();
+            cachedDormant   = parent.GetComp<CompCanBeDormant>();
             nextCheckTick = Find.TickManager.TicksGame + Props.checkInterval;
             InvalidateScanCache();
             // 登錄到地圖警戒計數器（供 Alert 判定「地圖存在相關警報建築」）
@@ -349,7 +350,8 @@ namespace Fortified
                         && pawn.Faction != parent.Faction
                         && pawn.Faction.HostileTo(parent.Faction ?? Faction.OfPlayer)
                         && !pawn.Dead
-                        && !pawn.Downed)
+                        && !pawn.Downed
+                        && CanDetect(pawn))
                     {
                         found = true;
                         break;
@@ -360,6 +362,22 @@ namespace Fortified
 
             SetDetecting(found);
             if (found) BeginCountdownOrFire();
+        }
+
+        /// <summary>
+        /// 隱身／潛行豁免：心理隱身（除非 detectsInvisible）與掛
+        /// <see cref="ModExtension_AlertScannerImmunity"/> 的 Hediff 會讓 Pawn 躲過掃描；
+        /// detectionChance 介於 0~1 時每次掃描擲一次骰。
+        /// Stealth exemption: psychologically invisible pawns (unless detectsInvisible) and pawns carrying a hediff
+        /// with <see cref="ModExtension_AlertScannerImmunity"/> slip past the scan; a partial detectionChance is
+        /// rolled once per scan.
+        /// </summary>
+        private bool CanDetect(Pawn pawn)
+        {
+            float chance = ModExtension_AlertScannerImmunity.GetDetectionChance(pawn, Props.detectsInvisible);
+            if (chance >= 1f) return true;
+            if (chance <= 0f) return false;
+            return Rand.Chance(chance);
         }
 
         // ── 掃描格快取 ───────────────────────────────────────────

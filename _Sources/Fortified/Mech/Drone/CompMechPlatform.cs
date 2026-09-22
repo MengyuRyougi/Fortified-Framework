@@ -739,7 +739,9 @@ namespace Fortified
                     {
 #if MULTIPLAYER
                         [SyncMethod] void SyncRetract() {
-                            foreach (Pawn item in spawnedPawns)
+                            // 無人機貼著平台時 ReturnToPlatform 會在同一幀跑完 job 並呼叫 Retracted，
+                            // 直接從 spawnedPawns 移除；不複製一份就會 Collection was modified。
+                            foreach (Pawn item in spawnedPawns.ToList())
                             {
                                 if (item.TryGetComp<CompDrone>(out var d))
                                 {
@@ -749,7 +751,9 @@ namespace Fortified
                         }
                         SyncRetract();
 #else
-                        foreach (Pawn item in spawnedPawns)
+                        // 無人機貼著平台時 ReturnToPlatform 會在同一幀跑完 job 並呼叫 Retracted，
+                        // 直接從 spawnedPawns 移除；不複製一份就會 Collection was modified。
+                        foreach (Pawn item in spawnedPawns.ToList())
                         {
                             if (item.TryGetComp<CompDrone>(out var d))
                             {

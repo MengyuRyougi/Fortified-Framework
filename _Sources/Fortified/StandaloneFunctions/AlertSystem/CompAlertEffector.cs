@@ -61,9 +61,17 @@ namespace Fortified
                 OnAlertNotify();
         }
 
-        /// <summary>由外部（MapComponent_AlertCounter 或 Signal）呼叫通知警報。</summary>
+        /// <summary>
+        /// 由外部（MapComponent_AlertCounter 或 Signal）呼叫通知警報。<br/>
+        /// 斷電、被 EMP / Stun 暈眩、或休眠中的反制建築一律不觸發，也不消耗 oneShot 與觸發機率
+        /// （判定見 <see cref="AlertBuildingUtility.IsOperational(ThingWithComps)"/>）。
+        /// Alarm entry point. An unpowered, EMP/stun-stunned or dormant counter-measure building never fires,
+        /// and neither its oneShot nor its trigger roll is consumed.
+        /// </summary>
         public void OnAlertNotify()
         {
+            if (!parent.Spawned) return;
+            if (!AlertBuildingUtility.IsOperational(parent)) return;
             if (Props.oneShot && hasFired) return;
 
             // 同 tick 去重：防止多個 Scanner 同 tick 廣播 Signal 導致重複觸發
