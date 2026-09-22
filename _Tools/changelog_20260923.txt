@@ -1,0 +1,55 @@
+[h1]Update 2026-09-23[/h1]
+[i]Changes since the 2026-09-04 release (17 commits).[/i]
+
+[h2]New features[/h2]
+[list]
+[*][b]Special mechanics on info cards[/b]: info cards have a new [b]Special mechanics[/b] section. It explains in plain text how framework features work, such as ammo switching, heavy weapons, drone platforms, overseers, the dead man's switch, the alert system and deployables. Around 70 entries are included. A pawn's info card also lists the mechanics from its hediffs, apparel, weapons and genes.
+[*][b]Field recycling[/b]: downed or destroyed units that have [b]CompProperties_Recycleable[/b] (for example drones) can be marked with a [b]Recycle[/b] gizmo or a right-click order. A colonist with construction work enabled then takes the unit apart on the spot. The default yield is the unit's butcher products, and a corpse gives half. Recycling a downed unit does not trigger death effects or a platform refund.
+[*][b]Overseers can activate storage cradles[/b]: overseer buildings can target a cradle and activate the mech inside instantly. Overseer mechs get the same hack option that mechanitors have. The overseer pays the bandwidth cost.
+[*][b]Alarm-triggered cradles[/b]: the new [b]CompAlertEffector_ReleaseCapsuleMech[/b] wakes the mothballed mech inside a cradle as a hostile when an alarm goes off on the same map. Cradles owned by the player never react.
+[*][b]Equip a deployed weapon directly[/b]: right-clicking a deployed deployable weapon with a weapon-using mech now offers [b]Equip[/b]. The mech's current weapon is dropped to make room.
+[*][b]Internal battery standby[/b]: when a building with an internal battery is switched off, it now charges at twice the normal rate ([code]standbyChargeFactor[/code]). The power comes from grid batteries, or from surplus power if the grid has no batteries. Buildings owned by non-player factions now spawn with 50–100% charge ([code]npcInitialChargePct[/code]), so ruin and site defenses work as soon as they spawn.
+[*][b]Scanner stealth[/b]: alert scanners now ignore psychologically invisible pawns. Set [code]detectsInvisible[/code] to make an anti-stealth scanner. The new [b]ModExtension_AlertScannerImmunity[/b] on a HediffDef hides a pawn from scanners completely, or partly with [code]detectionChance[/code].
+[*][b]Loot on shelves[/b]: garrisoned structures now put their loot on the shelves inside the compound first, and only scatter what does not fit. The new [b]FFF_Element_FillStorage[/b] layout element fills shelves from a ThingSetMakerDef.
+[*][b]Combat Extended[/b]: added [b]Verb_ArcSprayProjectileCE[/b], a CE version of the arc-spray verb. It uses CE ammo, fire modes and ballistics.
+[*][b]Worsening implant conditions[/b]: [b]HediffGiver_RandomSilent[/b] has a new [code]levelUpIfExists[/code] option. It raises an existing leveled hediff by one level instead of skipping it, and it pauses while the pawn is immune. It can also show a message when the level goes up.
+[/list]
+
+[h2]Changes[/h2]
+[list]
+[*][b]Mech modification window[/b]: reworked layout, tooltips on slots and items, and a queue that updates when installed modifications change. The window now works in multiplayer, the gizmo has a new icon, and only mechs from your colony can be modified.
+[*][b]Mounted weapons[/b] (body size -1) can no longer be equipped by body size alone. They now need a whitelisted race, apparel, hediff, gene or mech weapon system. The rejection message now says what is needed instead of "need: -1".
+[*][b]Enemy gear can be inspected[/b]: non-player turrets and units now show their ammo-switch gizmo (disabled), and non-player pawns show the multi-turret gizmo in read-only mode.
+[*][b]Alert system[/b]: scanners and counter-measure buildings now go offline while EMP- or stun-stunned. Counter-measures also stay inactive while unpowered or dormant, and do not use up their one-shot trigger when offline.
+[*][b]AMOs[/b]: humanlike artificial organisms can now join caravans. Mechs that are controlled directly (AMOs, overseer mechs) can no longer be assigned to a mechanitor, and no longer show the vanilla "uncontrolled" line. The ration readout only appears on your own AMOs.
+[*][b]Heavy weapon info card[/b]: the compatible-mech list now matches the real equip rules and no longer shows the same race twice.
+[*]Hull walls have proper build-menu icons.
+[/list]
+
+[h2]Fixes[/h2]
+[list]
+[*][b]Hotfix for the 2026-09-04 release[/b]: drones, command relays and woken dead-man-switch mechs from mods that use the vanilla Pawn class lost their special handling. This affected command range, drafting and weapon dropping, and it now works again.
+[*][b]Plated mechs were immune to EMP, stun and firefoam[/b]: protective shields absorbed all non-health damage. That damage now passes through.
+[*][b]Shield comp leak[/b]: adding the shield's damage comp to a pawn whose def has no comps added it to a list shared by every comp-less thing. The pawn now gets its own list.
+[*][b]Modification jobs[/b]: an install is no longer cancelled when a hauler merges the leftover stack. A failed merge now says why. Whole-body modifications from older saves can be stacked again, and removing a stacked modification refunds every unit. Modification jobs no longer all save as "Job_-1", which broke reservations after loading, and they are no longer recycled into unrelated jobs.
+[*][b]Solar flares[/b]: internal-battery buildings switch to battery power immediately, instead of flickering between grid and battery every 20 ticks.
+[*][b]Drones[/b]: drones can now return to wearable or mech-mounted platforms (before, the job failed every time the carrier moved). Recalling drones next to the platform no longer throws "Collection was modified". A platform with a broken PawnKindDef logs a clear error instead of throwing from the gizmo.
+[*][b]Custom knowledge tabs (Anomaly)[/b]: custom research categories are no longer hidden until the monolith is activated. Knowledge poured into a category with no active project now flows on to the next category instead of being lost.
+[*][b]Mech self-repair mode[/b] can now be used on injured mechs. Before, it only worked on mechs with a missing part.
+[*][b]Humanlike mechs[/b]: the allowed-work list is now applied every time, including to non-player mechs and older saves. This removes work types the mech should not have.
+[*][b]Signals no longer cross maps[/b]: an alarm or remote signal in an underground pocket map no longer triggers effectors, movers, self-destructs or area triggers on the surface.
+[*][b]Structures vs. landmarks[/b]: framework structures now reserve their footprint during map generation, so Odyssey landmarks and other structures no longer spawn on top of them with broken walls.
+[*][b]Raid waves[/b]: pawns spawned for temporary raid factions no longer get royal titles.
+[*][b]Save repair[/b]: when a save loads, titles and permits tied to a faction that no longer exists are removed. This stops the "Cannot get current title for null faction" error spam and a load crash.
+[*][b]Other fixes[/b]: vehicle turrets no longer throw when respawned; multi-turret ammo pickup no longer fails reservation on small stacks; leveled hediff labels no longer break when the level is higher than the number of stages; typos in the modification job report text are fixed; scanner status, facility lockdown, airspace blockade, precision bombardment and entity release messages now have their missing text.
+[/list]
+
+[h2]For mod authors[/h2]
+[list]
+[*][b]Info cards[/b]: define entries with [b]Fortified.FFF_InfoDef[/b]. Attach them with [b]InfoDisplayExtension[/b], with [code]autoAttachTo[/code], or by implementing [b]IInfoProvider[/b]. [b]CompProperties_AmmoSwitch[/b], [b]CompProperties_Overseer[/b], [b]CompProperties_DamageBlocker[/b] and [b]ModExt_EnvironmentalBill[/b] have an [code]infoDef[/code] field to override the default entry.
+[*][b]MapComponent_ModificationIndex[/b] was removed. Use [b]ModificationUtility.GetCandidates[/b] and [b]ModificationUtility.CountAvailable[/b] instead.
+[*][b]Building_MechCapsule.ActivateMech[/b] now takes a [b]Thing[/b], so an overseer can be the activator. [b]CanActivate[/b] and [b]ReleaseHostile[/b] are new.
+[*]To read cached mech comps, call the [b]CachedOverseerSubject / CachedDeadManSwitch / CachedCommandRelay / CachedDrone / CachedMechRepairable[/b] extension methods. Don't check [code]is ICachedMechComps[/code], because that check misses mechs that use other thing classes.
+[*]Weapon compatibility checks ([b]CheckUtility.IsMechUseable[/b], [b]MechWeaponExtension.CanUse[/b], [b]WeaponTagUtil.CanMechUseWeapon[/b]) now have ThingDef overloads, so they work without spawning the weapon.
+[*]Usage guides for info cards and recycling are in [code]_Sources/Fortified/Docs[/code]. The unused [code]DamageBlockerExamples.xml[/code] was removed from the mod root.
+[/list]
