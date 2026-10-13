@@ -20,12 +20,14 @@ namespace Fortified
             TargetCategoryDefName
         };
 
-        // Postfix 保留原來由其他模組加入的面板，只在非開發模式時移除目標分類
+        // 開發模式且模組設定允許時才顯示目標分類
+        public static bool ShowDevCategory => Prefs.DevMode && FortifiedMod.Settings.showDevCategory;
+
+        // Postfix 保留原來由其他模組加入的面板，只在不顯示時移除目標分類
         public static void Postfix(MainTabWindow_Architect __instance)
         {
-            bool devMode = Prefs.DevMode;
-            if (devMode)
-                return; // 開發模式下不處理，保留所有面板
+            if (ShowDevCategory)
+                return; // 顯示時不處理，保留所有面板
 
             var list = DesPanelsCachedRef(__instance);
             if (list == null || list.Count == 0)
@@ -58,16 +60,16 @@ namespace Fortified
             AccessTools.MethodDelegate<Action<MainTabWindow_Architect>>(
                 AccessTools.Method(typeof(MainTabWindow_Architect), "CacheSearchState"));
 
-        private static bool? lastDevMode;
+        private static bool? lastShowDevCategory;
 
         public static void Postfix(MainTabWindow_Architect __instance)
         {
-            // 必須與 CacheDesPanels 的隱藏條件一致（只看 DevMode），否則切換開發模式時不會重建面板
-            bool current = Prefs.DevMode;
-            if (lastDevMode.HasValue && lastDevMode.Value == current)
+            // 必須與 CacheDesPanels 的隱藏條件一致（DevMode 與模組設定），否則切換時不會重建面板
+            bool current = Patch_MainTabWindow_Architect_CacheDesPanels.ShowDevCategory;
+            if (lastShowDevCategory.HasValue && lastShowDevCategory.Value == current)
                 return;
 
-            lastDevMode = current;
+            lastShowDevCategory = current;
             CacheDesPanelsCall(__instance);
             CacheSearchStateCall(__instance);
         }
