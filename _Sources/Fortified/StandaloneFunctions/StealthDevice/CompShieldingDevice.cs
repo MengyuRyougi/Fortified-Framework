@@ -39,7 +39,9 @@ public class CompShieldingDevice : ThingComp
     public bool HasPower => CompPower == null || CompPower.PowerOn;
 
     private int remainingTicks = 0;
-    public bool Active => HasPower && remainingTicks < 1 && (Props.planetLayerWhitelist.NullOrEmpty() || Props.planetLayerWhitelist.Contains(parent.Map.Tile.LayerDef));
+    public bool CoolingDown => remainingTicks > 0;
+    public bool LayerAllowed => Props.planetLayerWhitelist.NullOrEmpty() || Props.planetLayerWhitelist.Contains(parent.Map.Tile.LayerDef);
+    public bool Active => HasPower && !CoolingDown && LayerAllowed;
 
     private MapComponent_Population popCache;
     public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -90,39 +92,35 @@ public class CompShieldingDevice : ThingComp
     {
         if (!HasPower) return;
         // 只處理冷卻；耗電調整不在 Tick 中做（由事件觸發）
-        if (!Active)
+        if (CoolingDown)
         {
-            if (remainingTicks > 0) remainingTicks--;
+            remainingTicks--;
+            // 只在冷卻歸零的那一刻提示一次；不能用 !Active 判斷，位於白名單外星層時 Active 恆為 false，會每 tick 洗訊息
             if (remainingTicks == 0)
             {
                 Messages.Message("FFF.MessageDeviceReady".Translate(parent.LabelCap), parent, MessageTypeDefOf.PositiveEvent);
             }
+        }
 
-            //冷卻中狀態的顯示
-            if (Props.cooldownEffecter == null) return;
-            if (effecter == null || effecter.def != Props.cooldownEffecter)
-            {
-                effecter?.Cleanup();
-                effecter = Props.cooldownEffecter.SpawnAttached(parent, parent.Map);
-            }
-            else effecter?.EffectTick(parent, TargetInfo.Invalid);
-        }
-        else
+        //冷卻中／可用狀態的顯示；不可運作的星層上不顯示
+        EffecterDef effecterDef = CoolingDown ? Props.cooldownEffecter : Active ? Props.activeEffecter : null;
+        if (effecterDef == null)
         {
-            //可用狀態的顯示
-            if (Props.activeEffecter == null) return;
-            if (effecter == null || effecter.def != Props.activeEffecter)
-            {
-                effecter?.Cleanup();
-                effecter = Props.activeEffecter.SpawnAttached(parent, parent.Map);
-            }
-            else effecter?.EffectTick(parent, TargetInfo.Invalid);
+            effecter?.Cleanup();
+            effecter = null;
         }
+        else if (effecter == null || effecter.def != effecterDef)
+        {
+            effecter?.Cleanup();
+            effecter = effecterDef.SpawnAttached(parent, parent.Map);
+        }
+        else effecter.EffectTick(parent, TargetInfo.Invalid);
     }
     public override string CompInspectStringExtra()
     {
         string text = "FFF.ColonistCount".Translate(colonistCountCache);
-        if (!Active) text += "\n" + "FFF.MessageCooldownRemaining".Translate(remainingTicks.ToStringTicksToPeriod());
+        if (CoolingDown) text += "\n" + "FFF.MessageCooldownRemaining".Translate(remainingTicks.ToStringTicksToPeriod());
+        else if (parent.Spawned && !LayerAllowed) text += "\n" + "CannotFunctionOnLayer".Translate(parent.Map.Tile.LayerDef.label).CapitalizeFirst();
         return base.CompInspectStringExtra() + text;
     }
     public void TriggerCooldown(int raidPoint)
