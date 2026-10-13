@@ -86,6 +86,16 @@ FF 框架本身的 `.rimignore` 就用 `!.rimignore` 覆寫了這條預設，讓
 
 鏡像放在模組資料夾內而非系統暫存資料夾，是為了保證與來源同一個磁碟區，讓硬連結一定可用（不佔額外空間、不動到原始檔案）。此資料夾永遠被排除在鏡像之外，RimWorld 也不會將其視為模組內容。
 
+#### 1.7：資源包上傳複本
+
+1.7 的上傳確認視窗預設勾選「建立資源包」：原版會先把每個載入資料夾的 `Textures` / `Sounds` 烘焙成該資料夾內的 `Assets.zip`，
+再把模組複製到系統暫存資料夾（`ModMetaData.workshopUploadDirectoryOverride`，會剔除 `Assets.zip.*` 附屬檔，並可選擇略過已打包的原始貼圖），最後才呼叫 `Upload` 上傳那份複本。
+
+此時第 1 步改為掃描這份複本，確認後直接在複本中刪除排除項目並驗證檔案數（`RimIgnoreStaging.RemoveExcluded`），不建立 `.fff_ws_staging`，也不需要第 3 步的導向；複本由原版在上傳結束後自行刪除。
+取消預覽或處理失敗時會呼叫原版的 `Workshop.ClearStaging`，避免下一次未烘焙的上傳誤用這份舊複本。
+
+`.rimignore` 若有 `*.zip` 這類規則，記得以 `!Assets.zip` 把資源包加回來（本模組的 `.rimignore` 已這麼做）。
+
 ### 防護設計
 
 - **沒有 `.rimignore` 就完全不介入**，原版流程一個位元組都不動。

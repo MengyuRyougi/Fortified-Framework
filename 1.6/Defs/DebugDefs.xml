@@ -61,8 +61,8 @@
     <apparelIgnoreSeasons>true</apparelIgnoreSeasons>
     <apparelIgnorePollution MayRequire="Ludeon.RimWorld.Biotech">true</apparelIgnorePollution>
     <apparelAllowHeadgearChance>0</apparelAllowHeadgearChance>
-    <techHediffsRequired MayRequire="Ludeon.RimWorld.Biotech">
-      <li>Mechlink</li>
+    <techHediffsRequired>
+      <li MayRequire="Ludeon.RimWorld.Biotech">Mechlink</li>
     </techHediffsRequired>
     <combatEnhancingDrugsChance>0</combatEnhancingDrugsChance>
     <combatEnhancingDrugsCount>0</combatEnhancingDrugsCount>

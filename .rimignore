@@ -49,7 +49,8 @@
 
 # ═══════════════════════════════════════════════════════════
 #  Unity 著色器專案
-#  已建置為 1.6/AssetBundles/fortified_shaders_{win,mac,linux}，
+#  已建置為 1.6/AssetBundles/fortified_shaders_{win,mac,linux}
+#  （1.7/AssetBundles 為 linux 版的 Vulkan 複本），
 #  原始 .shader 與 Library/ 不需隨模組發佈。
 # ═══════════════════════════════════════════════════════════
 /UnityProject/
@@ -90,6 +91,11 @@
 *.zip
 *.7z
 *.rar
+
+# 1.7 上傳時原版會為每個載入資料夾烘焙資源包 Assets.zip，必須隨模組上傳；
+# 其附屬檔 Assets.zip.* 只供本機增量烘焙使用，原版上傳時同樣會排除。
+!Assets.zip
+Assets.zip.*
 
 
 # ═══════════════════════════════════════════════════════════

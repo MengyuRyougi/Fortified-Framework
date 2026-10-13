@@ -19,7 +19,7 @@ namespace Fortified
 		public static FieldInfo meetingPoint = AccessTools.Field(typeof(LordToil_PrepareCaravan_GatherItems), "meetingPoint");
 
 		[HarmonyPostfix]
-		public static void Postfix(LordToil_PrepareCaravan_GatherDownedPawns __instance)
+		public static void Postfix(LordToil_PrepareCaravan_GatherItems __instance)
 		{
 			for (int i = 0; i < __instance.lord.ownedPawns.Count; i++)
 			{

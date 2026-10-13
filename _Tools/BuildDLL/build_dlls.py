@@ -16,8 +16,10 @@ What it does
               <ProjectReference> and <Reference><HintPath> entries that point at
               another discovered project's output DLL. FortifiedCE references
               ..\\..\\1.6\\Assemblies\\Fortified.dll, so Fortified is always built
-              first. Cycles are reported and the graph falls back to path order
-              instead of dying.
+              first. Multi-target projects (Fortified builds net472 -> 1.6 and
+              net10.0 -> 1.7) contribute every OutputPath they declare. Cycles
+              are reported and the graph falls back to path order instead of
+              dying.
 
 3. GUARD      refuses to clobber a DLL that RimWorld currently has loaded: the
               game keeps Assemblies\\*.dll memory-mapped, the write fails halfway
@@ -128,6 +130,7 @@ class Project(object):
         self.assembly_name = self.name
         self.output_dir = None               # absolute, or None when unresolvable
         self.output_dll = None
+        self.output_dlls = []                # every target framework's DLL (multi-target)
         self.mod_root = None
         self.raw_refs = []                   # absolute paths this project references
         self.project_refs = []               # absolute .csproj paths
@@ -140,7 +143,7 @@ class Project(object):
         self.errors = []
         self.warnings = []
         self.exit_code = None
-        self.output_before = None            # (mtime, size) of the DLL pre-build
+        self.output_before = None            # {dll: (mtime, size)} pre-build
 
     @property
     def key(self):
@@ -195,17 +198,21 @@ def parse_project(path):
         return proj
 
     props = {}
+    output_paths = []
     for elem in root.iter():
         tag = _strip_ns(elem.tag)
-        if tag in ("AssemblyName", "OutputPath", "TargetFramework",
+        if tag in ("AssemblyName", "OutputPath", "TargetFramework", "TargetFrameworks",
                    "AppendTargetFrameworkToOutputPath", "Configuration"):
             # Last one wins, mirroring MSBuild's top-to-bottom evaluation.
-            # Conditioned PropertyGroups are ignored: OutputPath in these
-            # projects is unconditional, and a wrong guess only degrades the
+            # Conditions are not evaluated: a wrong guess only degrades the
             # post-build size check, never the build itself.
             val = _text(elem)
             if val:
                 props[tag] = val
+                if tag == "OutputPath" and val not in output_paths:
+                    # Multi-target projects declare one OutputPath per target
+                    # framework in conditioned groups; keep all of them.
+                    output_paths.append(val)
         elif tag == "ProjectReference":
             inc = elem.get("Include")
             resolved = _expand_msbuild(inc, proj.dir)
@@ -217,13 +224,22 @@ def parse_project(path):
                 proj.raw_refs.append(resolved)
 
     proj.assembly_name = props.get("AssemblyName") or proj.name
-    out = _expand_msbuild(props.get("OutputPath"), proj.dir)
-    if out:
-        append_tfm = props.get("AppendTargetFrameworkToOutputPath", "true")
-        if append_tfm.strip().lower() != "false" and props.get("TargetFramework"):
-            out = os.path.join(out, props["TargetFramework"])
-        proj.output_dir = out
-        proj.output_dll = os.path.join(out, proj.assembly_name + ".dll")
+    append_tfm = props.get("AppendTargetFrameworkToOutputPath", "true").strip().lower() != "false"
+    tfms = [t.strip() for t in props.get("TargetFrameworks", "").split(";") if t.strip()]
+    if not tfms and props.get("TargetFramework"):
+        tfms = [props["TargetFramework"]]
+    for raw in output_paths:
+        out = _expand_msbuild(raw, proj.dir)
+        if not out:
+            continue
+        dirs = [os.path.join(out, t) for t in tfms] if append_tfm and tfms else [out]
+        for d in dirs:
+            dll = os.path.join(d, proj.assembly_name + ".dll")
+            if dll not in proj.output_dlls:
+                proj.output_dlls.append(dll)
+    if proj.output_dlls:
+        proj.output_dll = proj.output_dlls[-1]
+        proj.output_dir = os.path.dirname(proj.output_dll)
     return proj
 
 
@@ -324,8 +340,8 @@ def link_dependencies(projects):
     and ignored."""
     by_output = {}
     for proj in projects.values():
-        if proj.output_dll:
-            by_output.setdefault(os.path.normcase(proj.output_dll), proj)
+        for dll in proj.output_dlls:
+            by_output.setdefault(os.path.normcase(dll), proj)
 
     for proj in projects.values():
         for ref in proj.raw_refs:
@@ -557,7 +573,7 @@ def run_build(proj, dotnet, args):
     if args.extra:
         cmd.extend(args.extra)
 
-    proj.output_before = snapshot(proj.output_dll) if proj.output_dll else None
+    proj.output_before = {dll: snapshot(dll) for dll in proj.output_dlls}
     started = time.time()
     lines = []
     try:
@@ -627,14 +643,15 @@ def run_build(proj, dotnet, args):
 
     # Exit code 0 but the DLL did not move: warn rather than declare success.
     proj.status = "ok"
-    if proj.output_dll:
-        after = snapshot(proj.output_dll)
-        if after is None:
+    if proj.output_dlls:
+        after = {dll: snapshot(dll) for dll in proj.output_dlls}
+        missing = [dll for dll, snap in after.items() if snap is None]
+        for dll in missing:
             proj.status = "failed"
             proj.errors.append(Diagnostic(
                 "(build)", None, None, "error", "NOOUT",
-                "build reported success but %s does not exist" % proj.output_dll))
-        elif proj.output_before is not None and after == proj.output_before:
+                "build reported success but %s does not exist" % dll))
+        if not missing and proj.output_before and after == proj.output_before:
             proj.warnings.append(Diagnostic(
                 "(build)", None, None, "warning", "NOCHANGE",
                 "output DLL was not rewritten (up to date, or the write was blocked)"))
@@ -660,7 +677,7 @@ def write_report(path, ordered, args, elapsed, roots, cycle):
         add("  %-8s %-24s %6.1fs  E%-3d W%-3d  %s" % (
             proj.status.upper(), proj.name, proj.duration,
             len(proj.errors), len(proj.warnings),
-            proj.output_dll or "(output path unknown)"))
+            ", ".join(proj.output_dlls) or "(output path unknown)"))
     if cycle:
         add("")
         add("  ! circular references between: %s"
@@ -824,7 +841,7 @@ def main(argv):
     if args.list:
         say("")
         for proj in ordered:
-            say("  %-24s -> %s" % (proj.name, proj.output_dll or "(unknown output)"))
+            say("  %-24s -> %s" % (proj.name, ", ".join(proj.output_dlls) or "(unknown output)"))
         return 0
 
     dotnet = find_dotnet()
@@ -837,7 +854,7 @@ def main(argv):
     # --- guard: RimWorld holding the DLLs -----------------------------------
     if not args.no_process_check and not args.dry_run:
         procs = rimworld_processes()
-        locked = [p.output_dll for p in ordered if dll_is_locked(p.output_dll)]
+        locked = [dll for p in ordered for dll in p.output_dlls if dll_is_locked(dll)]
         if procs or locked:
             say("")
             rule("!")
@@ -879,9 +896,9 @@ def main(argv):
             return 130
 
         if proj.status == "ok":
-            note = ""
-            if proj.output_dll and os.path.isfile(proj.output_dll):
-                note = "  (%.0f KB)" % (os.path.getsize(proj.output_dll) / 1024.0)
+            sizes = ["%.0f KB" % (os.path.getsize(dll) / 1024.0)
+                     for dll in proj.output_dlls if os.path.isfile(dll)]
+            note = ("  (%s)" % ", ".join(sizes)) if sizes else ""
             say("    OK   %.1fs  %d warning%s%s"
                 % (proj.duration, len(proj.warnings),
                    "" if len(proj.warnings) == 1 else "s", note))

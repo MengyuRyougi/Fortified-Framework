@@ -22,6 +22,10 @@ UnityEngine.dll
 # Exclude optimized .dds textures from RimPy / png2dds
 *.dds
 
+# RimWorld 1.7 asset packs baked on Workshop upload (and their local sidecars)
+Assets.zip
+Assets.zip.*
+
 
 .idea/
 *.vsidx

@@ -1,0 +1,42 @@
+[h1]Update 2026-10-12[/h1]
+[i]Changes since the 2026-09-23 release (19 commits).[/i]
+
+[h2]New features[/h2]
+[list]
+[*][b]Facility lockdown, rebuilt[/b]: an underground facility's lockdown now runs from a [b]lockdown controller[/b] building. When the alert level maxes out, a countdown starts, and then the blast gates close and the lifts stop. Hacking the controller lifts the lockdown. If the controller is destroyed, the facility seals completely, and someone on the surface has to perform an [b]emergency override[/b] on the entrance (Intellectual 6). Re-hacking the surface entrance also lifts the lockdown. Pawns trapped below with no way out get one day before they are counted as lost.
+[*][b]Huntdown (faction pursuit)[/b]: a general version of Odyssey's pursuing mechanoids. A [b]HuntdownDef[/b] sets the faction, warning letter, wave timing and tracking rules. Huntdowns follow the gravship, can be paused, are postponed while the faction is not hostile, can offer quests after each wave, and show a countdown alert. A huntdown can be started from a scenario ([b]FFF_Huntdown[/b]), a quest or code.
+[*][b]Undiscovered research is masked[/b]: projects not yet discovered no longer show their names or unlocks on the research screen, and quick search no longer gives them away.
+[*][b]Bookcases in generated structures[/b]: [b]FFF_Element_FillStorage[/b] now puts random books in bookcases ([code]booksPerBookcase[/code]). Books from the loot maker go into bookcases before shelves.
+[*][b]Alert effectors can stay dormant in fog[/b]: with the new [code]inactiveWhenFogged[/code] option, a counter-measure building that is still fully hidden in fog does not fire or use up its trigger.
+[*][b]Carry capacity breakdown[/b]: the mass carry capacity tooltip now lists the bonus from apparel and other framework sources.
+[/list]
+
+[h2]Changes[/h2]
+[list]
+[*][b]Arc-spray weapons[/b]: the spray now sweeps back and forth in a zigzag and returns to the centre, and always completes the full arc in one burst. At close range the sweep narrows and never aims at cells beside or behind the shooter. The vanilla and CE versions use the same path.
+[*][b]Deployable weapons[/b]: a deployed weapon that belongs to another faction must be claimed before it can be picked up or equipped.
+[*][b]Ceramic plates[/b]: a modification's install count now goes down as plates wear out. A damaged plate no longer counts toward the install limit, so it can be replaced. Removal refunds only the intact plates.
+[*][b]Alert level[/b]: the alert-level warning now shows only the map you are viewing, so a pocket map's alert no longer appears on the surface.
+[*]Facility walls, hull walls and the mover door have adjusted colours.
+[/list]
+
+[h2]Fixes[/h2]
+[list]
+[*][b]Autofacturers that use fuel never burned it[/b]. They now burn fuel while working, stop when the tank is empty, and draw no working power while stalled.
+[*][b]Autofacturer bills[/b]: deleting a bill now cancels its active work. Finished bills now count toward repeat counts, worker hooks and bill-done stats. Extra ingredients in the machine are dropped beside it instead of being destroyed. Colonists bringing ingredients use what is already in the machine and only haul what is missing.
+[*][b]Alert level stuck at maximum[/b]: once triggered, the alert level now decays back to zero.
+[*][b]Drone warnings[/b]: the "no platform" warning now appears only for your own drones.
+[*][b]Combat Extended turrets[/b]: placing a turret that uses an arc-spray verb no longer throws errors every frame. Forced targets on CIWS / multi-verb turrets are no longer taken over by the CIWS verb. Player turrets with [b]ForceTargetableExtension[/b] can be given forced targets without a manning comp. Non-aimed CE arc-spray shots no longer lock to the first firing direction.
+[*][b]Vehicle turrets[/b] now follow the body's animation offsets.
+[*][b]Custom knowledge tabs[/b]: categories stack vertically like the Anomaly tab, and progress bars draw again.
+[*][b]Robustness[/b]: fixed errors on the info cards of the Occultech extractor and environment exemption facilities. The dev-mode architect category now refreshes when dev mode is toggled. Structure item generation recovers from errors instead of aborting. Hacking the lockdown controller in dev mode no longer throws.
+[/list]
+
+[h2]For mod authors[/h2]
+[list]
+[*][b]HuntdownUtility[/b]: Start / Stop / TrackMap / Delay / Suspend / ResumeNow / FireNextWaveNow, plus pawn binding. [b]HuntdownWorker[/b] can be subclassed for custom behaviour. See [code]Docs/Huntdown_Usage.md[/code].
+[*][b]FactionRelationUtility[/b] sets an exact goodwill and relation kind, without vanilla's overshoot or locks. [b]ScenPart_ForcedFactionGoodwill[/b] now uses it. See [code]Docs/FactionRelation_Usage.md[/code].
+[*][b]DefRenameDef[/b]: declare renamed defs in XML, and old saves and translation keys map them to the new names on load.
+[*][b]Facility lockdown[/b]: place [b]CompFacilityLockdownController[/b] on the controller building, and [b]CompFacilityLockdownGate[/b] on both the surface entrance and the underground exit. The old [b]AlertEffectWorker_FacilityLockdown[/b] was removed. An empty shell is kept only so older saves still load.
+[*][b]IModificationConsumable[/b] lets a modification comp report how many installations are left.
+[/list]

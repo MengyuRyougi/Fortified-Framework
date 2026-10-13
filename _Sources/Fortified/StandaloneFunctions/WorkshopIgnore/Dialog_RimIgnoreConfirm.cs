@@ -23,6 +23,10 @@ namespace Fortified
         private readonly string ignorePath;
         private readonly Action<RimIgnorePlan> onConfirm;
         private readonly Action onUploadAnyway;
+        private readonly Action onCancel;
+
+        /// <summary>已選擇確認或完整上傳；未選擇就關閉視窗（按鈕、X、Esc）都視為取消。</summary>
+        private bool resolved;
 
         private Vector2 scrollPosition = Vector2.zero;
         private string cachedSummary;
@@ -31,13 +35,14 @@ namespace Fortified
         public override Vector2 InitialSize => new Vector2(920f, 680f);
 
         public Dialog_RimIgnoreConfirm(RimIgnorePlan plan, string modName, string ignorePath,
-            Action<RimIgnorePlan> onConfirm, Action onUploadAnyway = null)
+            Action<RimIgnorePlan> onConfirm, Action onUploadAnyway = null, Action onCancel = null)
         {
             this.plan = plan;
             this.modName = modName.NullOrEmpty() ? "?" : modName;
             this.ignorePath = ignorePath;
             this.onConfirm = onConfirm;
             this.onUploadAnyway = onUploadAnyway;
+            this.onCancel = onCancel;
 
             forcePause = true;
             absorbInputAroundWindow = true;
@@ -287,6 +292,7 @@ namespace Fortified
         private void Confirm()
         {
             RimIgnorePlan confirmed = plan;
+            resolved = true;
             Close();
             try
             {
@@ -349,8 +355,26 @@ namespace Fortified
         /// <summary>提供 UploadAnyway 分支（保留給錯誤流程重用）。</summary>
         public void InvokeUploadAnyway()
         {
+            resolved = true;
             Close();
             onUploadAnyway?.Invoke();
+        }
+
+        public override void PostClose()
+        {
+            base.PostClose();
+            if (resolved)
+            {
+                return;
+            }
+            try
+            {
+                onCancel?.Invoke();
+            }
+            catch (Exception e)
+            {
+                Log.Error("[Fortified] 取消過濾上傳時發生錯誤：" + e);
+            }
         }
     }
 }

@@ -10,4 +10,14 @@
 		<li>1.6</li>
 		<li IfModActive="CETeam.CombatExtended,CETeam.CombatExtended_steam">1.6/CE</li>
 	</v1.6>
+	<!--
+		1.7 沿用 1.6 的 Defs / Patches；後列的 1.7 優先，相同相對路徑的檔案會蓋掉 1.6 的版本
+		（Assemblies 的 .NET 10 組件、AssetBundles 的 Vulkan 著色器）。
+		CE 尚無 1.7 版，FortifiedCE 暫不載入。
+	-->
+	<v1.7>
+		<li>/</li>
+		<li>1.6</li>
+		<li>1.7</li>
+	</v1.7>
 </loadFolders>

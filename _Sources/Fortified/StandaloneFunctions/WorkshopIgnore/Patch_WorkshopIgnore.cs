@@ -17,6 +17,10 @@ namespace Fortified
     ///      Steam 便只會看到過濾後的內容。
     ///   4. 上傳進度視窗關閉時清除鏡像。
     ///
+    /// 1.7 起上傳時預設會先烘焙資源包（Assets.zip），原版把模組複製到暫存資料夾
+    /// （ModMetaData.workshopUploadDirectoryOverride）後才呼叫 Upload，上傳的是那份複本。
+    /// 此時改為直接在該複本中刪除排除項目（步驟 2、3 不需要），保留原版的烘焙結果。
+    ///
     /// 任何一步失敗都不會靜默放行：要嘛完整過濾上傳，要嘛中止並告知使用者。
     /// </summary>
     [HarmonyPatch]
@@ -29,6 +33,12 @@ namespace Fortified
 
         private static readonly MethodInfo UploadMethod =
             AccessTools.Method(typeof(Workshop), "Upload", new[] { typeof(WorkshopUploadable) });
+
+#if RW_1_7
+        /// <summary>原版刪除上傳複本並重設 workshopUploadDirectoryOverride／stagedMod 的方法。</summary>
+        private static readonly MethodInfo ClearStagingMethod =
+            AccessTools.Method(typeof(Workshop), "ClearStaging");
+#endif
 
         /// <summary>目前是否有作業中的過濾上傳（供除錯查詢）。</summary>
         public static bool HasActiveSession => activeSession != null;
@@ -73,6 +83,7 @@ namespace Fortified
             }
 
             // 到這裡代表使用者明確放了 .rimignore，之後的錯誤一律中止而非放行。
+            DirectoryInfo bakedCopy = BakedUploadCopy(mod);
             try
             {
                 DiscardActiveSession();
@@ -81,15 +92,16 @@ namespace Fortified
                 if (spec == null)
                 {
                     ShowBlockingError(item, RimIgnoreText.Get(RimIgnoreText.ErrLoadFailed,
-                        "無法讀取 {0}，已中止上傳。詳情請見開發者主控台。", RimIgnoreSpec.FileName));
+                        "無法讀取 {0}，已中止上傳。詳情請見開發者主控台。", RimIgnoreSpec.FileName), bakedCopy);
                     return false;
                 }
 
-                RimIgnorePlan plan = RimIgnorePlan.Build(root, spec);
+                // 有上傳複本時掃描複本：原版已從中剔除資源包附屬檔，也可能已略過被打包的原始貼圖。
+                RimIgnorePlan plan = RimIgnorePlan.Build(bakedCopy ?? root, spec);
                 if (plan == null)
                 {
                     ShowBlockingError(item, RimIgnoreText.Get(RimIgnoreText.ErrScanFailed,
-                        "無法掃描模組資料夾，已中止上傳。詳情請見開發者主控台。"));
+                        "無法掃描模組資料夾，已中止上傳。詳情請見開發者主控台。"), bakedCopy);
                     return false;
                 }
 
@@ -102,17 +114,94 @@ namespace Fortified
                     plan,
                     mod.Name,
                     ignorePath,
-                    confirmedPlan => BeginFilteredUpload(item, mod, confirmedPlan),
-                    () => UploadWithoutFiltering(item)));
+                    confirmedPlan =>
+                    {
+                        if (bakedCopy != null)
+                        {
+                            FilterBakedCopyAndUpload(item, bakedCopy, confirmedPlan);
+                        }
+                        else
+                        {
+                            BeginFilteredUpload(item, mod, confirmedPlan);
+                        }
+                    },
+                    () => UploadWithoutFiltering(item),
+                    bakedCopy != null ? AbandonBakedCopy : (Action)null));
                 return false;
             }
             catch (Exception e)
             {
                 Log.Error($"[Fortified] {RimIgnoreSpec.FileName} 前置處理失敗：{e}");
                 ShowBlockingError(item, RimIgnoreText.Get(RimIgnoreText.ErrUnexpected,
-                    "套用忽略規則時發生未預期的錯誤，已中止上傳。詳情請見開發者主控台。"));
+                    "套用忽略規則時發生未預期的錯誤，已中止上傳。詳情請見開發者主控台。"), bakedCopy);
                 return false;
             }
+        }
+
+        // ── 1.7：資源包上傳複本 ──────────────────────────────────────
+
+        /// <summary>
+        /// 原版為這次上傳建立的暫存複本（1.7 勾選「建立資源包」時才有）；1.6 或未烘焙時為 null。
+        /// </summary>
+        private static DirectoryInfo BakedUploadCopy(ModMetaData mod)
+        {
+#if RW_1_7
+            DirectoryInfo copy = mod.workshopUploadDirectoryOverride;
+            if (copy == null)
+            {
+                return null;
+            }
+            copy.Refresh();
+            return copy.Exists ? copy : null;
+#else
+            return null;
+#endif
+        }
+
+        /// <summary>
+        /// 直接在原版的上傳複本中刪除排除項目，再續行原版上傳；複本由原版在上傳結束後自行刪除。
+        /// </summary>
+        private static void FilterBakedCopyAndUpload(WorkshopUploadable item, DirectoryInfo bakedCopy, RimIgnorePlan plan)
+        {
+            try
+            {
+                RimIgnoreStaging.RemoveExcluded(bakedCopy, plan);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"[Fortified] 從上傳複本排除項目失敗：{e}");
+                // 複本可能只刪了一半，交還原版清除；之後若選擇完整上傳會改傳未烘焙的原始資料夾。
+                AbandonBakedCopy();
+                ShowBlockingError(item, RimIgnoreText.Get(RimIgnoreText.ErrStagingFailed,
+                    "建立暫存鏡像失敗，已中止上傳（模組原始檔案未被更動）。\n\n{0}", e.Message));
+                return;
+            }
+
+            Log.Message($"[Fortified] {RimIgnoreSpec.FileName}：已從上傳複本排除 {plan.ExcludedEntries.Count} 個項目／" +
+                        $"{plan.ExcludedFileCount} 個檔案（{RimIgnorePlan.FormatBytes(plan.ExcludedBytes)}）。");
+            InvokeOriginalUpload(item);
+        }
+
+        /// <summary>
+        /// 放棄這次上傳時請原版刪除上傳複本並重設暫存狀態，否則下次未烘焙的上傳會誤傳這份舊複本。
+        /// </summary>
+        private static void AbandonBakedCopy()
+        {
+#if RW_1_7
+            if (ClearStagingMethod == null)
+            {
+                Log.Warning("[Fortified] 找不到 Verse.Steam.Workshop.ClearStaging，無法清除原版上傳複本。");
+                return;
+            }
+            try
+            {
+                ClearStagingMethod.Invoke(null, null);
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"[Fortified] 清除原版上傳複本失敗：{(e.InnerException ?? e).Message}");
+            }
+#endif
         }
 
         // ── 2. 建立鏡像並重新進入上傳 ────────────────────────────────
@@ -261,17 +350,20 @@ namespace Fortified
             }
         }
 
-        private static void ShowBlockingError(WorkshopUploadable item, string message)
+        /// <param name="bakedCopy">1.7 的上傳複本；不為 null 時，取消會一併請原版清除它。</param>
+        private static void ShowBlockingError(WorkshopUploadable item, string message, DirectoryInfo bakedCopy = null)
         {
             try
             {
+                Action cancel = bakedCopy != null ? AbandonBakedCopy : (Action)null;
                 Find.WindowStack.Add(new Dialog_MessageBox(
                     message,
                     RimIgnoreText.Get(RimIgnoreText.UploadAnyway, "仍要完整上傳"),
                     () => UploadWithoutFiltering(item),
                     RimIgnoreText.Get(RimIgnoreText.Cancel, "Cancel"),
-                    null,
-                    RimIgnoreText.Get(RimIgnoreText.ErrorTitle, "忽略規則處理失敗")));
+                    cancel,
+                    RimIgnoreText.Get(RimIgnoreText.ErrorTitle, "忽略規則處理失敗"),
+                    cancelAction: cancel));
             }
             catch (Exception e)
             {

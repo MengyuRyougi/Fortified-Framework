@@ -6,6 +6,11 @@ using System.Collections.Generic;
 public class BuildBundle
 {
     private static string OutputPath => Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "1.6", "AssetBundles"));
+
+    // RimWorld 1.7（Waylith/Vulkan）只能使用着色器的 Vulkan（SPIR-V）变体，
+    // 默认只有 Linux 目标会编译出 Vulkan（Windows 为 D3D11、macOS 为 Metal）。
+    // 1.7 仍按操作系统后缀挑选 AssetBundle，所以把 Linux 版复制成三个后缀。
+    private static string OutputPath17 => Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "1.7", "AssetBundles"));
     private const string BundleName = "fortified_shaders";
     private static readonly PlatformBundle[] PlatformBundles =
     {
@@ -65,11 +70,34 @@ public class BuildBundle
             }
 
             Debug.Log($"[Fortified] AssetBundle '{BundleName}' 构建完成！平台数 {builtCount}。输出至: {outputPath}");
+
+            if (CopyVulkanBundleFor17(outputPath))
+            {
+                Debug.Log($"[Fortified] 已将 Linux 版（Vulkan）复制为 1.7 的 AssetBundle: {OutputPath17}");
+            }
         }
         catch (System.Exception ex)
         {
             Debug.LogError($"[Fortified] FATAL BUILD ERROR: {ex.Message}\n{ex.StackTrace}");
         }
+    }
+
+    private static bool CopyVulkanBundleFor17(string outputPath)
+    {
+        string source = Path.Combine(outputPath, BundleName + "_linux");
+        if (!File.Exists(source))
+        {
+            Debug.LogError($"[Fortified] 找不到 {source}，无法更新 1.7 的 AssetBundle");
+            return false;
+        }
+
+        string outputPath17 = OutputPath17;
+        if (!Directory.Exists(outputPath17)) Directory.CreateDirectory(outputPath17);
+        foreach (var platform in PlatformBundles)
+        {
+            File.Copy(source, Path.Combine(outputPath17, BundleName + platform.suffix), true);
+        }
+        return true;
     }
 
     private static List<string> FindShaderAssets()

@@ -132,6 +132,68 @@ namespace Fortified
         }
 
         /// <summary>
+        /// 1.7 資源包上傳：原版已把模組複製到用完即丟的暫存資料夾，直接在該複本中刪除被排除的項目。
+        /// 刪除後的檔案數必須與 plan 一致，否則擲出例外，寧可中止也不要送出內容不明的版本。
+        /// </summary>
+        public static void RemoveExcluded(DirectoryInfo copyRoot, RimIgnorePlan plan)
+        {
+            if (copyRoot == null)
+            {
+                throw new ArgumentNullException(nameof(copyRoot));
+            }
+            if (plan == null)
+            {
+                throw new ArgumentNullException(nameof(plan));
+            }
+            if (plan.Truncated)
+            {
+                throw new InvalidOperationException(RimIgnoreText.Get(RimIgnoreText.ErrPlanTruncated,
+                    "掃描結果不完整（超出安全上限），已中止建立鏡像。"));
+            }
+            if (plan.IncludedFiles.Count == 0)
+            {
+                throw new InvalidOperationException(RimIgnoreText.Get(RimIgnoreText.ErrNothingToUpload,
+                    "套用 {0} 之後沒有任何檔案會被上傳，已中止。", RimIgnoreSpec.FileName));
+            }
+
+            string rootPath = Path.GetFullPath(copyRoot.FullName)
+                .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+            // 掃描永遠略過鏡像資料夾；若殘留的鏡像被原版一併複製進來，也不能上傳。
+            DeleteStagingDirectory(Path.Combine(rootPath, StagingFolderName), throwOnFailure: true);
+
+            foreach (RimIgnoreEntry entry in plan.ExcludedEntries)
+            {
+                string target = Path.GetFullPath(Path.Combine(rootPath, ToNativePath(entry.RelativePath)));
+                if (!target.StartsWith(rootPath + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException($"[Fortified] 拒絕刪除上傳複本以外的路徑：{target}");
+                }
+
+                if (entry.IsDirectory)
+                {
+                    if (Directory.Exists(target))
+                    {
+                        ClearReadOnlyRecursive(new DirectoryInfo(target), 0);
+                        Directory.Delete(target, recursive: true);
+                    }
+                }
+                else if (File.Exists(target))
+                {
+                    File.SetAttributes(target, FileAttributes.Normal);
+                    File.Delete(target);
+                }
+            }
+
+            int remaining = CountFiles(rootPath);
+            if (remaining != plan.IncludedFiles.Count)
+            {
+                throw new IOException(RimIgnoreText.Get(RimIgnoreText.ErrMirrorCountMismatch,
+                    "鏡像檔案數不符（預期 {0}、實得 {1}）。", plan.IncludedFiles.Count, remaining));
+            }
+        }
+
+        /// <summary>
         /// 把 About/PublishedFileId.txt 由原始資料夾同步到鏡像。
         /// 首次發佈時該檔案是在 Steam 回呼中才寫入的，必須在導向前補上。
         /// </summary>
